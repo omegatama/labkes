@@ -1,0 +1,1297 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"no",
+				"nominal"
+			],
+			[
+				"with",
+				"withErrors"
+			],
+			[
+				"str_rep",
+				"str_replace"
+			],
+			[
+				"BA",
+				"BarangPersediaan"
+			],
+			[
+				"url",
+				"urlhapus"
+			],
+			[
+				"qt",
+				"qty_lama"
+			],
+			[
+				"qty",
+				"qty_baru"
+			],
+			[
+				"rou",
+				"route"
+			],
+			[
+				"barang",
+				"barang_persediaan_id"
+			],
+			[
+				"str",
+				"strtolower"
+			],
+			[
+				"trx",
+				"trxpersediaan"
+			],
+			[
+				"nomina",
+				"nominal_lama"
+			],
+			[
+				"Bara",
+				"BarangPersediaan"
+			],
+			[
+				"peng",
+				"penggunaan_index"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"saldo",
+				"saldoawal"
+			],
+			[
+				"stok",
+				"stokawal"
+			],
+			[
+				"ba",
+				"barang_persediaan_id"
+			],
+			[
+				"Perse",
+				"PersediaanTrx"
+			],
+			[
+				"per",
+				"persediaan"
+			],
+			[
+				"rq",
+				"request"
+			],
+			[
+				"persedia",
+				"persediaans"
+			],
+			[
+				"bara",
+				"barangpersediaan_id"
+			],
+			[
+				"baran",
+				"barangpersediaan_id"
+			],
+			[
+				"nam",
+				"nama_persediaan"
+			],
+			[
+				"tabe",
+				"tabelbarangpersediaan"
+			],
+			[
+				"form",
+				"formBarangpersediaan"
+			],
+			[
+				"edi",
+				"edit-data"
+			],
+			[
+				"if",
+				"ife\tif … else"
+			],
+			[
+				"act",
+				"actionType"
+			],
+			[
+				"ac",
+				"actionType"
+			],
+			[
+				"keg",
+				"kegiatan"
+			],
+			[
+				"aja",
+				"ajax-modal"
+			],
+			[
+				"moda",
+				"ajax-modal"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"p",
+				"pt-3"
+			],
+			[
+				"save",
+				"savebelanja"
+			],
+			[
+				"saveblanja",
+				"savebelanja"
+			],
+			[
+				"navbar",
+				"navbar-right"
+			],
+			[
+				"font",
+				"font-size\tproperty"
+			],
+			[
+				"text",
+				"text-center"
+			],
+			[
+				"kecam",
+				"kecamatannya"
+			],
+			[
+				"n",
+				"namasekolah"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"jud",
+				"judulpengumuman"
+			],
+			[
+				"modal",
+				"modalpengumuman"
+			],
+			[
+				"pum",
+				"pumpswitch"
+			],
+			[
+				"roo",
+				"roofswitch"
+			],
+			[
+				"roof",
+				"rooftoogle"
+			],
+			[
+				"pump",
+				"pumpstate"
+			],
+			[
+				"hig",
+				"highcharts"
+			],
+			[
+				"lo",
+				"log"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"not",
+				"notify"
+			],
+			[
+				"fun",
+				"fun\tFunction"
+			],
+			[
+				"get",
+				"getScriptPage"
+			],
+			[
+				"mqtt",
+				"mqtt_connect"
+			],
+			[
+				"lux",
+				"luxvalue"
+			],
+			[
+				"soil",
+				"soilvalue"
+			],
+			[
+				"align",
+				"text-align\tproperty"
+			],
+			[
+				"disp",
+				"displaylux"
+			],
+			[
+				"dis",
+				"displayLineChart"
+			],
+			[
+				"can",
+				"canvaslux"
+			],
+			[
+				"session",
+				"session_destroy"
+			],
+			[
+				"us",
+				"username"
+			],
+			[
+				"sess",
+				"session_start"
+			],
+			[
+				"u",
+				"username"
+			],
+			[
+				"user",
+				"username"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"dist",
+				"distances"
+			],
+			[
+				"direc",
+				"directionsDisplay"
+			],
+			[
+				"koo",
+				"koordinat_path"
+			],
+			[
+				"back",
+				"background-image\tproperty"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"sisa",
+				"sisapagu4"
+			],
+			[
+				"tanggal_",
+				"tanggal_tempat"
+			],
+			[
+				"triw",
+				"triwulan_tahun"
+			],
+			[
+				"triwu",
+				"triwulan_tahun"
+			],
+			[
+				"nama",
+				"nama_kecamatan"
+			],
+			[
+				"bela",
+				"belanjas"
+			],
+			[
+				"tangga",
+				"tanggal_belanja"
+			],
+			[
+				"belan",
+				"belanja"
+			],
+			[
+				"ob",
+				"objbku"
+			],
+			[
+				"arr",
+				"arrpencairan"
+			],
+			[
+				"obj",
+				"objpencairan"
+			],
+			[
+				"key",
+				"keypencairan"
+			],
+			[
+				"a",
+				"arrpencairan"
+			],
+			[
+				"array_p",
+				"array_push"
+			],
+			[
+				"pen",
+				"pencairan"
+			],
+			[
+				"arra",
+				"arrpencairan"
+			],
+			[
+				"pe",
+				"pencairan"
+			],
+			[
+				"tanggal",
+				"tanggal_belanja"
+			],
+			[
+				"bku",
+				"bku_content"
+			],
+			[
+				"besa",
+				"besar_tabungan"
+			],
+			[
+				"use",
+				"user_entri"
+			],
+			[
+				"tgl",
+				"tgl_entri"
+			],
+			[
+				"besar",
+				"besar_simpanan"
+			],
+			[
+				"kode",
+				"kode_anggota"
+			],
+			[
+				"pass",
+				"password"
+			],
+			[
+				"pas",
+				"pass"
+			],
+			[
+				"belanja",
+				"belanja_modal"
+			],
+			[
+				"b",
+				"bulanarr"
+			],
+			[
+				"pene",
+				"penerimaan_tw_sekarang"
+			],
+			[
+				"teks",
+				"teks_penerimaan_tw"
+			],
+			[
+				"prog",
+				"program_kp"
+			],
+			[
+				"pro",
+				"program_kp_detail"
+			],
+			[
+				"Kode",
+				"KodePembiayaan"
+			],
+			[
+				"bulan",
+				"bulanawal"
+			],
+			[
+				"bul",
+				"bulanawal"
+			],
+			[
+				"nip",
+				"nip_bendahara"
+			],
+			[
+				"pener",
+				"penerimaan_twsekarang"
+			],
+			[
+				"sald",
+				"saldo_twlalu"
+			],
+			[
+				"seko",
+				"sekolah"
+			],
+			[
+				"realisasi",
+				"realisasi_twsekarang"
+			],
+			[
+				"realia",
+				"realisasi_sd_twlalu"
+			],
+			[
+				"tangg",
+				"tanggal_tanggal"
+			],
+			[
+				"sek",
+				"sekolah"
+			],
+			[
+				"strto",
+				"strtoupper"
+			],
+			[
+				"tota",
+				"total_rka_berjalan"
+			],
+			[
+				"ta",
+				"ta"
+			],
+			[
+				"belanjar1",
+				"belanjar1_sd_twlalu"
+			],
+			[
+				"rka",
+				"rka_rek2"
+			],
+			[
+				"tw",
+				"triwulan"
+			],
+			[
+				"bukti",
+				"bukti_tanggal"
+			],
+			[
+				"rekening",
+				"rekening_id"
+			],
+			[
+				"rka_be",
+				"rka_berjalan"
+			],
+			[
+				"reken",
+				"rekening"
+			],
+			[
+				"uang",
+				"uang_terbilang"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "routes/web.php",
+			"settings":
+			{
+				"buffer_size": 6749,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/layouts/admin.blade.php",
+			"settings":
+			{
+				"buffer_size": 28091,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/Sekolah/TransaksiPersediaanController.php",
+			"settings":
+			{
+				"buffer_size": 15366,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/Admin/PenerimaanController.php",
+			"settings":
+			{
+				"buffer_size": 12763,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/admin/penerimaan/index.blade.php",
+			"settings":
+			{
+				"buffer_size": 4698,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Pendapatan.php",
+			"settings":
+			{
+				"buffer_size": 642,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/admin/penerimaan/tambah.blade.php",
+			"settings":
+			{
+				"buffer_size": 7834,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"form",
+				"CodeFormatter: Format as Javascript Syntax"
+			],
+			[
+				"mark",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: en",
+				"Package Control: Disable Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"forma",
+				"CodeFormatter: Format Code"
+			],
+			[
+				"for",
+				"CodeFormatter: Format Code"
+			],
+			[
+				"format",
+				"CodeFormatter: Format Code"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"formatter",
+				"Formatter: Beautify With PHP CS Fixer"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Discover Packages"
+			],
+			[
+				"mk",
+				"Markdown Preview: Save to HTML"
+			],
+			[
+				"ma",
+				"Markdown Preview: Save to HTML"
+			],
+			[
+				"font",
+				"Set Syntax: Font"
+			],
+			[
+				"export",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"enab",
+				"Package Control: Enable Package"
+			],
+			[
+				"",
+				"About"
+			],
+			[
+				"packa",
+				"Package Control: Enable Package"
+			],
+			[
+				"html",
+				"HTML: Wrap Selection With Tag"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"emmet",
+				"Set Syntax: Emmet"
+			],
+			[
+				"codefo",
+				"CodeFormatter: Format Code"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			],
+			[
+				"mater",
+				"Activate Materialize Theme"
+			],
+			[
+				"ayu",
+				"ayu: Activate theme"
+			],
+			[
+				"Package Control: install ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 246.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/laragon/www/bos",
+		"/C/laragon/www/bos/app",
+		"/C/laragon/www/bos/app/Http",
+		"/C/laragon/www/bos/app/Http/Controllers",
+		"/C/laragon/www/bos/app/Http/Controllers/Admin",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/Master",
+		"/C/laragon/www/bos/resources",
+		"/C/laragon/www/bos/resources/views",
+		"/C/laragon/www/bos/resources/views/admin",
+		"/C/laragon/www/bos/resources/views/admin/kas",
+		"/C/laragon/www/bos/resources/views/admin/penerimaan",
+		"/C/laragon/www/bos/resources/views/admin/persediaan",
+		"/C/laragon/www/bos/resources/views/admin/sekolah",
+		"/C/laragon/www/bos/resources/views/layouts",
+		"/C/laragon/www/bos/resources/views/sekolah",
+		"/C/laragon/www/bos/resources/views/sekolah/kas",
+		"/C/laragon/www/bos/resources/views/sekolah/kas/transaksi",
+		"/C/laragon/www/bos/resources/views/sekolah/persediaan",
+		"/C/laragon/www/bos/resources/views/sekolah/rka",
+		"/C/laragon/www/bos/routes"
+	],
+	"file_history":
+	[
+		"/C/laragon/www/bos/app/Http/Controllers/Admin/TransaksiPersediaanController.php",
+		"/C/laragon/www/bos/app/PersediaanTrx.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/TransaksiPersediaanController.php",
+		"/C/laragon/www/bos/resources/views/admin/persediaan/penggunaan.blade.php",
+		"/C/laragon/www/bos/resources/views/admin/persediaan/penyesuaian.blade.php",
+		"/C/laragon/www/bos/resources/views/admin/sekolah/index.blade.php",
+		"/C/laragon/www/bos/app/Kecamatan.php",
+		"/C/laragon/www/bos/app/Sekolah.php",
+		"/C/laragon/www/bos/resources/views/admin/persediaan/stok.blade.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Admin/SekolahController.php",
+		"/C/laragon/www/bos/resources/views/layouts/admin.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/persediaan/penggunaan.blade.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/TransaksiKasController.php",
+		"/C/laragon/www/bos/resources/views/sekolah/persediaan/penyesuaian.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/rka/index.blade.php",
+		"/C/laragon/www/bos/resources/views/admin/rka.blade.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Admin/RkaController.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/RkaController.php",
+		"/C/laragon/www/bos/routes/web.php",
+		"/C/laragon/www/bos/resources/views/admin/kas/saldo.blade.php",
+		"/C/laragon/www/bos/app/Saldo.php",
+		"/C/laragon/www/bos/resources/views/admin/kas/saldolalu.blade.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Admin/KasController.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/KasController.php",
+		"/C/laragon/www/bos/resources/views/sekolah/persediaan/tambah.blade.php",
+		"/C/laragon/www/bos/app/BarangPersediaan.php",
+		"/C/laragon/www/bos/vendor/mockery/mockery/tests/Mockery/Fixtures/SemiReservedWordsAsMethods.php",
+		"/C/laragon/www/bos/resources/views/sekolah/rka/tambah.blade.php",
+		"/C/laragon/www/bos/app/KasTrxDetail.php",
+		"/C/laragon/www/bos/app/KasTrx.php",
+		"/C/laragon/www/bos/.env",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/RkaLimitController.php",
+		"/C/laragon/www/bos/resources/views/layouts/sekolah.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/persediaan/stok.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/kas/transaksi/index.blade.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Admin/PenerimaanController.php",
+		"/C/laragon/www/bos/app/StokAwal.php",
+		"/C/laragon/www/bos/app/SaldoAwal.php",
+		"/C/laragon/www/amanbos/app/Models/Belanja.php",
+		"/C/laragon/www/amanbos/app/Models/RkaSisa.php",
+		"/C/laragon/www/amanbos/app/Models/Rka.php",
+		"/C/laragon/www/amanbos/app/Models/Sekolah.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_091048_create_pendapatans.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_090813_create_transaksi_kas_details.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_090603_create_transaksi_kas.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_090307_create_saldo_awals.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_090124_create_saldos.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_092754_create_belanjas.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_091433_create_rbas.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_15_085332_create_rekenings.php",
+		"/C/laragon/www/blud/resources/views/puskesmas/rba/index.blade.php",
+		"/C/laragon/www/blud/app/Http/Controllers/Puskesmas/RbaController.php",
+		"/C/laragon/www/blud/routes/web.php",
+		"/C/laragon/www/blud/resources/views/layouts/admin.blade.php",
+		"/C/laragon/www/blud/resources/views/layouts/puskesmas.blade.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_02_070312_create_puskesmases.php",
+		"/C/laragon/www/blud/resources/views/auth/login.blade.php",
+		"/C/laragon/www/blud/config/auth.php",
+		"/C/laragon/www/blud/app/Http/Controllers/Auth/LoginController.php",
+		"/C/laragon/www/blud/app/Http/Controllers/Auth/RegisterController.php",
+		"/C/laragon/www/blud/resources/views/auth/register.blade.php",
+		"/C/laragon/www/blud/app/Rba.php",
+		"/C/laragon/www/blud/app/Puskesmas.php",
+		"/C/laragon/www/blud/.env",
+		"/C/laragon/www/blud/resources/views/puskesmas/index.blade.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_16_035527_add_kode_opd_to_puskesmases_table.php",
+		"/C/laragon/www/blud/app/Http/Middleware/RedirectIfAuthenticated.php",
+		"/C/laragon/www/blud/resources/views/auth/guest.blade.php",
+		"/C/laragon/www/blud/database/migrations/2020_02_02_070258_create_admins.php",
+		"/C/Users/Acer/Pictures/fixfix/fixfix.ino",
+		"/C/xamp5/htdocs/ereporting/erpt_bpkpaddemak.sql",
+		"/C/laragon/www/blud/config/constants.php",
+		"/C/laragon/www/blud/app/Exceptions/Handler.php",
+		"/C/laragon/www/blud/resources/views/layouts/sekolah.blade.php",
+		"/C/laragon/www/blud/resources/views/layouts/guest.blade.php",
+		"/C/laragon/www/bos/database/migrations/2020_01_31_080622_create_kode_rekening.php",
+		"/C/laragon/www/bos/database/migrations/2020_02_01_041652_create_table_kecamatans.php",
+		"/C/Users/Acer/Downloads/Compressed/Apex_v8.0/html/demo-1/sweet-alerts.html",
+		"/C/laragon/www/backend/app/Http/Controllers/CategoryController.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Admin/SaldoController.php",
+		"/C/laragon/www/bos/resources/views/sekolah/master/action_button.blade.php",
+		"/C/laragon/www/koperasi/mub.sql",
+		"/D/bs/bs-combogrid-2.1.0/demo/server.js",
+		"/D/bs/bs-combogrid-2.1.0/demo/index.html",
+		"/C/laragon/www/bos/app/Exceptions/Handler.php",
+		"/C/Users/Acer/Downloads/Compressed/Apex_v8.0/html/demo-1/components-modals.html",
+		"/C/laragon/www/bos/config/auth.php",
+		"/C/laragon/www/puskesmas/dashboard.php",
+		"/C/laragon/www/bos/config/app.php",
+		"/C/laragon/www/backend/app/Http/Controllers/ArtikelController.php",
+		"/C/Users/Acer/Downloads/Compressed/laravel-6/.env",
+		"/C/Users/Acer/AppData/Local/Temp/BvSshSftp/Bv001bdf/Bv001c41/.env",
+		"/C/Users/Acer/AppData/Local/Temp/BvSshSftp/Bv001bdf/Bv001bdf/web.php",
+		"/C/xamp5/htdocs/ereporting/opdlraall.php",
+		"/C/xamp5/htdocs/ereporting/laporantahunan.php",
+		"/C/xamp5/htdocs/ereporting/lra.php",
+		"/C/xamp5/htdocs/jakvent/datappu.php",
+		"/C/xamp5/htdocs/jakvent/datasurat.php",
+		"/C/laragon/www/bos/resources/views/admin/index.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah.blade.php",
+		"/D/nodered/kereta.json",
+		"/C/laragon/www/bos/resources/views/auth/login.blade.php",
+		"/C/laragon/www/bos/resources/views/auth/guest.blade.php",
+		"/C/laragon/www/bos/resources/views/auth/loginori.blade.php",
+		"/C/laragon/www/bos/resources/views/layouts/guest.blade.php",
+		"/C/laragon/www/bos/public/index.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Auth/RegisterController.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Auth/LoginController.php",
+		"/C/laragon/www/bos/config/constants.php",
+		"/C/laragon/www/bos/app/Http/Middleware/RedirectIfAuthenticated.php",
+		"/C/laragon/www/bos/resources/views/layouts/app.blade.php",
+		"/C/Users/Acer/Downloads/Compressed/Apex_v8.0/html/demo-1/login-page.html",
+		"/C/laragon/www/bos1/resources/views/login.blade.php",
+		"/C/laragon/www/bos1/resources/views/home.blade.php",
+		"/C/laragon/www/bos1/resources/views/welcome.blade.php",
+		"/C/Users/Acer/Downloads/Compressed/Apex_v8.0/html/demo-1/register-page.html",
+		"/C/laragon/www/bos/composer.json",
+		"/C/laragon/www/bos/resources/views/auth/register.blade.php",
+		"/C/laragon/www/bos/resources/views/layouts/auth.blade.php",
+		"/C/laragon/www/bos/app/Admin.php",
+		"/C/laragon/www/bos1/composer.json",
+		"/C/laragon/www/bos1/.env.example",
+		"/C/laragon/www/bos1/.env",
+		"/C/laragon/www/bos/.env.example",
+		"/C/laragon/www/bos/database/migrations/2014_10_12_000000_create_users_table.php",
+		"/C/laragon/www/bos/database/migrations/2020_01_17_055925_create_sekolahs_table.php",
+		"/C/laragon/www/bos/app/User.php",
+		"/C/xamp5/htdocs/rscasmgrwj/resources/views/layouts/mainapp.blade.php"
+	],
+	"find":
+	{
+		"height": 86.0
+	},
+	"find_in_files":
+	{
+		"height": 212.8,
+		"where_history":
+		[
+			"C:\\laragon\\www\\bos\\app\\Http\\Controllers"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"tr>",
+			"<tr",
+			"index",
+			"RkaLimit",
+			"limit",
+			"Usage",
+			"kas_trx_details",
+			"Logout",
+			"logout",
+			"<form",
+			"sekolah",
+			"puskesmas",
+			"Semarang",
+			"sekolah",
+			"Sekolah",
+			"sekolah",
+			"puskesmass",
+			"sekolah",
+			"kas",
+			"persedi",
+			"side",
+			"BOS",
+			"ico"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"td>",
+			"<td",
+			"Demak",
+			"puskesmas",
+			"Puskesmas",
+			"puskesmas",
+			"puskesmases",
+			"puskesmas"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "routes/web.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6749,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2321,
+								2321
+							]
+						],
+						"settings":
+						{
+							"SL.368.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2777.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "resources/views/layouts/admin.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 28091,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2880,
+								2880
+							]
+						],
+						"settings":
+						{
+							"SL.385.region_keys":
+							[
+								"SL.jshint.Highlights.|0b5fe3e9d8e1052522c5105a47e94deaeb5c9ba83bba12cda3c760c119a69bfc|region.yellowish markup.warning.sublime_linter|32",
+								"SL.jshint.Gutter.|region.yellowish markup.warning.sublime_linter|dot",
+								"sublime_linter.protected_regions"
+							],
+							"SL.66.region_keys":
+							[
+								"sublime_linter.protected_regions",
+								"SL.jshint.Gutter.|region.yellowish markup.warning.sublime_linter|dot",
+								"SL.jshint.Highlights.|0b5fe3e9d8e1052522c5105a47e94deaeb5c9ba83bba12cda3c760c119a69bfc|region.yellowish markup.warning.sublime_linter|32"
+							],
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 819.2,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/Http/Controllers/Sekolah/TransaksiPersediaanController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15366,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"SL.73.region_keys":
+							[
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4686.4,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/Http/Controllers/Admin/PenerimaanController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12763,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								902,
+								902
+							]
+						],
+						"settings":
+						{
+							"SL.391.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 605.0,
+						"translation.y": 908.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "resources/views/admin/penerimaan/index.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4698,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4304,
+								4304
+							]
+						],
+						"settings":
+						{
+							"SL.399.region_keys":
+							[
+							],
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4310.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/Pendapatan.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 642,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								630,
+								630
+							]
+						],
+						"settings":
+						{
+							"SL.396.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 623.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "resources/views/admin/penerimaan/tambah.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7834,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1551,
+								1551
+							]
+						],
+						"settings":
+						{
+							"SL.392.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 394.0,
+						"translation.y": 1355.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 48.0
+	},
+	"input":
+	{
+		"height": 88.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 129.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.paneltranformations":
+	{
+		"height": 168.0
+	},
+	"pinned_build_system": "",
+	"project": "bos.sublime-project",
+	"replace":
+	{
+		"height": 147.2
+	},
+	"save_all_on_build": false,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\laragon\\www\\blud\\blud.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 318.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
