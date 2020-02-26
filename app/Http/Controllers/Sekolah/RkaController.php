@@ -98,7 +98,7 @@ class RkaController extends Controller
             )*/ 
             
             // if( ($jumlah + $pagu->penggunaan_tw1 + $pagu->penggunaan_tw2 + $pagu->penggunaan_tw3 + $pagu->penggunaan_tw4) <= $pagu->pagu )
-            
+            // tes
             if($jumlah <= $pagu->sisa)
             {
                 # code...
