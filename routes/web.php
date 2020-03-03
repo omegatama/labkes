@@ -90,6 +90,14 @@ Route::group([
 ], function () {
     Route::view('/', 'sekolah.index')->name('sekolah');
     
+    // Profil
+    Route::get('/profil', 'Sekolah\ProfilController@index')->name('sekolah.profil.index');
+    Route::get('/profil/edit', 'Sekolah\ProfilController@edit')->name('sekolah.profil.edit');
+    Route::post('/profil/update', 'Sekolah\ProfilController@update')->name('sekolah.profil.update');
+    Route::get('/password/edit', 'Sekolah\ProfilController@passwordedit')->name('sekolah.password.edit');
+    Route::post('/password/update', 'Sekolah\ProfilController@passwordupdate')->name('sekolah.password.update');
+    // Profil
+
     // Start Master Kegiatan
     Route::resource('/kegiatan', 'Sekolah\Master\KegiatanController', ['as' => 'sekolah'])
 	->except([
@@ -122,6 +130,7 @@ Route::group([
     Route::get('/select/program', 'Sekolah\Master\SelectDataController@selectProgram')->name('sekolah.select.program');
     Route::get('/select/kegiatan', 'Sekolah\Master\SelectDataController@selectKegiatan')->name('sekolah.select.kegiatan');
     Route::get('/select/kp', 'Sekolah\Master\SelectDataController@selectKp')->name('sekolah.select.kp');
+    Route::get('/select/kecamatan', 'Sekolah\Master\SelectDataController@selectKecamatan')->name('sekolah.select.kecamatan');
     Route::get('/select/rekening', 'Sekolah\Master\SelectDataController@selectRekening')->name('sekolah.select.rekening');
     Route::get('/select/barangpersediaan', 'Sekolah\Master\SelectDataController@selectBarangPersediaan')->name('sekolah.select.barangpersediaan');
     // End Select2 URL
@@ -155,4 +164,14 @@ Route::group([
     Route::get('/penggunaan', 'Sekolah\TransaksiPersediaanController@penggunaan_index')->name('sekolah.persediaan.penggunaan');
     Route::get('/penyesuaian', 'Sekolah\TransaksiPersediaanController@penyesuaian_index')->name('sekolah.persediaan.penyesuaian');
     // End Persediaan
+
+    // Belanja Th Berjalan
+    Route::get('/belanja', 'Sekolah\BelanjaController@index')->name('sekolah.belanja.index');
+
+    Route::get('/belanja/create', 'Sekolah\BelanjaController@create')->name('sekolah.belanja.create');
+
+    Route::post('/belanja/store', 'Sekolah\BelanjaController@store')->name('sekolah.belanja.store');
+
+
+    // End Belanja Th Berjalan
 });

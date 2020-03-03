@@ -398,9 +398,9 @@
                                         <i class="ft-settings mr-2"></i>
                                         <span>Pengaturan</span>
                                     </a> --}}
-                                    <a href="javascript:;" class="dropdown-item py-1">
+                                    <a href="{{ route('sekolah.profil.index') }}" class="dropdown-item py-1">
                                         <i class="ft-edit mr-2"></i>
-                                        <span>Ubah Profil</span>
+                                        <span>Profil</span>
                                     </a>
                                     <a href="javascript:;" class="dropdown-item py-1"
                                       >
