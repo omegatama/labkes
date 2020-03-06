@@ -32,3 +32,12 @@ if (!function_exists('FormatMataUang')) {
         return "Rp. ".number_format($expression, 2, ',', '.');
     }
 }
+
+if (!function_exists('GetTriwulan')) {
+    function GetTriwulan($stringtanggal){
+        # code...
+        $bln = date("m",strtotime($stringtanggal));
+        $triwulan = $bln >= 1 && $bln <= 3 ? 1 : ($bln >= 4 && $bln <= 6 ? 2 : ($bln >= 7 && $bln <= 9 ? 3 : 4));
+        return $triwulan;
+    }
+}

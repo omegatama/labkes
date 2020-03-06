@@ -172,6 +172,28 @@ Route::group([
 
     Route::post('/belanja/store', 'Sekolah\BelanjaController@store')->name('sekolah.belanja.store');
 
+    Route::get('/belanja/edit/{id}', 'Sekolah\BelanjaController@edit')->name('sekolah.belanja.edit');
 
+    Route::post('/belanja/update/{id}', 'Sekolah\BelanjaController@update')->name('sekolah.belanja.update');
+
+    Route::get('/belanja/destroy/{id}', 'Sekolah\BelanjaController@destroy')->name('sekolah.belanja.destroy');
+
+    Route::get('/belanja/a2/{id}', 'Sekolah\BelanjaController@a2')->name('sekolah.belanja.a2');
+
+    Route::get('/belanja/modal/{id}', 'Sekolah\BelanjaController@modal')->name('sekolah.belanja.modal');
+
+    Route::get('/belanja/modal/{id}/create', 'Sekolah\BelanjaController@createmodal')->name('sekolah.belanja.createmodal');
+
+    Route::get('/belanja/getmodal/{id}', 'Sekolah\BelanjaController@getmodal')->name('sekolah.belanja.getmodal');
+
+    Route::get('/belanja/persediaan/{id}', 'Sekolah\BelanjaController@persediaan')->name('sekolah.belanja.persediaan');
     // End Belanja Th Berjalan
+
+    // Start Belanja Modal Th Berjalan
+    Route::get('/belanjamodal', 'Sekolah\BelanjaModalController@index')->name('sekolah.belanjamodal.index');
+    // End Belanja Modal Th Berjalan
+
+    // Start Belanja Persediaan Th Berjalan
+    Route::get('/belanjapersediaan', 'Sekolah\BelanjaPersediaanController@index')->name('sekolah.belanjapersediaan.index');
+    // End Belanja Persediaan Th Berjalan
 });

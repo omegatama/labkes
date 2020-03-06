@@ -78,6 +78,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if ($url == "sekolah")
+                                    <div class="card-footer">
+                                        Username: [npsn] <br>
+                                        Password: password <br>
+                                        Download Panduan Aplikasi BOS: <br>
+                                        {{-- Aplikasi BOS lama berpindah alamat pada: --}}
+                                        <a href="{{ asset('app-assets/download/panduan.pdf')}}">Panduan Aplikasi BOS</a>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

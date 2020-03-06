@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\KodeProgram;
 use App\Kegiatan;
+use App\Kecamatan;
 use App\KomponenPembiayaan;
 use App\KodeRekening;
 use Auth;
@@ -19,6 +20,17 @@ class SelectDataController extends Controller
             ->where('kode_program', 'like', '%' . $search . '%')
             ->orWhere('nama_program', 'like', '%' . $search . '%')
             ->orderBy('kode_program')
+            ->paginate(5);
+        
+        return response()->json(['items' => $data->toArray()['data'], 'pagination' => $data->nextPageUrl() ? true : false]);
+    }
+
+    public function selectKecamatan(Request $request)
+    {
+        $search = $request->get('search');
+        $data = Kecamatan::select(['id', 'nama_kecamatan'])
+            ->where('nama_kecamatan', 'like', '%' . $search . '%')
+            ->orderBy('id')
             ->paginate(5);
         
         return response()->json(['items' => $data->toArray()['data'], 'pagination' => $data->nextPageUrl() ? true : false]);

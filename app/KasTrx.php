@@ -14,7 +14,7 @@ class KasTrx extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = ['tanggal','created_at', 'updated_at', 'deleted_at'];
 
     protected $table = 'kas_trxes';
 
