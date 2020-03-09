@@ -87,23 +87,44 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                 <table id="tabelModal" class="table table-bordered nowrap" style="width: 100%">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Uraian</th>
-                                            <th>Volume</th>
+                                            <th rowspan="2" class="align-middle">No</th>
+                                            <th colspan="6" class="text-center">Data Barang</th>
+                                            <th colspan="2" class="text-center">Bukti Pembelian</th>
+                                            <th colspan="2" class="text-center">Jumlah</th>
+                                            <th colspan="2" class="text-center">Harga</th>
+                                            <th rowspan="2" class="align-middle">Pilihan</th>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th>Kode Barang</th>
+                                            <th>Nama Barang</th>
+                                            <th>Merek</th>
+                                            <th>Tipe</th>
+                                            <th>Warna</th>
+                                            <th>Bahan</th>
+                                            <th>Bukti Tanggal</th>
+                                            <th>Bukti Nomor</th>
+                                            <th>Qty</th>
                                             <th>Satuan</th>
-                                            <th>Harga</th>
-                                            <th>Jumlah</th>
-                                            <th>Pilihan</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Total</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>No</th>
-                                            <th>Uraian</th>
-                                            <th>Volume</th>
+                                            <th>Kode Barang</th>
+                                            <th>Nama Barang</th>
+                                            <th>Merek</th>
+                                            <th>Tipe</th>
+                                            <th>Warna</th>
+                                            <th>Bahan</th>
+                                            <th>Bukti Tanggal</th>
+                                            <th>Bukti Nomor</th>
+                                            <th>Qty</th>
                                             <th>Satuan</th>
-                                            <th>Harga</th>
-                                            <th>Jumlah</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Total</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </tfoot>

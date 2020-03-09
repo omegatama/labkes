@@ -239,28 +239,28 @@
                                     <a href="javascript:void(0)" class="menu-item">Th Berjalan</a>
                                     <ul class="menu-content">
                                         <li>
-                                            <a href="#" class="menu-item">Lap Realisasi</a>
+                                            <a href="{{ route('sekolah.laporan.realisasi') }}" class="menu-item">Lap Realisasi</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="menu-item">SPTJ</a>
+                                            <a href="{{ route('sekolah.laporan.sptj') }}" class="menu-item">SPTJ</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="menu-item">SPTMH</a>
+                                            <a href="{{ route('sekolah.laporan.sptmh') }}" class="menu-item">SPTMH</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="menu-item">K7 Provinsi</a>
+                                            <a href="{{ route('sekolah.laporan.k7prov') }}" class="menu-item">K7 Provinsi</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="menu-item">K7 Kabupaten</a>
+                                            <a href="{{ route('sekolah.laporan.k7kab') }}" class="menu-item">K7 Kabupaten</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="menu-item">Belanja Modal</a>
+                                            <a href="{{ route('sekolah.laporan.modal') }}" class="menu-item">Belanja Modal</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="menu-item">Belanja Persediaan</a>
+                                            <a href="{{ route('sekolah.laporan.persediaan') }}" class="menu-item">Belanja Persediaan</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="menu-item">BKU</a>
+                                            <a href="{{ route('sekolah.laporan.bku') }}" class="menu-item">BKU</a>
                                         </li>
                                         
                                     </ul>

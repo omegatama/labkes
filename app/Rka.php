@@ -17,6 +17,7 @@ class Rka extends Model
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     protected $fillable = ['ta', 'npsn', 'kode_program_id', 'kegiatan_id', 'komponen_pembiayaan_id', 'kode_rekening_id', 'uraian', 'volume', 'satuan', 'harga_satuan', 'jumlah', 'alokasi_tw1', 'alokasi_tw2', 'alokasi_tw3', 'alokasi_tw4'];
+    protected $appends = ['parent'];
 
     public function sekolah()
 	{
@@ -42,4 +43,23 @@ class Rka extends Model
 	{
 	    return $this->belongsTo('App\KodeRekening','kode_rekening_id');
 	}
+
+	public function scopeParentRekening($query, $rekening)
+    {
+        return $query->whereHas('rekening', function ($q) use ($rekening) {
+            $q->where('parent_id', $rekening);
+        });
+    }
+
+    public function scopeTa($query, $ta)
+    {
+		$query->where('ta','=', $ta);   
+    }
+
+    public function getParentAttribute()
+    {
+        if($this->rekening->parent_id){
+            return $this->rekening->parent_id;
+        }
+    }
 }

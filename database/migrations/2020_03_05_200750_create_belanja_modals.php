@@ -15,7 +15,21 @@ class CreateBelanjaModals extends Migration
     {
         Schema::create('belanja_modals', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('belanja_id');
+            $table->string('nama_barang');
+            $table->unsignedBigInteger('kode_barang_id');
+            $table->string('warna')->nullable();
+            $table->string('merek')->nullable();
+            $table->string('tipe')->nullable();
+            $table->string('bahan')->nullable();
+            $table->date('tanggal_bukti');
+            $table->string('nomor_bukti');
+            $table->string('satuan')->nullable();
+            $table->float('harga_satuan', 12, 2);
+            $table->integer('qty');
+            $table->float('total', 12, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

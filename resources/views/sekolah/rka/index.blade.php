@@ -22,6 +22,8 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('sekolah.rka.create') }}" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
+                            <a href="{{ route('sekolah.rka.cetak') }}" class="btn btn-dark btn-sm m-0" id="tambah-data">Cetak</a>
+
                             <div class="table-responsive">
                                 <table id="tabelRka" class="table table-bordered nowrap" style="width: 100%">
                                     <thead>

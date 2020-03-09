@@ -9,6 +9,7 @@ use App\Kegiatan;
 use App\Kecamatan;
 use App\KomponenPembiayaan;
 use App\KodeRekening;
+use App\KodeBarang;
 use Auth;
 
 class SelectDataController extends Controller
@@ -87,6 +88,23 @@ class SelectDataController extends Controller
                 // ['npsn', '=', $npsn],
             ])
             ->orderBy('id')
+            ->paginate(5);
+        
+        return response()->json(['items' => $data->toArray()['data'], 'pagination' => $data->nextPageUrl() ? true : false]);
+    }
+
+    public function selectKodeBarang(Request $request, $parent)
+    {
+        $search = $request->get('search');
+        $data = KodeBarang::select(['id', 'kode_barang', 'nama_barang'])
+            ->where('parent_id', '=', $parent)
+            ->where(function ($query) use ($search) {
+                $query
+                    ->where('kode_barang', 'like', '%' . $search . '%')
+                    ->orWhere('nama_barang', 'like', '%' . $search . '%');
+            })
+            
+            ->orderBy('kode_barang')
             ->paginate(5);
         
         return response()->json(['items' => $data->toArray()['data'], 'pagination' => $data->nextPageUrl() ? true : false]);

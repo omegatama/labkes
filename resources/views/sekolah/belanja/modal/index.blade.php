@@ -84,16 +84,45 @@ tr.shown td.details-control {
     <table class="table details-table" id="modal-{{id}}">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Bank account number</th>
-                <th>Company</th>
+                <th rowspan="2" class="align-middle">No</th>
+                <th colspan="6" class="text-center">Data Barang</th>
+                <th colspan="2" class="text-center">Bukti Pembelian</th>
+                <th colspan="2" class="text-center">Jumlah</th>
+                <th colspan="2" class="text-center">Harga</th>
+                <th rowspan="2" class="align-middle">Pilihan</th>
+                
+            </tr>
+            <tr>
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Merek</th>
+                <th>Tipe</th>
+                <th>Warna</th>
+                <th>Bahan</th>
+                <th>Bukti Tanggal</th>
+                <th>Bukti Nomor</th>
+                <th>Qty</th>
+                <th>Satuan</th>
+                <th>Harga Satuan</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>Id</th>
-                <th>Bank account number</th>
-                <th>Company</th>
+                <th>No</th>
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Merek</th>
+                <th>Tipe</th>
+                <th>Warna</th>
+                <th>Bahan</th>
+                <th>Bukti Tanggal</th>
+                <th>Bukti Nomor</th>
+                <th>Qty</th>
+                <th>Satuan</th>
+                <th>Harga Satuan</th>
+                <th>Total</th>
+                <th>Pilihan</th>
             </tr>
         </tfoot>
     </table>
@@ -108,8 +137,20 @@ tr.shown td.details-control {
             dom: 'frtp',
             columns: [
                 { data: 'id', name: 'id' },
-                { data: 'bank_acc_number', name: 'bank_acc_number' },
-                { data: 'company', name: 'company'}
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                { data: 'id', name: 'id' },
+                
             ]
         });
     }

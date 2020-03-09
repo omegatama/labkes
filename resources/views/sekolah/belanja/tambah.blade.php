@@ -278,13 +278,13 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
         @endif
 
         @if (isset($belanja))
-            var option = new Option('{{$belanja->rba->rekening->nama_rekening}}' , '{{$belanja->rba->rekening_id}}', true, true);
+            /*var option = new Option('{{$belanja->rba->rekening->nama_rekening}}' , '{{$belanja->rba->rekening_id}}', true, true);
             $('#rba_id').append(option).trigger('change');
             $('#rba_id').attr('readonly','readonly');
             $('#kas').val('{{$belanja->transaksi->kas}}');
             $('#kas').trigger('change');
             $('#kas').attr('readonly','readonly');
-            $('#tanggal').attr('readonly','readonly');
+            $('#tanggal').attr('readonly','readonly');*/
             
         @else
             $(".rupiah").val(0);

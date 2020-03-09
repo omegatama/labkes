@@ -119,6 +119,8 @@ Route::group([
     // End Pagu
 
     // Start RKA
+    Route::get('/rka/cetak', 'Sekolah\RkaController@cetak')->name('sekolah.rka.cetak');
+
     Route::resource('/rka', 'Sekolah\RkaController', ['as' => 'sekolah'])
     ->except([
         'destroy'
@@ -133,6 +135,7 @@ Route::group([
     Route::get('/select/kecamatan', 'Sekolah\Master\SelectDataController@selectKecamatan')->name('sekolah.select.kecamatan');
     Route::get('/select/rekening', 'Sekolah\Master\SelectDataController@selectRekening')->name('sekolah.select.rekening');
     Route::get('/select/barangpersediaan', 'Sekolah\Master\SelectDataController@selectBarangPersediaan')->name('sekolah.select.barangpersediaan');
+    Route::get('/select/kodebarang/{parent}', 'Sekolah\Master\SelectDataController@selectKodeBarang')->name('sekolah.select.kodebarang');
     // End Select2 URL
 
     // Start Rka Limit
@@ -196,4 +199,30 @@ Route::group([
     // Start Belanja Persediaan Th Berjalan
     Route::get('/belanjapersediaan', 'Sekolah\BelanjaPersediaanController@index')->name('sekolah.belanjapersediaan.index');
     // End Belanja Persediaan Th Berjalan
+
+    // Start Laporan
+    Route::get('/laporan/realisasi', 'Sekolah\LaporanController@realisasi')->name('sekolah.laporan.realisasi');
+
+    Route::post('/proses/realisasi', 'Sekolah\LaporanController@proses_realisasi')->name('sekolah.proses.realisasi');
+
+    Route::get('/laporan/sptj', 'Sekolah\LaporanController@sptj')->name('sekolah.laporan.sptj');
+
+    Route::post('/proses/sptj', 'Sekolah\LaporanController@proses_sptj')->name('sekolah.proses.sptj');
+
+    Route::get('/laporan/sptmh', 'Sekolah\LaporanController@sptmh')->name('sekolah.laporan.sptmh');
+
+    Route::post('/proses/sptmh', 'Sekolah\LaporanController@proses_sptmh')->name('sekolah.proses.sptmh');
+
+    Route::get('/laporan/k7kab', 'Sekolah\LaporanController@k7kab')->name('sekolah.laporan.k7kab');
+
+    Route::get('/laporan/k7prov', 'Sekolah\LaporanController@k7prov')->name('sekolah.laporan.k7prov');
+
+    Route::post('/proses/k7prov', 'Sekolah\LaporanController@proses_k7prov')->name('sekolah.proses.k7prov');
+
+    Route::get('/laporan/modal', 'Sekolah\LaporanController@modal')->name('sekolah.laporan.modal');
+
+    Route::get('/laporan/persediaan', 'Sekolah\LaporanController@persediaan')->name('sekolah.laporan.persediaan');
+
+    Route::get('/laporan/bku', 'Sekolah\LaporanController@bku')->name('sekolah.laporan.bku');
+    // End Laporan
 });

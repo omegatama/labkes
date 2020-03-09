@@ -86,4 +86,9 @@ class Sekolah extends Authenticatable
         return $this->hasMany('App\Belanja', 'npsn','npsn'); 
     }
 
+    public function kegiatans()
+    {
+        return $this->hasMany('App\Kegiatan', 'npsn', 'npsn');
+    }
+
 }

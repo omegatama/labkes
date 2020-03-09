@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Sekolah;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Carbon\Carbon;
 use App\Rka;
 use App\RkaLimit;
 use App\Pagu;
+use App\KodeProgram;
 use Auth;
 use Cookie;
 use Response;
@@ -342,5 +347,172 @@ class RkaController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('sekolah.rka.index')->withErrors(['msg' => 'RKA tidak ditemukan']);
         }
+    }
+
+    public function cetak(Request $request)
+    {
+        $sekolah= Auth::user();
+        $ta = $request->cookie('ta');
+        $rkas = Auth::user()->rkas()->where('ta','=',$request->cookie('ta'))->get()->sortBy('parent');
+        $programs = KodeProgram::all();
+        $kegiatans = Auth::user()->kegiatans()->get();
+        $nama_sekolah = $sekolah->name;
+        $desa_kecamatan = $sekolah->desa." / ".$sekolah->kecamatan->nama_kecamatan;
+
+        $parents = [
+            [
+                'kode' => '5.2.1.05.01',
+                'nama' => 'Belanja Pegawai'
+            ],
+            [
+                'kode' => '5.2.2.25.01',
+                'nama' => 'Belanja Barang dan Jasa'
+            ],
+            [
+                'kode' => '5.2.3.35.01',
+                'nama' => 'Belanja Modal Peralatan dan Mesin'
+            ],
+            [
+                'kode' => '5.2.3.35.02',
+                'nama' => 'Belanja Modal Aset Tetap Lainnya'
+            ],
+            [
+                'kode' => '5.2.3.35.03',
+                'nama' => 'Belanja Modal Gedung dan Bangunan'
+            ]
+        ];
+
+        $hasil= array();
+
+        foreach($rkas as $i => $rka)
+        {
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['snp'] = $rka->rekening->parent_id.".".$rka->rekening->kode_rekening;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['uraian'] = $rka->uraian;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['kp'] = $rka->kp->kode_komponen;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['vol'] = $rka->volume;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['sat'] = $rka->satuan;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['harga'] = $rka->harga_satuan;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['jumlah'] = $rka->jumlah;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['tw1'] = $rka->alokasi_tw1;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['tw2'] = $rka->alokasi_tw2;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['tw3'] = $rka->alokasi_tw3;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['tw4'] = $rka->alokasi_tw4;
+        }
+
+        // return json_encode($kegiatans);
+        // return json_encode($hasil);
+        // return view('sekolah.rka.cetak',compact('hasil'));
+
+        $baris= array();
+        $indexbaris=0;
+        foreach ($hasil as $i => $parent) {
+            $baris[$indexbaris]['koderekening'] = $parents[$i-1]['kode'];
+            $baris[$indexbaris]['snp'] = '';
+            $baris[$indexbaris]['uraian'] = '';
+            $baris[$indexbaris]['kp'] = '';
+            $baris[$indexbaris]['vol'] = '';
+            $baris[$indexbaris]['sat'] = '';
+            $baris[$indexbaris]['harga'] = '';
+            $baris[$indexbaris]['jumlah'] = '';
+            $baris[$indexbaris]['tw1'] = '';
+            $baris[$indexbaris]['tw2'] = '';
+            $baris[$indexbaris]['tw3'] = '';
+            $baris[$indexbaris]['tw4'] = '';
+
+            $indexbaris++;
+            $baris[$indexbaris]['koderekening'] = $parents[$i-1]['nama'];
+            $baris[$indexbaris]['snp'] = '';
+            $baris[$indexbaris]['uraian'] = '';
+            $baris[$indexbaris]['kp'] = '';
+            $baris[$indexbaris]['vol'] = '';
+            $baris[$indexbaris]['sat'] = '';
+            $baris[$indexbaris]['harga'] = '';
+            $baris[$indexbaris]['jumlah'] = '';
+            $baris[$indexbaris]['tw1'] = '';
+            $baris[$indexbaris]['tw2'] = '';
+            $baris[$indexbaris]['tw3'] = '';
+            $baris[$indexbaris]['tw4'] = '';
+            // $parents[$i-1]['kode'];
+            // $parents[$i-1]['nama'];
+            foreach ($parent as $j => $program) {
+                $indexbaris++;
+                $baris[$indexbaris]['koderekening'] = '';
+                $baris[$indexbaris]['snp'] = $j;
+                $baris[$indexbaris]['uraian'] = $programs->find($j)->nama_program;
+                $baris[$indexbaris]['kp'] = '';
+                $baris[$indexbaris]['vol'] = '';
+                $baris[$indexbaris]['sat'] = '';
+                $baris[$indexbaris]['harga'] = '';
+                $baris[$indexbaris]['jumlah'] = '';
+                $baris[$indexbaris]['tw1'] = '';
+                $baris[$indexbaris]['tw2'] = '';
+                $baris[$indexbaris]['tw3'] = '';
+                $baris[$indexbaris]['tw4'] = '';
+
+                foreach ($program as $k => $kegiatan) {
+                    $indexbaris++;
+                    $baris[$indexbaris]['koderekening'] = '';
+                    $baris[$indexbaris]['snp'] = $j.".".$k." ";
+                    $baris[$indexbaris]['uraian'] = $kegiatans->find($k)->uraian;
+                    $baris[$indexbaris]['kp'] = '';
+                    $baris[$indexbaris]['vol'] = '';
+                    $baris[$indexbaris]['sat'] = '';
+                    $baris[$indexbaris]['harga'] = '';
+                    $baris[$indexbaris]['jumlah'] = '';
+                    $baris[$indexbaris]['tw1'] = '';
+                    $baris[$indexbaris]['tw2'] = '';
+                    $baris[$indexbaris]['tw3'] = '';
+                    $baris[$indexbaris]['tw4'] = '';
+
+
+                    foreach ($kegiatan as $l => $rkadetail) {
+                        # code...
+                        $indexbaris++;
+                        $baris[$indexbaris]['koderekening'] = '';
+                        $baris[$indexbaris]['snp'] = $j.".".$k.".".$rkadetail['snp'];;
+                        $baris[$indexbaris]['uraian'] = $rkadetail['uraian'];
+                        $baris[$indexbaris]['kp'] = $rkadetail['kp'];
+                        $baris[$indexbaris]['vol'] = $rkadetail['vol'];
+                        $baris[$indexbaris]['sat'] = $rkadetail['sat'];
+                        $baris[$indexbaris]['harga'] = $rkadetail['harga'];
+                        $baris[$indexbaris]['jumlah'] = $rkadetail['jumlah'];
+                        $baris[$indexbaris]['tw1'] = $rkadetail['tw1'];
+                        $baris[$indexbaris]['tw2'] = $rkadetail['tw2'];
+                        $baris[$indexbaris]['tw3'] = $rkadetail['tw3'];
+                        $baris[$indexbaris]['tw4'] = $rkadetail['tw4'];
+
+                    }
+                }
+            }
+            $indexbaris++;
+
+        }
+
+        // return json_encode($baris);
+        // Excel
+        $spreadsheet = IOFactory::load('storage/format/rkas.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('desa_kecamatan')->setValue($desa_kecamatan);
+        $worksheet->getCell('ta')->setValue($ta);
+
+        $worksheet->insertNewRowBefore(17 ,count($baris));
+        $worksheet->fromArray(
+            $baris,
+            NULL,
+            'B16'
+        );
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'Rkas'."_".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+
     }
 }
