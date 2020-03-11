@@ -102,7 +102,12 @@ class BelanjaController extends Controller
     	$saldo = Auth::user()->saldos()->where('ta', '=', $ta)->firstOrFail();
     	$kas = $request->kas;
     	$nominal = floatval(str_replace(',', '.', $request->nominal));
-    	$tanggal = $request->tanggal;
+        $ppn = floatval(str_replace(',', '.', $request->ppn));
+        $pph21 = floatval(str_replace(',', '.', $request->pph21));
+        $pph23 = floatval(str_replace(',', '.', $request->pph23));
+        
+
+        $tanggal = $request->tanggal;
     	$triwulan = GetTriwulan($tanggal);
 
     	$rka_id= $request->rka_id;
@@ -230,9 +235,154 @@ class BelanjaController extends Controller
     	}
     }
 
-    public function edit()
+    public function edit(Request $request, $id)
     {
-    	# code...
+        $belanja= Auth::user()->belanjas()->findOrFail($id);
+    	$ta = Cookie::get('ta');
+        $rka = Auth::user()->rkas()->where('ta','=',$ta)->get();
+        $aksi= 'edit';
+        return view('sekolah.belanja.tambah', compact('aksi','rka','belanja'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $belanja= Auth::user()->belanjas()->with('transaksi')->findOrFail($id);
+        $ta = Cookie::get('ta');
+        $kas = $belanja->kas;
+
+        $tanggal = $belanja->tanggal;
+        $triwulan = GetTriwulan($tanggal);
+
+        $saldo = Auth::user()->saldos()->where('ta', '=', $ta)->firstOrFail();
+        $nominal_lama = $belanja->nilai;
+        $nominal_baru = floatval(str_replace(',', '.', $request->nominal));
+        $selisih = $nominal_baru - $nominal_lama;
+
+        $ppn = floatval(str_replace(',', '.', $request->ppn));
+        $pph21 = floatval(str_replace(',', '.', $request->pph21));
+        $pph23 = floatval(str_replace(',', '.', $request->pph23));
+        
+        $rka_id= $belanja->rka_id;
+        $rka= Auth::user()->rkas()->where(
+            [
+                'id' => $rka_id,
+                'ta' => $ta
+            ]
+        )->firstOrFail();
+
+        if ($kas=='B') {
+            $source = 'saldo_bank';
+            $msg = 'Maaf Saldo Bank tidak cukup';
+        }
+        else if ($kas=='T') {
+            $source = 'saldo_tunai';
+            $msg = 'Maaf Saldo Tunai tidak cukup';
+        }
+
+        if ($selisih > $saldo->$source) {
+            return redirect()->back()->withErrors($msg." saldo:" .$saldo->$source. " selisih nominal ".$selisih);
+        }
+
+        else {
+            $alokasi_triwulan= 'alokasi_tw'.$triwulan;
+            $realisasi_triwulan= 'realisasi_tw'.$triwulan;
+
+            if ($rka->$realisasi_triwulan + $selisih > $rka->$alokasi_triwulan) {
+                return redirect()->back()->withErrors('Alokasi Triwulan '.$triwulan.' untuk RKA terkait tidak cukup!');
+            }
+
+            else {
+                //di sini
+                // return json_encode($request->input());
+                DB::beginTransaction();
+
+                // Step 1: Simpan Data Belanja
+                try {
+                    $belanja->nama = $request->nama;
+                    $belanja->nilai += $selisih;
+                    
+                    $belanja->ppn = $ppn;
+                    $belanja->pph21 = $pph21;
+                    $belanja->pph23 = $pph23;
+                    
+                    $belanja->nomor = $request->nomor;
+                    $belanja->penerima = $request->penerima;
+                    Auth::user()->belanjas()->save($belanja);
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Step 1: '.$e->getMessage()); 
+                }
+
+                // Step 2: Buat Trx
+                try {
+                    $transaksi = $belanja->transaksi;
+                    // return json_encode($transaksi);
+                    $transaksi->nominal += $selisih;
+                    $transaksi->save();
+                    // Auth::user()->kas_trxs()->save($transaksi);
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Step 2: '.$e->getMessage());
+                }
+
+                // Step 3: Update Saldo
+                try {
+                    $saldo->$source -= $selisih;
+                    $saldo->save();
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Step 3: '.$e->getMessage());
+                }
+
+                // Step 4: Update Saldo Awal
+                try {
+                    try {
+                        $saldoawal = Auth::user()->saldo_awals()
+                        ->where(
+                            [
+                                'ta' => $transaksi->ta,
+                                'periode' => $transaksi->tanggal->addMonth()->startOfMonth()
+                            ]
+                        )->firstOrFail();
+                        $saldoawal->$source -= $selisih;
+                        $saldoawal->save();
+
+                    } catch (\Exception $e) {
+                        $saldoawal = new SaldoAwal; 
+                        $saldoawal->ta = $transaksi->ta;
+                        // $saldoawal->npsn = $belanja->npsn;
+                        $saldoawal->periode = $transaksi->tanggal->addMonth()->startOfMonth();
+                        $saldoawal->saldo_bank = $saldo->saldo_bank;
+                        $saldoawal->saldo_tunai = $saldo->saldo_tunai;
+                        // $saldoawal->save();
+                        Auth::user()->saldo_awals()->save($saldoawal);
+                    }
+                    
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Step 4: '.$e->getMessage());
+                }
+
+                // Step 5:
+                try {
+                    $rka->$realisasi_triwulan += $selisih;
+                    $rka->save();
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Step 5: '.$e->getMessage());
+                }
+
+                DB::commit();
+                return redirect()->route('sekolah.belanja.index')->with(['success' => 'Belanja Berhasil diperbarui!']);
+
+            }
+        }
+        
     }
 
     public function destroy()

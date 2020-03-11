@@ -20,7 +20,12 @@ class Belanja extends Model
 
     public function transaksi()
     {
-        return $this->belongsTo('App\KasTrx', 'id', 'reference_id');
+        return $this->belongsTo('App\KasTrx', 'id', 'reference_id')
+        ->where(
+            [
+                'io' => 'o'
+            ]
+        );
     }
 
     public function rka()

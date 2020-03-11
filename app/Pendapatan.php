@@ -25,6 +25,11 @@ class Pendapatan extends Model
 
     public function transaksi()
     {
-        return $this->belongsTo('App\KasTrx', 'id', 'reference_id');
+        return $this->belongsTo('App\KasTrx', 'id', 'reference_id')
+        ->where(
+            [
+                'io' => 'i'
+            ]
+        );
     }
 }

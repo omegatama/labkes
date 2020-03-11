@@ -4,8 +4,96 @@
 		"selected_items":
 		[
 			[
+				"nomin",
+				"nominal_lama"
+			],
+			[
+				"nomina",
+				"nominal_baru"
+			],
+			[
+				"btn",
+				"btn-cari"
+			],
+			[
+				"bari",
+				"barisI"
+			],
+			[
+				"bar",
+				"barisI"
+			],
+			[
+				"nama",
+				"nama_sekolah"
+			],
+			[
+				"jos",
+				"json_encode"
+			],
+			[
 				"belanj",
-				"belanjar3"
+				"belanjar1_sd_twlalu"
+			],
+			[
+				"pene",
+				"penerimaan_cw1"
+			],
+			[
+				"sald",
+				"saldo_thlalu"
+			],
+			[
+				"belan",
+				"belanjar1_sd_twlalu"
+			],
+			[
+				"for",
+				"for\tfor …"
+			],
+			[
+				"rea",
+				"realisasi_sd_twlalu"
+			],
+			[
+				"ke",
+				"kegiatans"
+			],
+			[
+				"kegi",
+				"kegiatans"
+			],
+			[
+				"pro",
+				"programs"
+			],
+			[
+				"kode",
+				"koderekening"
+			],
+			[
+				"keg",
+				"kegiatan"
+			],
+			[
+				"pare",
+				"parents"
+			],
+			[
+				"alokasi",
+				"alokasi_tw1"
+			],
+			[
+				"rka",
+				"rkadetail"
+			],
+			[
+				"par",
+				"parent"
+			],
+			[
+				"a",
+				"array\t$… = array (…)"
 			],
 			[
 				"if",
@@ -28,24 +116,12 @@
 				"realisasi_triwulan"
 			],
 			[
-				"rka",
-				"rka_rek1"
-			],
-			[
-				"nama",
-				"nama_kepalasekolah"
-			],
-			[
 				"uang",
 				"uang_terbilang"
 			],
 			[
 				"naam",
 				"namasekolah"
-			],
-			[
-				"kode",
-				"kode_barang_id"
 			],
 			[
 				"tabe",
@@ -136,10 +212,6 @@
 				"trxpersediaan"
 			],
 			[
-				"nomina",
-				"nominal_lama"
-			],
-			[
 				"Bara",
 				"BarangPersediaan"
 			],
@@ -208,10 +280,6 @@
 				"actionType"
 			],
 			[
-				"keg",
-				"kegiatan"
-			],
-			[
 				"aja",
 				"ajax-modal"
 			],
@@ -250,10 +318,6 @@
 			[
 				"n",
 				"namasekolah"
-			],
-			[
-				"for",
-				"foreach\tforeach …"
 			],
 			[
 				"jud",
@@ -392,10 +456,6 @@
 				"tanggal_belanja"
 			],
 			[
-				"belan",
-				"belanja"
-			],
-			[
 				"ob",
 				"objbku"
 			],
@@ -410,10 +470,6 @@
 			[
 				"key",
 				"keypencairan"
-			],
-			[
-				"a",
-				"arrpencairan"
 			],
 			[
 				"array_p",
@@ -458,62 +514,6 @@
 			[
 				"pass",
 				"password"
-			],
-			[
-				"pas",
-				"pass"
-			],
-			[
-				"belanja",
-				"belanja_modal"
-			],
-			[
-				"b",
-				"bulanarr"
-			],
-			[
-				"pene",
-				"penerimaan_tw_sekarang"
-			],
-			[
-				"teks",
-				"teks_penerimaan_tw"
-			],
-			[
-				"prog",
-				"program_kp"
-			],
-			[
-				"pro",
-				"program_kp_detail"
-			],
-			[
-				"Kode",
-				"KodePembiayaan"
-			],
-			[
-				"bulan",
-				"bulanawal"
-			],
-			[
-				"bul",
-				"bulanawal"
-			],
-			[
-				"nip",
-				"nip_bendahara"
-			],
-			[
-				"pener",
-				"penerimaan_twsekarang"
-			],
-			[
-				"sald",
-				"saldo_twlalu"
-			],
-			[
-				"seko",
-				"sekolah"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "routes/web.php",
 			"settings":
 			{
-				"buffer_size": 10284,
+				"buffer_size": 10590,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -550,61 +550,7 @@
 			"file": "app/Http/Controllers/Sekolah/BelanjaController.php",
 			"settings":
 			{
-				"buffer_size": 12232,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Http/Controllers/Sekolah/LaporanController.php",
-			"settings":
-			{
-				"buffer_size": 6868,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/views/sekolah/laporan/realisasi.blade.php",
-			"settings":
-			{
-				"buffer_size": 3913,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resources/views/sekolah/laporan/sptj.blade.php",
-			"settings":
-			{
-				"buffer_size": 5120,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/Helpers/Helper.php",
-			"settings":
-			{
-				"buffer_size": 3492,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/views/sekolah/belanja/modal/tambah.blade.php",
-			"settings":
-			{
-				"buffer_size": 13549,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/Http/Controllers/Sekolah/Master/SelectDataController.php",
-			"settings":
-			{
-				"buffer_size": 4117,
+				"buffer_size": 17965,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -613,53 +559,25 @@
 			"file": "resources/views/sekolah/belanja/tambah.blade.php",
 			"settings":
 			{
-				"buffer_size": 15121,
+				"buffer_size": 13238,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "resources/views/sekolah/belanja/modal/detail.blade.php",
+			"file": "app/Http/Controllers/Sekolah/LaporanController.php",
 			"settings":
 			{
-				"buffer_size": 8625,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resources/views/sekolah/belanja/persediaan/detail.blade.php",
-			"settings":
-			{
-				"buffer_size": 5494,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resources/views/sekolah/belanja/index.blade.php",
-			"settings":
-			{
-				"buffer_size": 5971,
+				"buffer_size": 18787,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resources/views/sekolah/belanja/modal/index.blade.php",
+			"file": "app/Helpers/Helper.php",
 			"settings":
 			{
-				"buffer_size": 9891,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/views/sekolah/belanja/persediaan/index.blade.php",
-			"settings":
-			{
-				"buffer_size": 8366,
-				"encoding": "UTF-8",
+				"buffer_size": 3492,
 				"line_ending": "Unix"
 			}
 		},
@@ -667,16 +585,52 @@
 			"file": "app/Belanja.php",
 			"settings":
 			{
-				"buffer_size": 1581,
+				"buffer_size": 2296,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "app/KasTrx.php",
+			"file": "app/Pendapatan.php",
 			"settings":
 			{
-				"buffer_size": 1293,
+				"buffer_size": 725,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/KasTrxDetail.php",
+			"settings":
+			{
+				"buffer_size": 649,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/sekolah/laporan/sptmh.blade.php",
+			"settings":
+			{
+				"buffer_size": 5128,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "resources/views/sekolah/laporan/k7prov.blade.php",
+			"settings":
+			{
+				"buffer_size": 3941,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/Sekolah/RkaController.php",
+			"settings":
+			{
+				"buffer_size": 21682,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -685,15 +639,16 @@
 			"file": "app/Sekolah.php",
 			"settings":
 			{
-				"buffer_size": 1804,
+				"buffer_size": 1912,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resources/views/sekolah/modal/rekening.blade.php",
+			"file": "resources/views/sekolah/rka/cetak.blade.php",
 			"settings":
 			{
-				"buffer_size": 3732,
+				"buffer_size": 374,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -702,24 +657,8 @@
 			"file": "app/Rka.php",
 			"settings":
 			{
-				"buffer_size": 1260,
+				"buffer_size": 1537,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Http/Controllers/Sekolah/RkaController.php",
-			"settings":
-			{
-				"buffer_size": 13222,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/views/sekolah/rka/index.blade.php",
-			"settings":
-			{
-				"buffer_size": 6653,
 				"line_ending": "Unix"
 			}
 		}
@@ -880,21 +819,15 @@
 		"/C/laragon/www/bos/app/Http/Controllers/Sekolah",
 		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/Master",
 		"/C/laragon/www/bos/database",
-		"/C/laragon/www/bos/database/migrations",
 		"/C/laragon/www/bos/resources",
 		"/C/laragon/www/bos/resources/views",
-		"/C/laragon/www/bos/resources/views/admin",
-		"/C/laragon/www/bos/resources/views/admin/kas",
-		"/C/laragon/www/bos/resources/views/admin/penerimaan",
-		"/C/laragon/www/bos/resources/views/admin/persediaan",
-		"/C/laragon/www/bos/resources/views/admin/sekolah",
-		"/C/laragon/www/bos/resources/views/layouts",
 		"/C/laragon/www/bos/resources/views/sekolah",
 		"/C/laragon/www/bos/resources/views/sekolah/belanja",
 		"/C/laragon/www/bos/resources/views/sekolah/belanja/modal",
 		"/C/laragon/www/bos/resources/views/sekolah/belanja/persediaan",
 		"/C/laragon/www/bos/resources/views/sekolah/kas",
 		"/C/laragon/www/bos/resources/views/sekolah/kas/transaksi",
+		"/C/laragon/www/bos/resources/views/sekolah/laporan",
 		"/C/laragon/www/bos/resources/views/sekolah/modal",
 		"/C/laragon/www/bos/resources/views/sekolah/persediaan",
 		"/C/laragon/www/bos/resources/views/sekolah/profil",
@@ -903,28 +836,40 @@
 	],
 	"file_history":
 	[
-		"/C/laragon/www/bos/resources/views/layouts/sekolah.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/rka/index.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/laporan/realisasi.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/laporan/sptj.blade.php",
 		"/C/laragon/www/bos/app/Helpers/Helper.php",
+		"/C/laragon/www/bos/resources/views/sekolah/belanja/modal/tambah.blade.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/Master/SelectDataController.php",
+		"/C/laragon/www/bos/resources/views/sekolah/belanja/tambah.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/belanja/modal/detail.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/belanja/persediaan/detail.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/belanja/index.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/belanja/modal/index.blade.php",
+		"/C/laragon/www/bos/resources/views/sekolah/belanja/persediaan/index.blade.php",
+		"/C/laragon/www/bos/app/Belanja.php",
+		"/C/laragon/www/bos/app/KasTrx.php",
+		"/C/laragon/www/bos/app/Sekolah.php",
+		"/C/laragon/www/bos/resources/views/sekolah/modal/rekening.blade.php",
+		"/C/laragon/www/bos/app/Rka.php",
+		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/RkaController.php",
+		"/C/laragon/www/bos/resources/views/layouts/sekolah.blade.php",
 		"/C/laragon/etc/apache2/sites-enabled/auto.bos.test.conf",
 		"/C/Users/Acer/AppData/Local/Temp/BvSshSftp/Bv007a6f/Bv007a6f/.htaccess",
 		"/C/laragon/www/bos/database/migrations/2020_03_05_200750_create_belanja_modals.php",
 		"/C/laragon/www/bos/resources/views/auth/login.blade.php",
 		"/C/laragon/www/bos/resources/views/auth/guest.blade.php",
 		"/C/laragon/www/bos/app/Http/Controllers/Admin/PenerimaanController.php",
-		"/C/laragon/www/bos/app/Sekolah.php",
 		"/C/laragon/www/bos/app/Http/Controllers/Admin/PaguController.php",
 		"/C/laragon/www/bos/database/migrations/2020_02_29_162332_create_belanjas.php",
 		"/C/Users/Acer/AppData/Local/Temp/BvSshSftp/Bv003a7c/Bv003a7c/laravel.log",
 		"/C/laragon/www/bos/resources/views/sekolah/profil/index.blade.php",
 		"/C/laragon/www/bos/resources/views/sekolah/profil/edit.blade.php",
-		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/Master/SelectDataController.php",
 		"/C/laragon/www/bos/resources/views/sekolah/profil/passwordedit.blade.php",
 		"/C/laragon/www/bos/resources/views/layouts/admin.blade.php",
 		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/TransaksiPersediaanController.php",
-		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/RkaController.php",
 		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/BelanjaController.php",
-		"/C/laragon/www/bos/resources/views/sekolah/belanja/index.blade.php",
-		"/C/laragon/www/bos/resources/views/sekolah/belanja/tambah.blade.php",
 		"/C/laragon/www/dadang/config/header.php",
 		"/C/laragon/www/dadang/index.php",
 		"/C/laragon/www/dadang/login.php",
@@ -946,7 +891,6 @@
 		"/C/laragon/www/bos/resources/views/sekolah/persediaan/penggunaan.blade.php",
 		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/TransaksiKasController.php",
 		"/C/laragon/www/bos/resources/views/sekolah/persediaan/penyesuaian.blade.php",
-		"/C/laragon/www/bos/resources/views/sekolah/rka/index.blade.php",
 		"/C/laragon/www/bos/resources/views/admin/rka.blade.php",
 		"/C/laragon/www/bos/app/Http/Controllers/Admin/RkaController.php",
 		"/C/laragon/www/bos/routes/web.php",
@@ -960,7 +904,6 @@
 		"/C/laragon/www/bos/vendor/mockery/mockery/tests/Mockery/Fixtures/SemiReservedWordsAsMethods.php",
 		"/C/laragon/www/bos/resources/views/sekolah/rka/tambah.blade.php",
 		"/C/laragon/www/bos/app/KasTrxDetail.php",
-		"/C/laragon/www/bos/app/KasTrx.php",
 		"/C/laragon/www/bos/.env",
 		"/C/laragon/www/bos/app/Http/Controllers/Sekolah/RkaLimitController.php",
 		"/C/laragon/www/bos/resources/views/sekolah/persediaan/stok.blade.php",
@@ -1020,17 +963,7 @@
 		"/C/laragon/www/bos/config/app.php",
 		"/C/laragon/www/backend/app/Http/Controllers/ArtikelController.php",
 		"/C/Users/Acer/Downloads/Compressed/laravel-6/.env",
-		"/C/Users/Acer/AppData/Local/Temp/BvSshSftp/Bv001bdf/Bv001c41/.env",
-		"/C/Users/Acer/AppData/Local/Temp/BvSshSftp/Bv001bdf/Bv001bdf/web.php",
-		"/C/xamp5/htdocs/ereporting/opdlraall.php",
-		"/C/xamp5/htdocs/ereporting/laporantahunan.php",
-		"/C/xamp5/htdocs/ereporting/lra.php",
-		"/C/xamp5/htdocs/jakvent/datappu.php",
-		"/C/xamp5/htdocs/jakvent/datasurat.php",
-		"/C/laragon/www/bos/resources/views/admin/index.blade.php",
-		"/C/laragon/www/bos/resources/views/sekolah.blade.php",
-		"/D/nodered/kereta.json",
-		"/C/laragon/www/bos/resources/views/auth/loginori.blade.php"
+		"/C/Users/Acer/AppData/Local/Temp/BvSshSftp/Bv001bdf/Bv001c41/.env"
 	],
 	"find":
 	{
@@ -1049,6 +982,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"parent",
 			"puskesmas",
 			"table",
 			"modal",
@@ -1101,7 +1035,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -1110,27 +1044,23 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10284,
+						"buffer_size": 10590,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9569,
-								9569
-							],
-							[
-								9610,
-								9610
-							],
-							[
-								9639,
-								9639
+								10214,
+								10214
 							]
 						],
 						"settings":
 						{
+							"SL.173.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
 							"SL.26.region_keys":
 							[
 								"sublime_linter.protected_regions"
@@ -1144,7 +1074,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 11869.0,
+						"translation.y": 9970.4,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
@@ -1173,13 +1103,15 @@
 							[
 								"sublime_linter.protected_regions"
 							],
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 1798.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
@@ -1208,13 +1140,15 @@
 							[
 								"sublime_linter.protected_regions"
 							],
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 216.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
@@ -1223,23 +1157,23 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12232,
+						"buffer_size": 17965,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9446,
-								9597
-							],
-							[
-								10801,
-								11270
+								13520,
+								13520
 							]
 						],
 						"settings":
 						{
+							"SL.176.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
 							"SL.208.region_keys":
 							[
 								"sublime_linter.protected_regions"
@@ -1249,30 +1183,66 @@
 								"sublime_linter.protected_regions"
 							],
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
 							"word_wrap": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 4174.4,
+						"translation.x": 67.0,
+						"translation.y": 11728.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "app/Http/Controllers/Sekolah/LaporanController.php",
+					"file": "resources/views/sekolah/belanja/tambah.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6868,
+						"buffer_size": 13238,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5457,
-								5457
+								7163,
+								7156
+							]
+						],
+						"settings":
+						{
+							"SL.233.region_keys":
+							[
+							],
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4779.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/Http/Controllers/Sekolah/LaporanController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18787,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								16763,
+								16825
 							]
 						],
 						"settings":
@@ -1281,85 +1251,24 @@
 							[
 								"sublime_linter.protected_regions"
 							],
+							"SL.177.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
 							"word_wrap": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1116.0,
+						"translation.y": 10624.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "resources/views/sekolah/laporan/realisasi.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3913,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1668,
-								1668
-							]
-						],
-						"settings":
-						{
-							"SL.105.region_keys":
-							[
-							],
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1916.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
 					"buffer": 6,
-					"file": "resources/views/sekolah/laporan/sptj.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5120,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3277,
-								3277
-							]
-						],
-						"settings":
-						{
-							"SL.106.region_keys":
-							[
-							],
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 406.4,
-						"translation.y": 1464.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
 					"file": "app/Helpers/Helper.php",
 					"semi_transient": false,
 					"settings":
@@ -1371,369 +1280,46 @@
 						"selection":
 						[
 							[
-								2013,
-								2013
+								1705,
+								1719
 							]
 						],
 						"settings":
 						{
-							"SL.89.region_keys":
+							"SL.229.region_keys":
 							[
-								"sublime_linter.protected_regions"
 							],
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2711.2,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "resources/views/sekolah/belanja/modal/tambah.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13549,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								11718,
-								11718
-							]
-						],
-						"settings":
-						{
-							"SL.288.region_keys":
-							[
-								"sublime_linter.protected_regions"
-							],
-							"open_with_edit": true,
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 242.0,
-						"translation.y": 7049.0,
+						"translation.y": 2578.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "app/Http/Controllers/Sekolah/Master/SelectDataController.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4117,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3642,
-								3642
-							]
-						],
-						"settings":
-						{
-							"SL.344.region_keys":
-							[
-								"sublime_linter.protected_regions"
-							],
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4367.2,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "resources/views/sekolah/belanja/tambah.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 15121,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								14971,
-								14535
-							]
-						],
-						"settings":
-						{
-							"SL.186.region_keys":
-							[
-								"sublime_linter.protected_regions"
-							],
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 10503.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "resources/views/sekolah/belanja/modal/detail.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8625,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3614,
-								3485
-							]
-						],
-						"settings":
-						{
-							"SL.284.region_keys":
-							[
-								"sublime_linter.protected_regions"
-							],
-							"open_with_edit": true,
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 264.0,
-						"translation.y": 2684.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "resources/views/sekolah/belanja/persediaan/detail.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5494,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1614,
-								1614
-							]
-						],
-						"settings":
-						{
-							"SL.287.region_keys":
-							[
-							],
-							"open_with_edit": true,
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1400.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 18,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "resources/views/sekolah/belanja/index.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5971,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2185,
-								2185
-							]
-						],
-						"settings":
-						{
-							"SL.261.region_keys":
-							[
-							],
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 170.0,
-						"translation.y": 4156.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "resources/views/sekolah/belanja/modal/index.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9891,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6376,
-								6376
-							]
-						],
-						"settings":
-						{
-							"SL.282.region_keys":
-							[
-								"SL.csslint.Highlights.|b1faf61c3ce992405c23068a112070c02cfabc92d2a8adbb2912bce168857114|region.yellowish markup.warning.sublime_linter|2340",
-								"SL.csslint.Gutter.|region.yellowish markup.warning.sublime_linter|dot",
-								"sublime_linter.protected_regions"
-							],
-							"open_with_edit": true,
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 5556.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 17,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"file": "resources/views/sekolah/belanja/persediaan/index.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8366,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7393,
-								7393
-							]
-						],
-						"settings":
-						{
-							"SL.286.region_keys":
-							[
-								"SL.csslint.Highlights.|fb4aa8aa48943d78b8d2f6ee40b4249ca1a9ee52acfd0ff988df6840f7d0cf5e|region.yellowish markup.warning.sublime_linter|2340",
-								"sublime_linter.protected_regions",
-								"SL.csslint.Gutter.|region.yellowish markup.warning.sublime_linter|dot"
-							],
-							"open_with_edit": true,
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1536.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
+					"buffer": 7,
 					"file": "app/Belanja.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1581,
+						"buffer_size": 2296,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1252,
-								1252
+								617,
+								542
 							]
 						],
 						"settings":
 						{
-							"SL.250.region_keys":
-							[
-								"sublime_linter.protected_regions"
-							],
-							"SL.38.region_keys":
-							[
-							],
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 896.8,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 17,
-					"file": "app/KasTrx.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1293,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								108,
-								63
-							],
-							[
-								159,
-								143
-							]
-						],
-						"settings":
-						{
-							"SL.249.region_keys":
+							"SL.228.region_keys":
 							[
 								"sublime_linter.protected_regions"
 							],
@@ -1742,180 +1328,292 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 625.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
-					"file": "app/Sekolah.php",
+					"buffer": 8,
+					"file": "app/Pendapatan.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1804,
+						"buffer_size": 725,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								716,
+								641
 							]
 						],
 						"settings":
 						{
-							"SL.248.region_keys":
+							"SL.234.region_keys":
 							[
-							],
-							"SL.40.region_keys":
-							[
+								"sublime_linter.protected_regions"
 							],
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 472.0,
+						"translation.y": 844.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "app/KasTrxDetail.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 649,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								547,
+								547
+							]
+						],
+						"settings":
+						{
+							"SL.235.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 565.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "resources/views/sekolah/laporan/sptmh.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5128,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3114,
+								3114
+							],
+							[
+								3231,
+								3231
+							],
+							[
+								3250,
+								3250
+							]
+						],
+						"settings":
+						{
+							"SL.227.region_keys":
+							[
+							],
+							"open_with_edit": true,
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3156.8,
 						"zoom_level": 1.0
 					},
 					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
-					"file": "resources/views/sekolah/modal/rekening.blade.php",
+					"buffer": 11,
+					"file": "resources/views/sekolah/laporan/k7prov.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3732,
+						"buffer_size": 3941,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1261,
-								1261
+								1531,
+								1531
 							]
 						],
 						"settings":
 						{
-							"SL.205.region_keys":
+							"SL.231.region_keys":
 							[
-								"sublime_linter.protected_regions"
 							],
 							"open_with_edit": true,
 							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"word_wrap": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3655.0,
+						"translation.y": 1592.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 20,
-					"file": "app/Rka.php",
+					"buffer": 12,
+					"file": "app/Http/Controllers/Sekolah/RkaController.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1260,
+						"buffer_size": 21682,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1257,
-								1257
+								21169,
+								21169
+							],
+							[
+								21193,
+								21193
 							]
 						],
 						"settings":
 						{
-							"SL.215.region_keys":
+							"SL.197.region_keys":
 							[
+								"sublime_linter.protected_regions"
 							],
-							"SL.43.region_keys":
-							[
-							],
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1507.0,
+						"translation.y": 9836.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 21,
-					"file": "app/Http/Controllers/Sekolah/RkaController.php",
+					"buffer": 13,
+					"file": "app/Sekolah.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13222,
+						"buffer_size": 1912,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								919,
-								1269
+								1831,
+								1831
 							]
 						],
 						"settings":
 						{
-							"SL.213.region_keys":
+							"SL.221.region_keys":
 							[
+								"sublime_linter.protected_regions"
 							],
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2144.0,
+						"translation.y": 1788.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 22,
-					"file": "resources/views/sekolah/rka/index.blade.php",
+					"buffer": 14,
+					"file": "resources/views/sekolah/rka/cetak.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6653,
+						"buffer_size": 374,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								859,
-								3482
+								303,
+								308
 							]
 						],
 						"settings":
 						{
-							"SL.214.region_keys":
+							"SL.220.region_keys":
 							[
+								"sublime_linter.protected_regions"
 							],
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"open_with_edit": true,
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 22662.0,
+						"translation.y": 196.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "app/Rka.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1537,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1351,
+								1351
+							]
+						],
+						"settings":
+						{
+							"SL.198.region_keys":
+							[
+								"sublime_linter.protected_regions"
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1937.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
 					"type": "text"
 				}
 			]

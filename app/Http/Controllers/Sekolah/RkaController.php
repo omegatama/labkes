@@ -358,6 +358,9 @@ class RkaController extends Controller
         $kegiatans = Auth::user()->kegiatans()->get();
         $nama_sekolah = $sekolah->name;
         $desa_kecamatan = $sekolah->desa." / ".$sekolah->kecamatan->nama_kecamatan;
+        $nama_kepsek = $sekolah->nama_kepsek;
+        $nip_kepsek = $sekolah->nip_kepsek;
+
 
         $parents = [
             [
@@ -502,6 +505,25 @@ class RkaController extends Controller
             NULL,
             'B16'
         );
+
+        $row = 15+count($baris);
+        $sum_all= "=SUM(I15:I".$row.")";
+        $worksheet->getCell('sum_all')->setValue($sum_all);
+
+        $sum_tw1= "=SUM(J15:J".$row.")";
+        $worksheet->getCell('sum_tw1')->setValue($sum_tw1);
+
+        $sum_tw2= "=SUM(K15:K".$row.")";
+        $worksheet->getCell('sum_tw2')->setValue($sum_tw2);
+
+        $sum_tw3= "=SUM(L15:L".$row.")";
+        $worksheet->getCell('sum_tw3')->setValue($sum_tw3);
+
+        $sum_tw4= "=SUM(M15:M".$row.")";
+        $worksheet->getCell('sum_tw4')->setValue($sum_tw4);
+
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
 
         // Cetak
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');

@@ -20,7 +20,8 @@ class KasTrxDetail extends Model
 
     public function kas_trx()
 	{
-	    return $this->belongsTo('App\KasTrx','id','reference_id');
+	    return $this->belongsTo('App\KasTrx','id','reference_id')
+        ->whereNull('io');
 	}
 
 	public function sekolah()

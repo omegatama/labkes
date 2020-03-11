@@ -41,9 +41,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                         <div class="card-body">
                             <form class="form" method="POST" action="{{ (isset($belanja))? route('sekolah.belanja.update', ['id'=>$belanja->id]) : route('sekolah.belanja.store') }}">
                                 @csrf
-                                @isset ($belanja)
-                                    @method('PUT')
-                                @endisset
+                                
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-lg-6">
@@ -62,7 +60,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                                     <div class="input-group m-0">
                                                         <input type="text" id="nama_rka" class="form-control" name="nama_rka" required placeholder="Pilih RKA" readonly>
                                                         <input type="text" id="rka_id" class=" d-none" name="rka_id" required>
-                                                        <div class="input-group-append">
+                                                        <div class="input-group-append" id="btn-cari">
                                                             <button class="btn btn-outline-info" type="button" onclick="cariRekening()">Cari</button>
                                                         </div>
                                                     </div>
@@ -112,7 +110,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="nominal">Nominal</label>
-                                                    <input type="text" id="nominal" class="form-control rupiah" name="nominal" required value="{{ (isset($belanja))? str_replace(".",",", $belanja->nominal) : '' }}">
+                                                    <input type="text" id="nominal" class="form-control rupiah" name="nominal" required value="{{ (isset($belanja))? str_replace(".",",", $belanja->nilai) : '' }}">
                                                 </div>
                                             </div>
 
@@ -203,50 +201,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                 
             }
         });
-        /*$('#tabelRekening thead tr').clone(true).appendTo( '#tabelRekening thead' );
-        $('#tabelRekening thead tr:eq(1) th').each( function (i) {
-            var title = $(this).text();
-            $(this).html( '<input class="form-control form-control-sm" type="text" placeholder="'+title+'" />' );
-     
-            $( 'input', this ).on( 'keyup change', function () {
-                if ( table.column(i).search() !== this.value ) {
-                    table
-                        .column(i)
-                        .search( this.value )
-                        .draw();
-                }
-            } );
-        } );*/
-        /*$('#rba_id').select2({
-            ajax: {
-                {{-- url: "{{ route('puskesmas.select.rekeningpengeluaran') }}", --}}
-                data: function (params) {
-                    return {
-                        search: params.term,
-                        page: params.page || 1
-                    };
-                },
-                dataType: 'json',
-                processResults: function (data) {
-                    data.page = data.page || 1;
-                    return {
-                        results: data.items.map(function (item) {
-                            return {
-                                id: item.id,
-                                text: item.kode_rekening+" - "+item.nama_rekening
-                            };
-                        }),
-                        pagination: {
-                            more: data.pagination
-                        }
-                    };
-                },
-                cache: true,
-                delay: 250
-            },
-            placeholder: 'Pilih Kode Rekening',
-            theme: 'bootstrap4',
-        });*/
+
 
         $('#kas').select2({
             placeholder: 'Pilih Sumber Kas',
@@ -278,13 +233,13 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
         @endif
 
         @if (isset($belanja))
-            /*var option = new Option('{{$belanja->rba->rekening->nama_rekening}}' , '{{$belanja->rba->rekening_id}}', true, true);
-            $('#rba_id').append(option).trigger('change');
-            $('#rba_id').attr('readonly','readonly');
+            $('#rka_id').val('{{$belanja->rka_id}}');
+            $('#nama_rka').val('{{ $belanja->rka->kegiatan->uraian ." - ". $belanja->rka->rekening->nama_rekening }}');
+            $('#btn-cari').remove();
             $('#kas').val('{{$belanja->transaksi->kas}}');
             $('#kas').trigger('change');
             $('#kas').attr('readonly','readonly');
-            $('#tanggal').attr('readonly','readonly');*/
+            $('#tanggal').attr('readonly','readonly');
             
         @else
             $(".rupiah").val(0);
