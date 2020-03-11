@@ -407,8 +407,25 @@ class RkaController extends Controller
         // return view('sekolah.rka.cetak',compact('hasil'));
 
         $baris= array();
+        $jumlahperparent= array();
+        $jumlahall= array();
+        $arraykepala= array();
+
         $indexbaris=0;
+
+        $jumlahall['jumlah'] = 0;
+        $jumlahall['tw1'] = 0;
+        $jumlahall['tw2'] = 0;
+        $jumlahall['tw3'] = 0;
+        $jumlahall['tw4'] = 0;
+
         foreach ($hasil as $i => $parent) {
+            $jumlahperparent[$i]['jumlah'] = 0;
+            $jumlahperparent[$i]['tw1'] = 0;
+            $jumlahperparent[$i]['tw2'] = 0;
+            $jumlahperparent[$i]['tw3'] = 0;
+            $jumlahperparent[$i]['tw4'] = 0;
+
             $baris[$indexbaris]['koderekening'] = $parents[$i-1]['kode'];
             $baris[$indexbaris]['snp'] = '';
             $baris[$indexbaris]['uraian'] = '';
@@ -435,6 +452,9 @@ class RkaController extends Controller
             $baris[$indexbaris]['tw2'] = '';
             $baris[$indexbaris]['tw3'] = '';
             $baris[$indexbaris]['tw4'] = '';
+
+            $arraykepala[$i] = $indexbaris;
+
             // $parents[$i-1]['kode'];
             // $parents[$i-1]['nama'];
             foreach ($parent as $j => $program) {
@@ -484,10 +504,32 @@ class RkaController extends Controller
                         $baris[$indexbaris]['tw3'] = $rkadetail['tw3'];
                         $baris[$indexbaris]['tw4'] = $rkadetail['tw4'];
 
+                        // Hitung
+                        $jumlahperparent[$i]['jumlah'] += $rkadetail['jumlah'];
+                        $jumlahperparent[$i]['tw1'] += $rkadetail['tw1'];
+                        $jumlahperparent[$i]['tw2'] += $rkadetail['tw2'];
+                        $jumlahperparent[$i]['tw3'] += $rkadetail['tw3'];
+                        $jumlahperparent[$i]['tw4'] += $rkadetail['tw4'];
+
+                        //Hitung Lagi
+                        $jumlahall['jumlah'] += $rkadetail['jumlah'];
+                        $jumlahall['tw1'] += $rkadetail['tw1'];
+                        $jumlahall['tw2'] += $rkadetail['tw2'];
+                        $jumlahall['tw3'] += $rkadetail['tw3'];
+                        $jumlahall['tw4'] += $rkadetail['tw4'];
                     }
                 }
             }
             $indexbaris++;
+
+        }
+
+        foreach ($arraykepala as $a => $item) {
+            $baris[$item]['jumlah'] = $jumlahperparent[$a]['jumlah'];
+            $baris[$item]['tw1'] = $jumlahperparent[$a]['tw1'];
+            $baris[$item]['tw2'] = $jumlahperparent[$a]['tw2'];
+            $baris[$item]['tw3'] = $jumlahperparent[$a]['tw3'];
+            $baris[$item]['tw4'] = $jumlahperparent[$a]['tw4'];
 
         }
 
@@ -506,21 +548,15 @@ class RkaController extends Controller
             'B16'
         );
 
-        $row = 15+count($baris);
-        $sum_all= "=SUM(I15:I".$row.")";
-        $worksheet->getCell('sum_all')->setValue($sum_all);
+        $worksheet->getCell('sum_all')->setValue($jumlahall['jumlah']);
 
-        $sum_tw1= "=SUM(J15:J".$row.")";
-        $worksheet->getCell('sum_tw1')->setValue($sum_tw1);
+        $worksheet->getCell('sum_tw1')->setValue($jumlahall['tw1']);
 
-        $sum_tw2= "=SUM(K15:K".$row.")";
-        $worksheet->getCell('sum_tw2')->setValue($sum_tw2);
+        $worksheet->getCell('sum_tw2')->setValue($jumlahall['tw2']);
 
-        $sum_tw3= "=SUM(L15:L".$row.")";
-        $worksheet->getCell('sum_tw3')->setValue($sum_tw3);
+        $worksheet->getCell('sum_tw3')->setValue($jumlahall['tw3']);
 
-        $sum_tw4= "=SUM(M15:M".$row.")";
-        $worksheet->getCell('sum_tw4')->setValue($sum_tw4);
+        $worksheet->getCell('sum_tw4')->setValue($jumlahall['tw4']);
 
         $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
         $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
