@@ -88,11 +88,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="align-middle">No</th>
+                                            <th rowspan="2" class="align-middle">Pilihan</th>
                                             <th colspan="6" class="text-center">Data Barang</th>
                                             <th colspan="2" class="text-center">Bukti Pembelian</th>
                                             <th colspan="2" class="text-center">Jumlah</th>
                                             <th colspan="2" class="text-center">Harga</th>
-                                            <th rowspan="2" class="align-middle">Pilihan</th>
                                             
                                         </tr>
                                         <tr>
@@ -113,6 +113,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                     <tfoot>
                                         <tr>
                                             <th>No</th>
+                                            <th>Pilihan</th>
                                             <th>Kode Barang</th>
                                             <th>Nama Barang</th>
                                             <th>Merek</th>
@@ -124,8 +125,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <th>Qty</th>
                                             <th>Satuan</th>
                                             <th>Harga Satuan</th>
-                                            <th>Total</th>
-                                            <th>Pilihan</th>
+                                            <th>Total: <span id="total"></span></th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -150,9 +150,35 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
     $(document).ready(function () {
         var table = $('#tabelModal').DataTable({
             order: [],
+            processing: true,
+            serverSide: true,
+            // responsive: true,
+            ajax: "{{ route('sekolah.belanja.getmodal',['id' => $belanja->id]) }}",
             dom: 'flrtp',
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'action', name: 'action', orderable: false, searchable: false},
+                { data: 'kode_barang.kode_barang', name: 'kode_barang.kode_barang' },
+                { data: 'nama_barang', name: 'nama_barang' },
+                { data: 'merek', name: 'merek' },
+                { data: 'tipe', name: 'tipe' },
+                { data: 'warna', name: 'warna' },
+                { data: 'bahan', name: 'bahan' },
+                { data: 'tanggal_bukti', name: 'tanggal_bukti' },
+                { data: 'nomor_bukti', name: 'nomor_bukti' },
+                { data: 'qty', name: 'qty' },
+                { data: 'satuan', name: 'satuan' },
+                { data: 'harga_satuan', name: 'harga_satuan' },
+                { data: 'total', name: 'total' },
+                
+            ],
             initComplete: function () {
-                this.api().columns('.cari').every(function () {
+                // console.log(this.api().ajax.json().total);
+                $('#total').html( this.api().ajax.json().total );
+                $('.confirmation').on('click', function () {
+                    return confirm('Apakah anda yakin akan menghapus Trx ini?');
+                });
+                /*this.api().columns('.cari').every(function () {
                     var column = this;
                     var input = document.createElement('input');
                     $(input).addClass('form-control m-0');
@@ -163,7 +189,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 
                         column.search(val ? val : '', true, false).draw();
                     });
-                });
+                });*/
                 
             }
         });

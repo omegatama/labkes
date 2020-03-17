@@ -24,8 +24,18 @@ class KasTrx extends Model
     {
         if (empty($this->io)) {
             # code...
-            return $this->hasOne('App\KasTrxDetail', 'reference_id');
+            return $this->hasOne('App\KasTrxDetail', 'id', 'reference_id');
         }
+    }
+
+    public function belanja()
+    {
+        return $this->hasOne('App\Belanja','id','reference_id');
+    }
+
+    public function pendapatan()
+    {
+        return $this->hasOne('App\Pendapatan','id','reference_id');
     }
 
     // Kas berisi B, T atau Null

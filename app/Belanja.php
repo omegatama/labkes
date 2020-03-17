@@ -90,4 +90,9 @@ class Belanja extends Model
             });
         });
     }
+
+    public function modals()
+    {
+        return $this->hasMany('App\BelanjaModal', 'belanja_id', 'id');
+    }
 }

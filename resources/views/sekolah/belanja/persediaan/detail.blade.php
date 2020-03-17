@@ -81,7 +81,41 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                 </span>
                             </h4>
                         </div>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            <a href="{{ route('sekolah.belanja.createpersediaan', ['id'=>$belanja->id]) }}" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
+                            <div>
+                                <table id="tabelPersediaan" class="table table-bordered nowrap" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" class="align-middle">No</th>
+                                            <th rowspan="2" class="align-middle">Pilihan</th>
+                                            <th colspan="2" class="text-center">Data Persediaan</th>
+                                            <th colspan="2" class="text-center">Data Pembelian</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Nama Persediaan</th>
+                                            <th>Harga Persediaan</th>
+
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Pilihan</th>
+                                            <th>Nama Persediaan</th>
+                                            <th>Harga Persediaan</th>
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </tfoot>
+
+                                    
+                                </table>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,10 +132,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 <script>
 
     $(document).ready(function () {
-        var table = $('#tabelRekening').DataTable({
+        var table = $('#tabelPersediaan').DataTable({
             order: [],
+            dom: 'flrtp',
             initComplete: function () {
-                this.api().columns('.cari').every(function () {
+                /*this.api().columns('.cari').every(function () {
                     var column = this;
                     var input = document.createElement('input');
                     $(input).addClass('form-control m-0');
@@ -112,8 +147,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 
                         column.search(val ? val : '', true, false).draw();
                     });
-                });
-                
+                });*/   
             }
         });
         

@@ -187,9 +187,29 @@ Route::group([
 
     Route::get('/belanja/modal/{id}/create', 'Sekolah\BelanjaController@createmodal')->name('sekolah.belanja.createmodal');
 
+    Route::post('/belanja/modal/{id}/store', 'Sekolah\BelanjaController@storemodal')->name('sekolah.belanja.storemodal');
+
+    Route::get('/belanja/modal/{id}/edit/{modal_id}', 'Sekolah\BelanjaController@editmodal')->name('sekolah.belanja.editmodal');
+
+    Route::post('/belanja/modal/{id}/update/{modal_id}', 'Sekolah\BelanjaController@updatemodal')->name('sekolah.belanja.updatemodal');
+
+    Route::get('/belanja/modal/{id}/destroy/{modal_id}', 'Sekolah\BelanjaController@destroymodal')->name('sekolah.belanja.destroymodal');
+
     Route::get('/belanja/getmodal/{id}', 'Sekolah\BelanjaController@getmodal')->name('sekolah.belanja.getmodal');
 
     Route::get('/belanja/persediaan/{id}', 'Sekolah\BelanjaController@persediaan')->name('sekolah.belanja.persediaan');
+
+    Route::get('/belanja/persediaan/{id}/create', 'Sekolah\BelanjaController@createpersediaan')->name('sekolah.belanja.createpersediaan');
+
+    Route::post('/belanja/persediaan/{id}/store', 'Sekolah\BelanjaController@storepersediaan')->name('sekolah.belanja.storepersediaan');
+
+    Route::get('/belanja/persediaan/{id}/edit/{persediaan_id}', 'Sekolah\BelanjaController@editpersediaan')->name('sekolah.belanja.editpersediaan');
+
+    Route::post('/belanja/persediaan/{id}/update/{persediaan_id}', 'Sekolah\BelanjaController@updatepersediaan')->name('sekolah.belanja.updatepersediaan');
+
+    Route::get('/belanja/persediaan/{id}/destroy/{persediaan_id}', 'Sekolah\BelanjaController@destroypersediaan')->name('sekolah.belanja.destroypersediaan');
+
+
     // End Belanja Th Berjalan
 
     // Start Belanja Modal Th Berjalan
@@ -215,6 +235,8 @@ Route::group([
 
     Route::get('/laporan/k7kab', 'Sekolah\LaporanController@k7kab')->name('sekolah.laporan.k7kab');
 
+    Route::post('/proses/k7kab', 'Sekolah\LaporanController@proses_k7kab')->name('sekolah.proses.k7kab');
+
     Route::get('/laporan/k7prov', 'Sekolah\LaporanController@k7prov')->name('sekolah.laporan.k7prov');
 
     Route::post('/proses/k7prov', 'Sekolah\LaporanController@proses_k7prov')->name('sekolah.proses.k7prov');
@@ -224,5 +246,19 @@ Route::group([
     Route::get('/laporan/persediaan', 'Sekolah\LaporanController@persediaan')->name('sekolah.laporan.persediaan');
 
     Route::get('/laporan/bku', 'Sekolah\LaporanController@bku')->name('sekolah.laporan.bku');
+
+    Route::post('/proses/bku', 'Sekolah\LaporanController@proses_bku')->name('sekolah.proses.bku');
+
+    Route::get('/laporan/bukubank', 'Sekolah\LaporanController@bukubank')->name('sekolah.laporan.bukubank');
+
+    Route::post('/proses/bukubank', 'Sekolah\LaporanController@proses_bukubank')->name('sekolah.proses.bukubank');
+
+    Route::get('/laporan/bukutunai', 'Sekolah\LaporanController@bukutunai')->name('sekolah.laporan.bukutunai');
+
+    Route::post('/proses/bukutunai', 'Sekolah\LaporanController@proses_bukutunai')->name('sekolah.proses.bukutunai');
+
+    Route::get('/laporan/bukupajak', 'Sekolah\LaporanController@bukupajak')->name('sekolah.laporan.bukupajak');
+
+    Route::post('/proses/bukupajak', 'Sekolah\LaporanController@proses_bukupajak')->name('sekolah.proses.bukupajak');
     // End Laporan
 });

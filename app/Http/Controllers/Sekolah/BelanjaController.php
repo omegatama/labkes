@@ -10,6 +10,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Carbon\Carbon;
 use App\Belanja;
+use App\BelanjaModal;
 use App\KasTrx;
 use App\Saldo;
 use App\SaldoAwal;
@@ -487,15 +488,144 @@ class BelanjaController extends Controller
     	return view('sekolah.belanja.modal.tambah', compact('aksi','nama','id','parent'));
     }
 
+    public function storemodal(Request $request, $id)
+    {
+        $belanja = Auth::user()->belanjas()->findOrFail($id);
+        $harga_satuan = floatval(str_replace(',', '.', $request->harga_satuan));
+        $total = floatval(str_replace(',', '.', $request->total));
+
+        $belanjamodal                   = new BelanjaModal;
+        $belanjamodal->nama_barang      = $request->nama_barang;
+        $belanjamodal->kode_barang_id   = $request->kode_barang_id;
+        $belanjamodal->warna            = $request->warna;
+        $belanjamodal->merek            = $request->merek;
+        $belanjamodal->tipe             = $request->tipe;
+        $belanjamodal->bahan            = $request->bahan;
+        $belanjamodal->tanggal_bukti    = $request->tanggal_bukti;
+        $belanjamodal->nomor_bukti      = $request->nomor_bukti;
+        $belanjamodal->satuan           = $request->satuan;
+        $belanjamodal->harga_satuan     = $harga_satuan;
+        $belanjamodal->qty              = $request->qty;
+        $belanjamodal->total            = $total;
+        
+        try {
+            $belanja->modals()->save($belanjamodal);
+            return redirect()->route('sekolah.belanja.modal',['id'=>$id]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+        
+        // return $request->input();
+    }
+
+    public function editmodal($id, $modal_id)
+    {
+        $aksi="edit";
+        $belanja = Auth::user()->belanjas()->with('rka.rekening')->modal()->findOrFail($id);
+        $belanjamodal = $belanja->modals()->with('kode_barang')->findOrFail($modal_id);
+        $nama= $belanja->nama;
+        $parent= $belanja->rka->rekening->parent_id;
+        return view('sekolah.belanja.modal.tambah', compact('aksi','nama','id','parent', 'belanjamodal'));
+    }
+
+    public function updatemodal(Request $request, $id, $modal_id)
+    {
+        $belanja = Auth::user()->belanjas()->findOrFail($id);
+        $belanjamodal = $belanja->modals()->findOrFail($modal_id);
+        
+        $harga_satuan = floatval(str_replace(',', '.', $request->harga_satuan));
+        $total = floatval(str_replace(',', '.', $request->total));
+
+        $belanjamodal->nama_barang      = $request->nama_barang;
+        // $belanjamodal->kode_barang_id   = $request->kode_barang_id;
+        $belanjamodal->warna            = $request->warna;
+        $belanjamodal->merek            = $request->merek;
+        $belanjamodal->tipe             = $request->tipe;
+        $belanjamodal->bahan            = $request->bahan;
+        // $belanjamodal->tanggal_bukti    = $request->tanggal_bukti;
+        $belanjamodal->nomor_bukti      = $request->nomor_bukti;
+        $belanjamodal->satuan           = $request->satuan;
+        $belanjamodal->harga_satuan     = $harga_satuan;
+        $belanjamodal->qty              = $request->qty;
+        $belanjamodal->total            = $total;
+        // return $belanjamodal;
+        try {
+            $belanjamodal->save();
+            return redirect()->route('sekolah.belanja.modal',['id'=>$id]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+    }
+
+    public function destroymodal(Request $request, $id, $modal_id)
+    {
+        $belanja = Auth::user()->belanjas()->findOrFail($id);
+        $belanjamodal = $belanja->modals()->findOrFail($modal_id);
+        
+        try {
+            $belanjamodal->delete();
+            return redirect()->route('sekolah.belanja.modal',['id'=>$id]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+    }
+
     public function getmodal($id)
     {
-    	# code...
+    	// if(request()->ajax()) {
+            $ta = Cookie::get('ta');
+            $belanja = Auth::user()->belanjas()->findOrFail($id);
+            $query = $belanja->modals()->with('kode_barang');
+
+            return DataTables::eloquent($query)
+            // ->filter(function ($query) use ($ta) {
+            //     $query->where('ta', '=', $ta);
+            // },true)
+            ->withQuery('total', function($filteredQuery) {
+                return FormatMataUang($filteredQuery->sum('total'));
+            })
+            ->editColumn('harga_satuan', function ($belanjamodal) {
+                return FormatMataUang($belanjamodal->harga_satuan);
+            })
+            ->editColumn('total', function ($belanjamodal) {
+                return FormatMataUang($belanjamodal->total);
+            })
+            ->editColumn('tanggal_bukti', function ($belanjamodal
+            ) {
+                return $belanjamodal
+                ->tanggal_bukti->format('d/m/Y');
+            })
+            ->addColumn('action', function($belanjamodal) {
+                $urledit= route('sekolah.belanja.editmodal', ['id' => $belanjamodal->belanja_id, 'modal_id' => $belanjamodal->id]);
+                $urlhapus= route('sekolah.belanja.destroymodal', ['id' => $belanjamodal->belanja_id, 'modal_id' => $belanjamodal->id]);
+                
+                $btnaction =
+                    RenderTombol("success", $urledit, "Edit")." ".
+                    RenderTombol("danger confirmation", $urlhapus, "Hapus");
+
+                return $btnaction;
+            })
+            ->addIndexColumn()
+            ->make(true);
+            // return $belanja;
+        // }
     }
 
     public function persediaan($id)
     {
     	$belanja = Auth::user()->belanjas()->persediaan()->findOrFail($id);
     	return view('sekolah.belanja.persediaan.detail', compact('belanja'));
+    }
+
+    public function createpersediaan($id)
+    {
+        $aksi="tambah";
+        $belanja = Auth::user()->belanjas()->with('rka.rekening')->persediaan()->findOrFail($id);
+        $persediaans = Auth::user()->persediaans()->get();
+        $nama= $belanja->nama;
+        // $parent= $belanja->rka->rekening->parent_id;
+        return view('sekolah.belanja.persediaan.tambah', compact('aksi','nama','id', 'persediaans'));
+    
     }
 
     public function getpersediaan($id)

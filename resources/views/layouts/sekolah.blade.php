@@ -262,6 +262,15 @@
                                         <li>
                                             <a href="{{ route('sekolah.laporan.bku') }}" class="menu-item">BKU</a>
                                         </li>
+                                        <li>
+                                            <a href="{{ route('sekolah.laporan.bukubank') }}" class="menu-item">Buku Bank</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('sekolah.laporan.bukutunai') }}" class="menu-item">Buku Tunai</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('sekolah.laporan.bukupajak') }}" class="menu-item">Buku Pajak</a>
+                                        </li>
                                         
                                     </ul>
                                 </li>

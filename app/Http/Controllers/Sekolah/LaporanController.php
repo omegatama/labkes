@@ -465,11 +465,921 @@ class LaporanController extends Controller
 
     public function bku()
     {
-    	# code...
+    	return view('sekolah.laporan.bku');
     }
 
     public function proses_bku(Request $request)
     {
-    	# code...
+        $sekolah = Auth::user();
+    	$nama_sekolah = $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= "NIP.".$sekolah->nip_kepsek;
+        $nama_bendahara= $sekolah->nama_bendahara;
+        $nip_bendahara= "NIP.".$sekolah->nip_bendahara;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+        $desa= (!empty($sekolah->desa)) ? strtoupper($sekolah->desa) : "-" ;
+        $desa_kecamatan=$desa." / ".$nama_kecamatan;
+        $ta = $request->cookie('ta');
+        $bulan = $request->bulan;
+        $tanggal = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->endOfMonth();
+        $tempat_tanggal = "Kab. Semarang, ".$tanggal->locale('id_ID')->isoFormat('LL');
+        $periode= IntBulan($bulan);
+
+        // return $periode;
+
+        $bku_content= array();
+
+        if ($bulan==1) {
+            $saldo_awal = 0;
+            // Carbon::parse('first day of january '.$ta)->locale('id_ID')->isoFormat('DD MMM YY');
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Awal';
+            $bku_content[0][4]= $saldo_awal;
+            $bku_content[0][5]= null;
+        }
+        else {
+            $fromDate = Carbon::createFromFormat("!Y-n-j", $ta."-1-1");
+            $tillDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->startOfMonth();
+            $saldo_awal = Auth::user()->saldo_awals()->where([
+                'ta' => $ta,
+                'periode' => $tillDate
+            ])->first();
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Bulan Lalu';
+            $bku_content[0][4]= $saldo_awal->saldo_bank + $saldo_awal->saldo_tunai;
+            $bku_content[0][5]= 0;
+        }
+
+        $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
+        $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+        $i = 0;
+        $a= array();
+        foreach ($trx as $key => $item) {
+            $kodebku[$i]=null;
+            $uraian[$i]=null;
+            $nomorbukti[$i]=null;
+            $nominalpendapatan[$i]=0;
+            $nominalbelanja[$i]=0;
+
+            if ($item->io == 'o') {
+                // $a[]= $item->belanja->rka;
+                $belanja= $item->belanja;
+                $kodebku[$i]  = $belanja->rka->kode_program_id."/";
+                $kodebku[$i] .= $belanja->rka->rekening->parent->kode_rekening.".";
+                $kodebku[$i] .= $belanja->rka->rekening->kode_rekening."/";
+                $kodebku[$i] .= $belanja->rka->kp->kode_komponen;
+                $uraian[$i]   = $belanja->nama;
+                $nominalbelanja[$i] = $item->belanja->nilai; 
+                $nomorbukti[$i] = $belanja->nomor;
+
+                $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                $bku_content[$i+1][1]= $kodebku[$i];
+                $bku_content[$i+1][2]= $nomorbukti[$i];
+                $bku_content[$i+1][3]= $uraian[$i];
+                $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                $bku_content[$i+1][5]= $nominalbelanja[$i];
+                $i++;
+
+                if (($item->belanja->ppn)!=0) {
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menerima PPN';
+                    $bku_content[$i+1][4]= $item->belanja->ppn;
+                    $bku_content[$i+1][5]= 0;
+                    $i++;
+
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menyetorkan PPN';
+                    $bku_content[$i+1][4]= 0;
+                    $bku_content[$i+1][5]= $item->belanja->ppn;
+                    $i++; 
+                }
+
+                if (($item->belanja->pph21)!=0) {
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menerima PPh 21';
+                    $bku_content[$i+1][4]= $item->belanja->pph21;
+                    $bku_content[$i+1][5]= 0;
+                    $i++;
+
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menyetorkan PPh 21';
+                    $bku_content[$i+1][4]= 0;
+                    $bku_content[$i+1][5]= $item->belanja->pph21;
+                    $i++; 
+                }
+
+                if (($item->belanja->pph23)!=0) {
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menerima PPh 23';
+                    $bku_content[$i+1][4]= $item->belanja->pph23;
+                    $bku_content[$i+1][5]= 0;
+                    $i++;
+
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menyetorkan PPh 23';
+                    $bku_content[$i+1][4]= 0;
+                    $bku_content[$i+1][5]= $item->belanja->pph23;
+                    $i++; 
+                }
+            }
+
+            else {
+
+                if ($item->io == 'i') {
+                    // $a[]= $item->pendapatan;
+                    $kodebku[$i] = "Pendapatan ".$item->pendapatan->sumber;
+                    $uraian[$i] = $item->pendapatan->keterangan;
+                    $nominalpendapatan[$i] = $item->pendapatan->nominal;
+                }
+
+                else if (empty($item->io)) {
+                    $a[]= $item->kas_trx_detail;
+                    $kodebku[$i] = $item->kas_trx_detail->tipe;
+
+                    switch ($kodebku[$i]) {
+                        case 'Pindah Buku':
+                            $uraian[$i] = 'Pemindahbukuan';
+                            break;
+
+                        case 'Setor Kembali':
+                            $uraian[$i] = 'Setor Sisa Kas';
+                            break;
+                        
+                        default:
+                            $uraian[$i] = 'Bunga';
+                            break;   
+                    }
+
+                    $nominalpendapatan[$i] = $item->kas_trx_detail->nominal;
+                    $nominalbelanja[$i] = $item->kas_trx_detail->nominal;
+                }
+
+                $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                $bku_content[$i+1][1]= $kodebku[$i];
+                $bku_content[$i+1][2]= $nomorbukti[$i];
+                $bku_content[$i+1][3]= $uraian[$i];
+                $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                $bku_content[$i+1][5]= $nominalbelanja[$i];
+
+                $i++;
+            }
+            // $i++;
+        }
+
+        // return json_encode($bku_content);
+        $spreadsheet = IOFactory::load('storage/format/bku.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('desa_kecamatan')->setValue($desa_kecamatan);
+        $worksheet->getCell('periode')->setValue("BULAN ".strtoupper($periode));
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
+        $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+        $worksheet->getCell('nip_bendahara')->setValue($nip_bendahara);
+        
+              
+        $worksheet->fromArray(
+            $bku_content,
+            NULL,
+            'B12'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I211');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('I');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            'A'
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'BKU_bulan_'.$bulan."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+
+    }
+
+    public function bukubank()
+    {
+        return view('sekolah.laporan.bukubank');
+    }
+
+    public function proses_bukubank(Request $request)
+    {
+        $sekolah = Auth::user();
+        $nama_sekolah = $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= "NIP.".$sekolah->nip_kepsek;
+        $nama_bendahara= $sekolah->nama_bendahara;
+        $nip_bendahara= "NIP.".$sekolah->nip_bendahara;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+        $desa= (!empty($sekolah->desa)) ? strtoupper($sekolah->desa) : "-" ;
+        $desa_kecamatan=$desa." / ".$nama_kecamatan;
+        $ta = $request->cookie('ta');
+        $bulan = $request->bulan;
+        $tanggal = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->endOfMonth();
+        $tempat_tanggal = "Kab. Semarang, ".$tanggal->locale('id_ID')->isoFormat('LL');
+        $periode= IntBulan($bulan);
+
+        // return $periode;
+
+        $bku_content= array();
+
+        if ($bulan==1) {
+            $saldo_awal = 0;
+            // Carbon::parse('first day of january '.$ta)->locale('id_ID')->isoFormat('DD MMM YY');
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Awal';
+            $bku_content[0][4]= $saldo_awal;
+            $bku_content[0][5]= null;
+        }
+        else {
+            $fromDate = Carbon::createFromFormat("!Y-n-j", $ta."-1-1");
+            $tillDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->startOfMonth();
+            $saldo_awal = Auth::user()->saldo_awals()->where([
+                'ta' => $ta,
+                'periode' => $tillDate
+            ])->first();
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Bulan Lalu';
+            $bku_content[0][4]= $saldo_awal->saldo_bank + $saldo_awal->saldo_tunai;
+            $bku_content[0][5]= 0;
+        }
+
+        $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
+        $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+        $i = 0;
+        $a= array();
+        foreach ($trx as $key => $item) {
+            $kodebku[$i]=null;
+            $uraian[$i]=null;
+            $nomorbukti[$i]=null;
+            $nominalpendapatan[$i]=0;
+            $nominalbelanja[$i]=0;
+
+            if ($item->io == 'o') {
+                if ($item->kas =='B') {
+                    // $a[]= $item->belanja->rka;
+                    $belanja= $item->belanja;
+                    $kodebku[$i]  = $belanja->rka->kode_program_id."/";
+                    $kodebku[$i] .= $belanja->rka->rekening->parent->kode_rekening.".";
+                    $kodebku[$i] .= $belanja->rka->rekening->kode_rekening."/";
+                    $kodebku[$i] .= $belanja->rka->kp->kode_komponen;
+                    $uraian[$i]   = $belanja->nama;
+                    $nominalbelanja[$i] = $item->belanja->nilai; 
+                    $nomorbukti[$i] = $belanja->nomor;
+
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i];
+                    $bku_content[$i+1][2]= $nomorbukti[$i];
+                    $bku_content[$i+1][3]= $uraian[$i];
+                    $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                    $bku_content[$i+1][5]= $nominalbelanja[$i];
+                    $i++;
+
+                    if (($item->belanja->ppn)!=0) {
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menerima PPN';
+                        $bku_content[$i+1][4]= $item->belanja->ppn;
+                        $bku_content[$i+1][5]= 0;
+                        $i++;
+
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menyetorkan PPN';
+                        $bku_content[$i+1][4]= 0;
+                        $bku_content[$i+1][5]= $item->belanja->ppn;
+                        $i++; 
+                    }
+
+                    if (($item->belanja->pph21)!=0) {
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menerima PPh 21';
+                        $bku_content[$i+1][4]= $item->belanja->pph21;
+                        $bku_content[$i+1][5]= 0;
+                        $i++;
+
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menyetorkan PPh 21';
+                        $bku_content[$i+1][4]= 0;
+                        $bku_content[$i+1][5]= $item->belanja->pph21;
+                        $i++; 
+                    }
+
+                    if (($item->belanja->pph23)!=0) {
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menerima PPh 23';
+                        $bku_content[$i+1][4]= $item->belanja->pph23;
+                        $bku_content[$i+1][5]= 0;
+                        $i++;
+
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menyetorkan PPh 23';
+                        $bku_content[$i+1][4]= 0;
+                        $bku_content[$i+1][5]= $item->belanja->pph23;
+                        $i++; 
+                    }
+                }
+            }
+
+            else {
+
+                if ($item->io == 'i') {
+                    if ($item->kas =='B') {
+                        // $a[]= $item->pendapatan;
+                        $kodebku[$i] = "Pendapatan ".$item->pendapatan->sumber;
+                        $uraian[$i] = $item->pendapatan->keterangan;
+                        $nominalpendapatan[$i] = $item->pendapatan->nominal;
+                        
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i];
+                        $bku_content[$i+1][2]= $nomorbukti[$i];
+                        $bku_content[$i+1][3]= $uraian[$i];
+                        $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                        $bku_content[$i+1][5]= $nominalbelanja[$i];
+                    }
+                }
+
+                else if (empty($item->io)) {
+                    $a[]= $item->kas_trx_detail;
+                    $kodebku[$i] = $item->kas_trx_detail->tipe;
+
+                    switch ($kodebku[$i]) {
+                        case 'Pindah Buku':
+                            $uraian[$i] = 'Pemindahbukuan';
+                            $nominalbelanja[$i] = $item->kas_trx_detail->nominal;
+                            break;
+
+                        case 'Setor Kembali':
+                            $uraian[$i] = 'Setor Sisa Kas';
+                            $nominalpendapatan[$i] = $item->kas_trx_detail->nominal;
+                            break;
+                        
+                        default:
+                            $uraian[$i] = 'Bunga';
+                            $nominalpendapatan[$i] = $item->kas_trx_detail->nominal;
+                            $nominalbelanja[$i] = $item->kas_trx_detail->nominal;
+                            break;
+                    }
+
+                    /*if ($uraian[$i]== 'Bunga') {
+                        continue;
+                    }*/
+
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i];
+                    $bku_content[$i+1][2]= $nomorbukti[$i];
+                    $bku_content[$i+1][3]= $uraian[$i];
+                    $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                    $bku_content[$i+1][5]= $nominalbelanja[$i];
+                }
+
+                
+
+                $i++;
+            }
+            // $i++;
+        }
+
+        // return json_encode($bku_content);
+        $spreadsheet = IOFactory::load('storage/format/buku_bank.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('desa_kecamatan')->setValue($desa_kecamatan);
+        $worksheet->getCell('periode')->setValue("BULAN ".strtoupper($periode));
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
+        $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+        $worksheet->getCell('nip_bendahara')->setValue($nip_bendahara);
+        
+              
+        $worksheet->fromArray(
+            $bku_content,
+            NULL,
+            'B12'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I211');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('I');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            'A'
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'Buku_Bank_bulan_'.$bulan."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+
+    }
+
+    public function bukutunai()
+    {
+        return view('sekolah.laporan.bukutunai');
+    }
+
+    public function proses_bukutunai(Request $request)
+    {
+        $sekolah = Auth::user();
+        $nama_sekolah = $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= "NIP.".$sekolah->nip_kepsek;
+        $nama_bendahara= $sekolah->nama_bendahara;
+        $nip_bendahara= "NIP.".$sekolah->nip_bendahara;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+        $desa= (!empty($sekolah->desa)) ? strtoupper($sekolah->desa) : "-" ;
+        $desa_kecamatan=$desa." / ".$nama_kecamatan;
+        $ta = $request->cookie('ta');
+        $bulan = $request->bulan;
+        $tanggal = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->endOfMonth();
+        $tempat_tanggal = "Kab. Semarang, ".$tanggal->locale('id_ID')->isoFormat('LL');
+        $periode= IntBulan($bulan);
+
+        // return $periode;
+
+        $bku_content= array();
+
+        if ($bulan==1) {
+            $saldo_awal = 0;
+            // Carbon::parse('first day of january '.$ta)->locale('id_ID')->isoFormat('DD MMM YY');
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Awal';
+            $bku_content[0][4]= $saldo_awal;
+            $bku_content[0][5]= null;
+        }
+        else {
+            $fromDate = Carbon::createFromFormat("!Y-n-j", $ta."-1-1");
+            $tillDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->startOfMonth();
+            $saldo_awal = Auth::user()->saldo_awals()->where([
+                'ta' => $ta,
+                'periode' => $tillDate
+            ])->first();
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Bulan Lalu';
+            $bku_content[0][4]= $saldo_awal->saldo_bank + $saldo_awal->saldo_tunai;
+            $bku_content[0][5]= 0;
+        }
+
+        $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
+        $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+        $i = 0;
+        $a= array();
+        foreach ($trx as $key => $item) {
+            $kodebku[$i]=null;
+            $uraian[$i]=null;
+            $nomorbukti[$i]=null;
+            $nominalpendapatan[$i]=0;
+            $nominalbelanja[$i]=0;
+
+            if ($item->io == 'o') {
+                if ($item->kas =='T') {
+                    // $a[]= $item->belanja->rka;
+                    $belanja= $item->belanja;
+                    $kodebku[$i]  = $belanja->rka->kode_program_id."/";
+                    $kodebku[$i] .= $belanja->rka->rekening->parent->kode_rekening.".";
+                    $kodebku[$i] .= $belanja->rka->rekening->kode_rekening."/";
+                    $kodebku[$i] .= $belanja->rka->kp->kode_komponen;
+                    $uraian[$i]   = $belanja->nama;
+                    $nominalbelanja[$i] = $item->belanja->nilai; 
+                    $nomorbukti[$i] = $belanja->nomor;
+
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i];
+                    $bku_content[$i+1][2]= $nomorbukti[$i];
+                    $bku_content[$i+1][3]= $uraian[$i];
+                    $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                    $bku_content[$i+1][5]= $nominalbelanja[$i];
+                    $i++;
+
+                    if (($item->belanja->ppn)!=0) {
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menerima PPN';
+                        $bku_content[$i+1][4]= $item->belanja->ppn;
+                        $bku_content[$i+1][5]= 0;
+                        $i++;
+
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menyetorkan PPN';
+                        $bku_content[$i+1][4]= 0;
+                        $bku_content[$i+1][5]= $item->belanja->ppn;
+                        $i++; 
+                    }
+
+                    if (($item->belanja->pph21)!=0) {
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menerima PPh 21';
+                        $bku_content[$i+1][4]= $item->belanja->pph21;
+                        $bku_content[$i+1][5]= 0;
+                        $i++;
+
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menyetorkan PPh 21';
+                        $bku_content[$i+1][4]= 0;
+                        $bku_content[$i+1][5]= $item->belanja->pph21;
+                        $i++; 
+                    }
+
+                    if (($item->belanja->pph23)!=0) {
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menerima PPh 23';
+                        $bku_content[$i+1][4]= $item->belanja->pph23;
+                        $bku_content[$i+1][5]= 0;
+                        $i++;
+
+                        $kodebku[$i] = $kodebku[$i-1];
+                        $nomorbukti[$i] = $nomorbukti[$i-1];
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i-1];
+                        $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                        $bku_content[$i+1][3]= 'Menyetorkan PPh 23';
+                        $bku_content[$i+1][4]= 0;
+                        $bku_content[$i+1][5]= $item->belanja->pph23;
+                        $i++; 
+                    }
+                }
+            }
+
+            else {
+
+                if ($item->io == 'i') {
+                    if ($item->kas =='T') {
+                        // $a[]= $item->pendapatan;
+                        $kodebku[$i] = "Pendapatan ".$item->pendapatan->sumber;
+                        $uraian[$i] = $item->pendapatan->keterangan;
+                        $nominalpendapatan[$i] = $item->pendapatan->nominal;
+                        
+                        $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                        $bku_content[$i+1][1]= $kodebku[$i];
+                        $bku_content[$i+1][2]= $nomorbukti[$i];
+                        $bku_content[$i+1][3]= $uraian[$i];
+                        $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                        $bku_content[$i+1][5]= $nominalbelanja[$i];
+                    }
+                }
+
+                else if (empty($item->io)) {
+                    $a[]= $item->kas_trx_detail;
+                    $kodebku[$i] = $item->kas_trx_detail->tipe;
+
+                    switch ($kodebku[$i]) {
+                        case 'Pindah Buku':
+                            $uraian[$i] = 'Pemindahbukuan';
+                            $nominalpendapatan[$i] = $item->kas_trx_detail->nominal;
+                            break;
+
+                        case 'Setor Kembali':
+                            $uraian[$i] = 'Setor Sisa Kas';
+                            $nominalbelanja[$i] = $item->kas_trx_detail->nominal;
+                            break;
+                        
+                        default:
+                            $uraian[$i] = 'Bunga';
+                            break;   
+                    }
+
+                    if ($uraian[$i]== 'Bunga') {
+                        continue;
+                    }
+
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i];
+                    $bku_content[$i+1][2]= $nomorbukti[$i];
+                    $bku_content[$i+1][3]= $uraian[$i];
+                    $bku_content[$i+1][4]= $nominalpendapatan[$i];
+                    $bku_content[$i+1][5]= $nominalbelanja[$i];
+                }
+
+                
+
+                $i++;
+            }
+            // $i++;
+        }
+
+        // return json_encode($bku_content);
+        $spreadsheet = IOFactory::load('storage/format/buku_tunai.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('desa_kecamatan')->setValue($desa_kecamatan);
+        $worksheet->getCell('periode')->setValue("BULAN ".strtoupper($periode));
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
+        $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+        $worksheet->getCell('nip_bendahara')->setValue($nip_bendahara);
+        
+              
+        $worksheet->fromArray(
+            $bku_content,
+            NULL,
+            'B12'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I211');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('I');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            'A'
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'Buku_Tunai_bulan_'.$bulan."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+
+    }
+
+    public function bukupajak()
+    {
+        return view('sekolah.laporan.bukupajak');
+    }
+
+    public function proses_bukupajak(Request $request)
+    {
+        $sekolah = Auth::user();
+        $nama_sekolah = $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= "NIP.".$sekolah->nip_kepsek;
+        $nama_bendahara= $sekolah->nama_bendahara;
+        $nip_bendahara= "NIP.".$sekolah->nip_bendahara;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+        $desa= (!empty($sekolah->desa)) ? strtoupper($sekolah->desa) : "-" ;
+        $desa_kecamatan=$desa." / ".$nama_kecamatan;
+        $ta = $request->cookie('ta');
+        $bulan = $request->bulan;
+        $tanggal = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->endOfMonth();
+        $tempat_tanggal = "Kab. Semarang, ".$tanggal->locale('id_ID')->isoFormat('LL');
+        $periode= IntBulan($bulan);
+
+        // return $periode;
+
+        $bku_content= array();
+
+        /*if ($bulan==1) {
+            $saldo_awal = 0;
+            // Carbon::parse('first day of january '.$ta)->locale('id_ID')->isoFormat('DD MMM YY');
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Awal';
+            $bku_content[0][4]= $saldo_awal;
+            $bku_content[0][5]= null;
+        }
+        else {
+            $fromDate = Carbon::createFromFormat("!Y-n-j", $ta."-1-1");
+            $tillDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->startOfMonth();
+            $saldo_awal = Auth::user()->saldo_awals()->where([
+                'ta' => $ta,
+                'periode' => $tillDate
+            ])->first();
+            $bku_content[0][0]= null;
+            $bku_content[0][1]= null;
+            $bku_content[0][2]= null;
+            $bku_content[0][3]= 'Saldo Bulan Lalu';
+            $bku_content[0][4]= $saldo_awal->saldo_bank + $saldo_awal->saldo_tunai;
+            $bku_content[0][5]= 0;
+        }*/
+
+        $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
+        $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+        $i = 0;
+        $a= array();
+        foreach ($trx as $key => $item) {
+            $kodebku[$i]=null;
+            $uraian[$i]=null;
+            $nomorbukti[$i]=null;
+            $nominalpendapatan[$i]=0;
+            $nominalbelanja[$i]=0;
+
+            if ($item->io == 'o') {
+                // $a[]= $item->belanja->rka;
+                $belanja= $item->belanja;
+                $kodebku[$i]  = $belanja->rka->kode_program_id."/";
+                $kodebku[$i] .= $belanja->rka->rekening->parent->kode_rekening.".";
+                $kodebku[$i] .= $belanja->rka->rekening->kode_rekening."/";
+                $kodebku[$i] .= $belanja->rka->kp->kode_komponen;
+                $nomorbukti[$i] = $belanja->nomor;
+                $i++;
+
+                if (($item->belanja->ppn)!=0) {
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menerima PPN';
+                    $bku_content[$i+1][4]= $item->belanja->ppn;
+                    $bku_content[$i+1][5]= 0;
+                    $i++;
+
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menyetorkan PPN';
+                    $bku_content[$i+1][4]= 0;
+                    $bku_content[$i+1][5]= $item->belanja->ppn;
+                    $i++; 
+                }
+
+                if (($item->belanja->pph21)!=0) {
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menerima PPh 21';
+                    $bku_content[$i+1][4]= $item->belanja->pph21;
+                    $bku_content[$i+1][5]= 0;
+                    $i++;
+
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menyetorkan PPh 21';
+                    $bku_content[$i+1][4]= 0;
+                    $bku_content[$i+1][5]= $item->belanja->pph21;
+                    $i++; 
+                }
+
+                if (($item->belanja->pph23)!=0) {
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menerima PPh 23';
+                    $bku_content[$i+1][4]= $item->belanja->pph23;
+                    $bku_content[$i+1][5]= 0;
+                    $i++;
+
+                    $kodebku[$i] = $kodebku[$i-1];
+                    $nomorbukti[$i] = $nomorbukti[$i-1];
+                    $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
+                    $bku_content[$i+1][1]= $kodebku[$i-1];
+                    $bku_content[$i+1][2]= $nomorbukti[$i-1];
+                    $bku_content[$i+1][3]= 'Menyetorkan PPh 23';
+                    $bku_content[$i+1][4]= 0;
+                    $bku_content[$i+1][5]= $item->belanja->pph23;
+                    $i++; 
+                }
+            }
+            // $i++;
+        }
+
+        // return json_encode($bku_content);
+        $spreadsheet = IOFactory::load('storage/format/buku_pajak.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('desa_kecamatan')->setValue($desa_kecamatan);
+        $worksheet->getCell('periode')->setValue("BULAN ".strtoupper($periode));
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
+        $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+        $worksheet->getCell('nip_bendahara')->setValue($nip_bendahara);
+        
+              
+        $worksheet->fromArray(
+            $bku_content,
+            NULL,
+            'B12'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I211');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('I');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            'A'
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'Buku_Pajak_bulan_'.$bulan."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+
     }
 }

@@ -42,15 +42,16 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                             </h4>
                         </div>
                         <div class="card-body">
-                            <form class="form" method="POST" action="{{ (isset($belanja))? route('sekolah.belanja.update', ['id'=>$belanja->id]) : route('sekolah.belanja.store') }}">
+                            <form class="form" method="POST" action="
+                            {{
+                                (isset($belanjamodal))? route('sekolah.belanja.updatemodal', ['id'=>$id, 'modal_id' =>$belanjamodal->id]) : route('sekolah.belanja.storemodal',['id'=>$id])
+                            }}
+                            ">
                                 @csrf
-                                @isset ($belanja)
-                                    @method('PUT')
-                                @endisset
+                                
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            
                                             
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
@@ -64,29 +65,36 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
+                                                    <label class="m-0" for="nama_barang">Nama Barang</label>
+                                                    <input type="text" id="nama_barang" class="form-control" name="nama_barang" required value="{{ (isset($belanjamodal))? $belanjamodal->nama_barang : '' }}" placeholder="Masukkan Nama Barang">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="warna">Warna</label>
-                                                    <input type="text" id="warna" class="form-control" name="warna" required value="{{ (isset($belanja))? $belanja->warna : '' }}" placeholder="Masukkan Warna">
+                                                    <input type="text" id="warna" class="form-control" name="warna" required value="{{ (isset($belanjamodal))? $belanjamodal->warna : '' }}" placeholder="Masukkan Warna">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="merek">Merek</label>
-                                                    <input type="text" id="merek" class="form-control" name="merek" required value="{{ (isset($belanja))? $belanja->merek : '' }}" placeholder="Masukkan Merek">
+                                                    <input type="text" id="merek" class="form-control" name="merek" required value="{{ (isset($belanjamodal))? $belanjamodal->merek : '' }}" placeholder="Masukkan Merek">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="tipe">Tipe</label>
-                                                    <input type="text" id="tipe" class="form-control" name="tipe" required value="{{ (isset($belanja))? $belanja->tipe : '' }}" placeholder="Masukkan Tipe">
+                                                    <input type="text" id="tipe" class="form-control" name="tipe" required value="{{ (isset($belanjamodal))? $belanjamodal->tipe : '' }}" placeholder="Masukkan Tipe">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="bahan">Bahan</label>
-                                                    <input type="text" id="bahan" class="form-control" name="bahan" required value="{{ (isset($belanja))? $belanja->bahan : '' }}" placeholder="Masukkan Bahan">
+                                                    <input type="text" id="bahan" class="form-control" name="bahan" required value="{{ (isset($belanjamodal))? $belanjamodal->bahan : '' }}" placeholder="Masukkan Bahan">
                                                 </div>
                                             </div>
 
@@ -97,14 +105,14 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="nomor_bukti">Nomor Bukti</label>
-                                                    <input type="text" id="nomor_bukti" class="form-control" name="nomor_bukti" required value="{{ (isset($belanja))? $belanja->nomor_bukti : '' }}" placeholder="Masukkan Nomor Bukti">
+                                                    <input type="text" id="nomor_bukti" class="form-control" name="nomor_bukti" required value="{{ (isset($belanjamodal))? $belanjamodal->nomor_bukti : '' }}" placeholder="Masukkan Nomor Bukti">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="tanggal_bukti">Tanggal Bukti</label>
-                                                    <input type="date" id="tanggal_bukti" class="form-control" name="tanggal_bukti" required value="{{ (isset($belanja))? $belanja->tanggal_bukti : '' }}" placeholder="Masukkan Nomor Bukti">
+                                                    <input type="date" id="tanggal_bukti" class="form-control" name="tanggal_bukti" required value="{{ (isset($belanjamodal))? $belanjamodal->tanggal_bukti->format('Y-m-d') : '' }}" placeholder="Masukkan Nomor Bukti">
                                                 </div>
                                             </div>
                                   
@@ -121,28 +129,28 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="qty">Qty</label>
-                                                    <input type="text" id="qty" class="form-control" name="qty" required value="{{ (isset($belanja))? $belanja->qty : '' }}" placeholder="Masukkan Qty">
+                                                    <input type="text" id="qty" class="form-control" name="qty" required value="{{ (isset($belanjamodal))? $belanjamodal->qty : '' }}" placeholder="Masukkan Qty">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="satuan">Satuan</label>
-                                                    <input type="text" id="satuan" class="form-control" name="satuan" required value="{{ (isset($belanja))? $belanja->satuan : '' }}" placeholder="Masukkan Satuan">
+                                                    <input type="text" id="satuan" class="form-control" name="satuan" required value="{{ (isset($belanjamodal))? $belanjamodal->satuan : '' }}" placeholder="Masukkan Satuan">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="harga_satuan">Harga Satuan</label>
-                                                    <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" required value="{{ (isset($belanja))? str_replace(".",",", $belanja->harga_satuan) : '' }}">
+                                                    <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" required value="{{ (isset($belanjamodal))? str_replace(".",",", $belanjamodal->harga_satuan) : '' }}">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="total">Total</label>
-                                                    <input type="text" id="total" class="form-control rupiah" name="total" required value="{{ (isset($belanja))? str_replace(".",",", $belanja->total) : '' }}">
+                                                    <input type="text" id="total" class="form-control rupiah" name="total" required value="{{ (isset($belanjamodal))? str_replace(".",",", $belanjamodal->total) : '' }}">
                                                 </div>
                                             </div>
 
@@ -240,8 +248,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
             });
         @endif
 
-        @if (isset($belanja))
-            
+        @if (isset($belanjamodal))
+            var option = new Option('{{$belanjamodal->kode_barang->nama_barang}}' , '{{$belanjamodal->kode_barang_id}}', true, true);
+            $('#kode_barang_id').append(option).trigger('change');
+            $('#kode_barang_id').attr('readonly','readonly');
+            $("#tanggal_bukti").attr('readonly','readonly');
         @else
             $(".rupiah").val(0);
         @endif

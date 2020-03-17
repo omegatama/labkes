@@ -85,11 +85,11 @@ tr.shown td.details-control {
         <thead>
             <tr>
                 <th rowspan="2" class="align-middle">No</th>
+                <th rowspan="2" class="align-middle">Pilihan</th>
                 <th colspan="6" class="text-center">Data Barang</th>
                 <th colspan="2" class="text-center">Bukti Pembelian</th>
                 <th colspan="2" class="text-center">Jumlah</th>
                 <th colspan="2" class="text-center">Harga</th>
-                <th rowspan="2" class="align-middle">Pilihan</th>
                 
             </tr>
             <tr>
@@ -110,6 +110,7 @@ tr.shown td.details-control {
         <tfoot>
             <tr>
                 <th>No</th>
+                <th>Pilihan</th>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
                 <th>Merek</th>
@@ -121,8 +122,7 @@ tr.shown td.details-control {
                 <th>Qty</th>
                 <th>Satuan</th>
                 <th>Harga Satuan</th>
-                <th>Total</th>
-                <th>Pilihan</th>
+                <th>Total: <span id="total"></span></th>
             </tr>
         </tfoot>
     </table>
@@ -136,22 +136,29 @@ tr.shown td.details-control {
             ajax: data.details_url,
             dom: 'frtp',
             columns: [
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
-                { data: 'id', name: 'id' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'action', name: 'action', orderable: false, searchable: false},
+                { data: 'kode_barang.kode_barang', name: 'kode_barang.kode_barang' },
+                { data: 'nama_barang', name: 'nama_barang' },
+                { data: 'merek', name: 'merek' },
+                { data: 'tipe', name: 'tipe' },
+                { data: 'warna', name: 'warna' },
+                { data: 'bahan', name: 'bahan' },
+                { data: 'tanggal_bukti', name: 'tanggal_bukti' },
+                { data: 'nomor_bukti', name: 'nomor_bukti' },
+                { data: 'qty', name: 'qty' },
+                { data: 'satuan', name: 'satuan' },
+                { data: 'harga_satuan', name: 'harga_satuan' },
+                { data: 'total', name: 'total' },
                 
-            ]
+            ],
+            initComplete: function () {
+                // console.log(this.api().ajax.json().total);
+                $('#' + tableId +' '+ '#total').html( this.api().ajax.json().total );
+                $('.confirmation').on('click', function () {
+                    return confirm('Apakah anda yakin akan menghapus Trx ini?');
+                });
+            }
         });
     }
 

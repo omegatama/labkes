@@ -113,3 +113,11 @@ if (!function_exists('Terbilang')) {
         return $str;
     }
 }
+
+if (!function_exists('IntBulan')) {
+    function IntBulan($expression) {
+        $bulan = ['','Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        return $bulan[$expression];
+    }
+}
