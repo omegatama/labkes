@@ -48,7 +48,7 @@
                         <div class="logo-img">
                             <img src="{{ asset('app-assets/img/logo-kabsemarang.webp') }}" style="width: 100%" />
                         </div>
-                        <span class="text align-middle" style="font-size: 90%">APIK BOS</span>
+                        <span class="text align-middle" style="font-size: 100%">SIM - BOS</span>
                     </a>
                     <a
                     id="sidebarToggle"
@@ -137,7 +137,7 @@
                             <a href="javascript:void(0)">
                                 <i class="ft-credit-card"></i>
                                 <span data-i18n="" class="menu-title">
-                                    Saldo
+                                    Saldo & Transaksi
                                 </span>
                             </a>
                             <ul class="menu-content">
@@ -152,6 +152,10 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('sekolah.kas.saldo') }}" class="menu-item">Saldo Kas</a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="menu-item">Saldo Awal</a>
                                 </li>
                             </ul>
                         </li>
@@ -177,7 +181,8 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-sub">
+
+                                {{-- <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Belanja Perubahan</a>
                                     <ul class="menu-content">
                                         <li>
@@ -190,7 +195,8 @@
                                             <a href="#belanjamodal" class="menu-item">Data Belanja Modal</a>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> --}}
+
                                 <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Belanja Th Lalu</a>
                                     <ul class="menu-content">
@@ -223,6 +229,10 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('sekolah.persediaan.penyesuaian') }}" class="menu-item">Penyesuaian</a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="menu-item">Stok Awal</a>
                                 </li>
                             </ul>
                         </li>
@@ -274,7 +284,8 @@
                                         
                                     </ul>
                                 </li>
-                                <li class="has-sub">
+                                
+                                {{-- <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Perubahan</a>
                                     <ul class="menu-content">
                                         <li>
@@ -303,7 +314,8 @@
                                         </li>
                                         
                                     </ul>
-                                </li>
+                                </li> --}}
+
                                 <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Th Lalu</a>
                                     <ul class="menu-content">

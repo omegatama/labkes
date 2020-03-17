@@ -91,6 +91,15 @@ class Belanja extends Model
         });
     }
 
+    public function scopeRekening($query, $rekening_id)
+    {
+        return $query->whereHas('rka', function ($qrka) use ($rekening_id) {
+            $qrka->whereHas('rekening', function ($q) use ($rekening_id) {
+                $q->where('id', $rekening_id);
+            });
+        });
+    }
+
     public function modals()
     {
         return $this->hasMany('App\BelanjaModal', 'belanja_id', 'id');

@@ -18,4 +18,34 @@ class BelanjaModal extends Model
 	    return $this->belongsTo('App\KodeBarang');
 	}
 
+	public function belanja()
+	{
+	    return $this->belongsTo('App\Belanja');
+	}
+
+	public function scopeNpsn($query, $npsn)
+    {
+        return $query->whereHas('belanja', function ($qbelanja) use ($npsn) {
+            $qbelanja->whereHas('sekolah', function ($q) use ($npsn) {
+                $q->where('npsn','=', $npsn);   
+            });
+        });
+    }
+
+    public function scopeTa($query, $ta)
+    {
+        return $query->whereHas('belanja', function ($qbelanja) use ($ta) {
+            $qbelanja->whereHas('rka', function ($q) use ($ta) {
+                $q->where('ta','=', $ta);   
+            });
+        });
+    }
+
+    public function scopeTriwulan($query, $tw)
+    {
+        return $query->whereHas('belanja', function ($q) use ($tw) {
+            $q->where('triwulan','=', $tw);   
+        });
+    }
+
 }

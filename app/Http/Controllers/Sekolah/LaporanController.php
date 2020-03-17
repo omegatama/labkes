@@ -9,6 +9,9 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Carbon\Carbon;
 use App\KodeProgram;
+use App\Belanja;
+use App\BelanjaModal;
+use App\KodeRekening;
 use App\KomponenPembiayaan;
 
 use Auth;
@@ -435,27 +438,235 @@ class LaporanController extends Controller
 
     public function k7kab()
     {
-    	# code...
+    	return view('sekolah.laporan.k7kab');
     }
 
     public function proses_k7kab(Request $request)
     {
-    	# code...
+    	$sekolah = Auth::user();
+        $triwulan = $request->triwulan;
+        $ta = $request->cookie('ta');
+        $judul= "REKAPITULASI PENGGUNAAN DANA BOS TRIWULAN ".$triwulan." TAHUN ".$ta;
+        $nama_sekolah= $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= $sekolah->nip_kepsek;
+        $nama_bendahara= $sekolah->nama_bendahara;
+        $nip_bendahara= $sekolah->nip_bendahara;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+        $saldo_twlalu=0;
+
+        $belanja_pegawai= array();
+        $belanja_barangjasa= array();
+        $belanja_modal= array();
+
+        $triwulan1= [1 ,2 ,3 ];
+        $triwulan2= [4 ,5 ,6 ];
+        $triwulan3= [7 ,8 ,9 ];
+        $triwulan4= [10,11,12];
+
+        $bulan = ${"triwulan".$triwulan};
+        $bulan1= IntBulan($bulan[0]);
+        $bulan2= IntBulan($bulan[1]);
+        $bulan3= IntBulan($bulan[2]);
+        // $nama_triwulan= "Triwulan ".$triwulan;
+
+        $rek = KodeRekening::whereNotNull('parent_id')->orderBy('parent_id')->get();
+        
+        foreach ($rek as $key => $item) {
+            $belanjaperrekening = Auth::user()->belanjas()->ta($ta)->rekening($item->id);
+            switch ($item->parent_id) {
+                case 1:
+                    $belanja_rek1_bln0 = $belanjaperrekening->whereMonth('tanggal', $bulan[0])->sum('nilai');
+                    $belanja_rek1_bln1 = $belanjaperrekening->whereMonth('tanggal', $bulan[1])->sum('nilai');
+                    $belanja_rek1_bln2 = $belanjaperrekening->whereMonth('tanggal', $bulan[2])->sum('nilai');
+                    
+                    $belanja_pegawai[$key][0] = $belanja_rek1_bln0;
+                    $belanja_pegawai[$key][1] = $belanja_rek1_bln1;
+                    $belanja_pegawai[$key][2] = $belanja_rek1_bln2;
+                    // $belanja_pegawai[$key][3] = $item->nama_rekening." (".$item->parent->kode_rekening.".".$item->kode_rekening.")";
+                    // $belanja_pegawai[$key][4] = $item->id;
+                    break;
+
+                case 2:
+                    $belanja_rek2_bln0 = $belanjaperrekening->whereMonth('tanggal', $bulan[0])->sum('nilai');
+                    $belanja_rek2_bln1 = $belanjaperrekening->whereMonth('tanggal', $bulan[1])->sum('nilai');
+                    $belanja_rek2_bln2 = $belanjaperrekening->whereMonth('tanggal', $bulan[2])->sum('nilai');
+                    
+                    $belanja_barangjasa[$key][0] = $belanja_rek2_bln0;
+                    $belanja_barangjasa[$key][1] = $belanja_rek2_bln1;
+                    $belanja_barangjasa[$key][2] = $belanja_rek2_bln2;
+                    // $belanja_barangjasa[$key][3] = $item->nama_rekening." (".$item->parent->kode_rekening.".".$item->kode_rekening.")";
+                    // $belanja_barangjasa[$key][4] = $item->id;
+                    break;
+                
+                default:
+                    $belanja_rek345_bln0 = $belanjaperrekening->whereMonth('tanggal', $bulan[0])->sum('nilai');
+                    $belanja_rek345_bln1 = $belanjaperrekening->whereMonth('tanggal', $bulan[1])->sum('nilai');
+                    $belanja_rek345_bln2 = $belanjaperrekening->whereMonth('tanggal', $bulan[2])->sum('nilai');
+                    
+                    $belanja_modal[$key][0] = $belanja_rek345_bln0;
+                    $belanja_modal[$key][1] = $belanja_rek345_bln1;
+                    $belanja_modal[$key][2] = $belanja_rek345_bln2;
+                    // $belanja_modal[$key][3] = $item->nama_rekening." (".$item->parent->kode_rekening.".".$item->kode_rekening.")";
+                    // $belanja_modal[$key][4] = $item->id;
+                    break;
+            }
+        }
+
+        // return json_encode($belanja_modal);
+        // Excel
+        $spreadsheet = IOFactory::load('storage/format/k7_kab1.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('judul')->setValue($judul);
+        $worksheet->getCell('triwulan')->setValue($triwulan);
+        $worksheet->getCell('npsn')->setValue($sekolah->npsn);
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('nama_kecamatan')->setValue($nama_kecamatan);
+        $worksheet->getCell('bulan1')->setValue($bulan1);
+        $worksheet->getCell('bulan2')->setValue($bulan2);
+        $worksheet->getCell('bulan3')->setValue($bulan3);
+        // $worksheet->getCell('nama_triwulan')->setValue($nama_triwulan);
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+        $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+        $worksheet->getCell('nip_bendahara')->setValue("NIP.".$nip_bendahara);
+
+        $worksheet->fromArray(
+            $belanja_pegawai,
+            null,
+            'F11'
+        );
+        $worksheet->fromArray(
+            $belanja_barangjasa,
+            null,
+            'F16'
+        );
+        $worksheet->fromArray(
+            $belanja_modal,
+            null,
+            'F62'
+        );
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'K7Kab_tw_'.$triwulan."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+        
     }
 
     public function modal()
     {
-    	# code...
+    	return view('sekolah.laporan.modal');
     }
 
     public function proses_modal(Request $request)
     {
-    	# code...
+        $sekolah= Auth::user();
+    	$npsn= $sekolah->npsn;
+        $ta= $request->cookie('ta');
+        $triwulan= $request->triwulan;
+        switch ($triwulan) {
+            case '1':
+                # code...
+                $twhuruf= "I";
+                break;
+            case '2':
+                # code...
+                $twhuruf= "II";
+                break;
+            case '3':
+                # code...
+                $twhuruf= "III";
+                break;
+            case '4':
+                # code...
+                $twhuruf= "IV";
+                break;
+            
+            default:
+                # code...
+                $twhuruf="-";
+                break;
+        }
+        $sub_judul="TRIWULAN ".$twhuruf." TAHUN ANGGARAN ".$ta;
+
+        $nama_sekolah= $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= $sekolah->nip_kepsek;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+
+        $barang_modal= array();
+        $belanjamodal= BelanjaModal::npsn($npsn)->ta($ta)->triwulan($triwulan)->get();
+        // return $belanjamodal;
+        foreach ($belanjamodal as $key => $modal) {
+            $barang_modal[$key]['kode_barang']= $modal->kode_barang->kode_barang;
+            $barang_modal[$key]['nama_barang']= $modal->nama_barang;
+            $barang_modal[$key]['merek']= $modal->merek;
+            $barang_modal[$key]['warna']= $modal->warna;
+            $barang_modal[$key]['tipe']= $modal->tipe;
+            $barang_modal[$key]['bahan']= $modal->bahan;
+            $barang_modal[$key]['bukti_tanggal']= date('d', strtotime($modal->tanggal_bukti));
+            $barang_modal[$key]['bukti_bulan']= IntBulan(date('n', strtotime($modal->tanggal_bukti)));
+            $barang_modal[$key]['bukti_nomor']= $modal->nomor_bukti;
+            $barang_modal[$key]['qty']= $modal->qty;
+            $barang_modal[$key]['satuan']= $modal->satuan;
+            $barang_modal[$key]['jenis']= $modal->belanja->rka->rekening->parent_id;
+            $barang_modal[$key]['harga_satuan']= $modal->harga_satuan;
+            // $barang_modal[$key]['jumlah']= null;
+            // $barang_modal[$key]['jenis_modal']= null;
+        }
+        
+        // return $barang_modal;
+        // Excel
+        $spreadsheet = IOFactory::load('storage/format/belanja_modal.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('sub_judul')->setValue($sub_judul);
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('nama_kecamatan')->setValue($nama_kecamatan);
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+
+        $worksheet->fromArray(
+            $barang_modal,
+            null,
+            'B10'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('B9:Q209');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('Q');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            'A'
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'B_Modal_tw_'.$triwulan."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
     }
 
     public function persediaan()
     {
-    	# code...
+    	return view('sekolah.laporan.persediaan');
     }
 
     public function proses_persediaan(Request $request)

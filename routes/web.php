@@ -243,7 +243,11 @@ Route::group([
 
     Route::get('/laporan/modal', 'Sekolah\LaporanController@modal')->name('sekolah.laporan.modal');
 
+    Route::post('/proses/modal', 'Sekolah\LaporanController@proses_modal')->name('sekolah.proses.modal');
+
     Route::get('/laporan/persediaan', 'Sekolah\LaporanController@persediaan')->name('sekolah.laporan.persediaan');
+
+    Route::post('/proses/persediaan', 'Sekolah\LaporanController@proses_persediaan')->name('sekolah.proses.persediaan');
 
     Route::get('/laporan/bku', 'Sekolah\LaporanController@bku')->name('sekolah.laporan.bku');
 
