@@ -4,6 +4,7 @@
 
 @section('extraCss')
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/js/dt/datatables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/toastr.css') }}">
 @endsection
 
 @section('content')
@@ -73,6 +74,7 @@
 
 @section('extraJs')
 <script src="{{ asset('app-assets/vendors/js/dt/datatables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('app-assets/vendors/js/toastr.min.js') }}" type="text/javascript"></script>
 <script>
     $(function() {
         $('#tabelSekolah').DataTable({
@@ -111,6 +113,22 @@
 
             }
         });
+
+        /* jshint ignore:start */
+        @if($errors->any())
+            toastr.error("{{ $errors->first() }}", "Error!", {
+                closeButton: 1,
+                timeOut: 0
+            });
+        @endif
+
+        @if($message = Session::get('success'))
+            toastr.success("{{ $message }}", "Sukses!", {
+                closeButton: 1,
+                timeOut: 0
+            });
+        @endif
+        /* jshint ignore:end */
 
     });
 </script>

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Sekolah;
-
 use Auth;
 use Cookie;
 use Response;
@@ -103,7 +103,16 @@ class SekolahController extends Controller
 
     public function reset($id)
     {
-        //
+        $sekolah = Sekolah::findOrFail($id);
+        $sekolah->password = Hash::make($sekolah->npsn);
+
+        try {
+            $sekolah->save();
+            return redirect()->back()->with(['success'=> 'Password di set sesuai NPSN']);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Reset Password Gagal!');
+        }
     }
 
     public function selectSekolah(Request $request)
