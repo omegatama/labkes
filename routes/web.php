@@ -90,6 +90,9 @@ Route::group([
     // Start Laporan
     Route::get('/laporan/rkaall', 'Admin\LaporanController@rkaall')->name('admin.laporan.rkaall');
     Route::post('/proses/rkaall', 'Admin\LaporanController@proses_rkaall')->name('admin.proses.rkaall');
+
+    Route::get('/laporan/rka', 'Admin\LaporanController@rka')->name('admin.laporan.rka');
+    Route::post('/proses/rka', 'Admin\LaporanController@proses_rka')->name('admin.proses.rka');
     // End Laporan
 });
 

@@ -106,4 +106,9 @@ class Sekolah extends Authenticatable
         return $query->where('status','=', $status);
     }
 
+    public function scopeNpsn($query, $npsn)
+    {
+        return $query->where('npsn','=', $npsn);
+    }
+
 }

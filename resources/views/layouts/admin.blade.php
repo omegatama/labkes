@@ -244,6 +244,9 @@
                                         <li>
                                             <a href="{{ route('admin.laporan.rkaall') }}" class="menu-item">RKA Seluruh Sekolah</a>
                                         </li>
+                                        <li>
+                                            <a href="{{ route('admin.laporan.rka') }}" class="menu-item">RKA per Sekolah</a>
+                                        </li>
                                         {{-- <li>
                                             <a href="#" class="menu-item">Lap Realisasi</a>
                                         </li>
