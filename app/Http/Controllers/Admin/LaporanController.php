@@ -332,7 +332,7 @@ class LaporanController extends Controller
         $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
 
         // Cetak
-        /*$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
         $writer->save($temp_file);
         $file= 'Rkas'."_".$sekolah->npsn.'.xlsx';
@@ -340,6 +340,6 @@ class LaporanController extends Controller
         unlink($temp_file);  // delete file tmp
         header("Content-Disposition: attachment; filename= ".$file."");
         header('Content-Type: application/excel');
-        return $documento;*/
+        return $documento;
     }
 }
