@@ -109,9 +109,9 @@
                                 <li>
                                     <a href="{{ route('sekolah.pagu.index') }}" class="menu-item">Pagu Awal</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#" class="menu-item">Pagu Perubahan</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="has-sub nav-item">
@@ -128,9 +128,9 @@
                                 {{-- <li>
                                     <a href="{{ route('sekolah.rkalimit.index') }}" class="menu-item">Limit RKA</a>
                                 </li> --}}
-                                <li>
+                                {{-- <li>
                                     <a href="#" class="menu-item">RKA Perubahan</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="has-sub nav-item">
@@ -154,9 +154,9 @@
                                     <a href="{{ route('sekolah.kas.saldo') }}" class="menu-item">Saldo Kas</a>
                                 </li>
 
-                                <li>
+                                {{-- <li>
                                     <a href="#" class="menu-item">Saldo Awal</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="has-sub nav-item">
@@ -231,9 +231,9 @@
                                     <a href="{{ route('sekolah.persediaan.penyesuaian') }}" class="menu-item">Penyesuaian</a>
                                 </li>
 
-                                <li>
+                                {{-- <li>
                                     <a href="#" class="menu-item">Stok Awal</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
 

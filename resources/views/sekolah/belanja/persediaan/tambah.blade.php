@@ -57,8 +57,8 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="barang_persediaan_id">Barang Persediaan</label>
                                                     <div class="input-group m-0">
-                                                        <input type="text" id="nama_persediaan" class="form-control" name="nama_persediaan" required placeholder="Pilih Barang Persediaan" readonly>
-                                                        <input type="text" id="barang_persediaan_id" class=" d-none" name="barang_persediaan_id" required>
+                                                        <input type="text" id="nama_persediaan" class="form-control" name="nama_persediaan" required placeholder="Pilih Barang Persediaan" readonly value="{{ (isset($belanjapersediaan))? $belanjapersediaan->barang_persediaan->nama_persediaan : '' }}">
+                                                        <input type="text" id="barang_persediaan_id" class=" d-none" name="barang_persediaan_id" required value="{{ (isset($belanjapersediaan))? $belanjapersediaan->barang_persediaan_id : '' }}">
                                                         <div class="input-group-append" id="btn-cari">
                                                             <button class="btn btn-outline-info" type="button" onclick="cariPersediaan()">Cari</button>
                                                         </div>
@@ -70,21 +70,21 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="satuan">Satuan</label>
-                                                    <input type="text" id="satuan" class="form-control" name="satuan" required value="{{ (isset($belanjamodal))? $belanjamodal->satuan : '' }}" placeholder="Masukkan Satuan">
+                                                    <input type="text" id="satuan" class="form-control" name="satuan" required value="{{ (isset($belanjapersediaan))? $belanjapersediaan->barang_persediaan->satuan : '' }}" placeholder="Masukkan Satuan">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="harga_satuan">Harga Satuan</label>
-                                                    <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" required value="{{ (isset($belanjamodal))? str_replace(".",",", $belanjamodal->harga_satuan) : '' }}">
+                                                    <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" required value="{{ (isset($belanjapersediaan))? str_replace(".",",", $belanjapersediaan->barang_persediaan->harga_satuan) : '' }}">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="qty">Qty</label>
-                                                    <input type="text" id="qty" class="form-control" name="qty" required value="{{ (isset($belanjamodal))? $belanjamodal->qty : '' }}" placeholder="Masukkan Qty">
+                                                    <input type="text" id="qty" class="form-control" name="qty" required value="{{ (isset($belanjapersediaan))? $belanjapersediaan->qty : '' }}" placeholder="Masukkan Qty">
                                                 </div>
                                             </div>
 
@@ -93,7 +93,8 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="total">Total</label>
-                                                    <input type="text" id="total" class="form-control rupiah" name="total" required value="{{ (isset($belanjamodal))? str_replace(".",",", $belanjamodal->total) : '' }}">
+                                                    <input type="text" id="total" class="form-control rupiah" name="total" required 
+                                                    value="{{ (isset($belanjapersediaan))? str_replace(".",",", ($belanjapersediaan->barang_persediaan->harga_satuan * $belanjapersediaan->qty)) : '' }}">
                                                 </div>
                                             </div>
 
@@ -129,7 +130,9 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 @endsection
 
 @section('lowPage')
-    @include('sekolah.modal.barangpersediaan')
+    @if (empty($belanjapersediaan))
+        @include('sekolah.modal.barangpersediaan')
+    @endif
 @endsection
 
 @section('extraJs')

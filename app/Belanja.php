@@ -13,6 +13,8 @@ class Belanja extends Model
 
     protected $fillable = ['ta', 'npsn', 'sumber', 'nominal', 'keterangan', 'tanggal'];
 
+    protected $appends = ['jenis_belanja', 'keterangan'];
+
     public function sekolah()
 	{
 	    return $this->belongsTo('App\Sekolah', 'npsn', 'npsn');
@@ -100,8 +102,62 @@ class Belanja extends Model
         });
     }
 
+    /*public function modals()
+    {
+        return $this->hasMany('App\BelanjaModal', 'belanja_id', 'id');
+    }
+
+    public function persediaans()
+    {
+        return $this->hasMany('App\BelanjaPersediaan', 'belanja_id', 'id');
+    }*/
+
     public function modals()
     {
         return $this->hasMany('App\BelanjaModal', 'belanja_id', 'id');
+    }
+
+    public function persediaans()
+    {
+        return $this->hasMany('App\BelanjaPersediaan', 'belanja_id', 'id');
+    }
+
+    public function getJenisBelanjaAttribute()
+    {
+        // return "{$this->first_name} {$this->last_name}";
+        if($this->rka->rekening->jenis){
+            return $this->rka->rekening->jenis;
+        }
+        // ;
+    }
+
+    public function getKeteranganAttribute()
+    {
+        switch ($this->jenis_belanja) {
+            case 1:
+                // Modal...
+                if ($this->nilai==$this->modals()->sum('total')) {
+                    # code...
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
+                break;
+            case 2:
+                // Persediaan
+                if ($this->nilai==$this->persediaans()->sum('total')) {
+                    # code...
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
+                break;
+            default:
+                // Something else
+                # code...
+                break;
+        }
     }
 }

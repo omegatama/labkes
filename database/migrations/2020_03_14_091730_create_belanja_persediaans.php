@@ -15,7 +15,12 @@ class CreateBelanjaPersediaans extends Migration
     {
         Schema::create('belanja_persediaans', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('belanja_id');
+            $table->unsignedBigInteger('barang_persediaan_id');
+            $table->integer('qty');
+            $table->float('total', 12, 2)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

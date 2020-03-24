@@ -48,7 +48,7 @@
                         <div class="logo-img">
                             <img src="{{ asset('app-assets/img/logo-kabsemarang.webp') }}" style="width: 100%" />
                         </div>
-                        <span class="text align-middle" style="font-size: 90%">APIK BOS</span>
+                        <span class="text align-middle" style="font-size: 100%">SIM - BOS</span>
                     </a>
                     <a
                     id="sidebarToggle"
@@ -115,9 +115,9 @@
                                 <li>
                                     <a href="{{ route('admin.pagu.index') }}" class="menu-item">Pagu Awal</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#" class="menu-item">Pagu Perubahan</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="has-sub nav-item">
@@ -131,9 +131,9 @@
                                 <li>
                                     <a href="{{ route('admin.rka.index') }}" class="menu-item">RKA Awal</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#" class="menu-item">RKA Perubahan</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="has-sub nav-item">
@@ -178,7 +178,8 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-sub">
+                                
+                                {{-- <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Belanja Perubahan</a>
                                     <ul class="menu-content">
                                         <li>
@@ -191,7 +192,8 @@
                                             <a href="belanjamodal" class="menu-item">Data Belanja Modal</a>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> --}}
+
                                 <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Belanja Th Lalu</a>
                                     <ul class="menu-content">
@@ -240,33 +242,37 @@
                                     <a href="javascript:void(0)" class="menu-item">Th Berjalan</a>
                                     <ul class="menu-content">
                                         <li>
-                                            <a href="Lap Realisasi" class="menu-item">Lap Realisasi</a>
+                                            <a href="{{ route('admin.laporan.rkaall') }}" class="menu-item">RKA Seluruh Sekolah</a>
+                                        </li>
+                                        {{-- <li>
+                                            <a href="#" class="menu-item">Lap Realisasi</a>
                                         </li>
                                         <li>
-                                            <a href="SPTJ" class="menu-item">SPTJ</a>
+                                            <a href="#" class="menu-item">SPTJ</a>
                                         </li>
                                         <li>
-                                            <a href="SPTMH" class="menu-item">SPTMH</a>
+                                            <a href="#" class="menu-item">SPTMH</a>
                                         </li>
                                         <li>
-                                            <a href="K7 Provinsi" class="menu-item">K7 Provinsi</a>
+                                            <a href="#" class="menu-item">K7 Provinsi</a>
                                         </li>
                                         <li>
-                                            <a href="K7 Kabupaten" class="menu-item">K7 Kabupaten</a>
+                                            <a href="#" class="menu-item">K7 Kabupaten</a>
                                         </li>
                                         <li>
-                                            <a href="Belanja Modal" class="menu-item">Belanja Modal</a>
+                                            <a href="#" class="menu-item">Belanja Modal</a>
                                         </li>
                                         <li>
-                                            <a href="Belanja Persediaan" class="menu-item">Belanja Persediaan</a>
+                                            <a href="#" class="menu-item">Belanja Persediaan</a>
                                         </li>
                                         <li>
-                                            <a href="BKU" class="menu-item">BKU</a>
-                                        </li>
+                                            <a href="#" class="menu-item">BKU</a>
+                                        </li> --}}
                                         
                                     </ul>
                                 </li>
-                                <li class="has-sub">
+
+                                {{-- <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Perubahan</a>
                                     <ul class="menu-content">
                                         <li>
@@ -295,34 +301,24 @@
                                         </li>
                                         
                                     </ul>
-                                </li>
+                                </li> --}}
+
                                 <li class="has-sub">
                                     <a href="javascript:void(0)" class="menu-item">Th Lalu</a>
                                     <ul class="menu-content">
-                                        {{-- <li>
-                                            <a href="Lap Realisasi" class="menu-item">Lap Realisasi</a>
+                                        
+                                        <li>
+                                            <a href="#" class="menu-item">K7 Provinsi</a>
                                         </li>
                                         <li>
-                                            <a href="SPTJ" class="menu-item">SPTJ</a>
+                                            <a href="#" class="menu-item">K7 Kabupaten</a>
                                         </li>
                                         <li>
-                                            <a href="SPTMH" class="menu-item">SPTMH</a>
-                                        </li> --}}
-                                        <li>
-                                            <a href="K7 Provinsi" class="menu-item">K7 Provinsi</a>
+                                            <a href="#" class="menu-item">Belanja Modal</a>
                                         </li>
                                         <li>
-                                            <a href="K7 Kabupaten" class="menu-item">K7 Kabupaten</a>
+                                            <a href="#" class="menu-item">Belanja Persediaan</a>
                                         </li>
-                                        <li>
-                                            <a href="Belanja Modal" class="menu-item">Belanja Modal</a>
-                                        </li>
-                                        <li>
-                                            <a href="Belanja Persediaan" class="menu-item">Belanja Persediaan</a>
-                                        </li>
-                                        {{-- <li>
-                                            <a href="BKU" class="menu-item">BKU</a>
-                                        </li> --}}
                                         
                                     </ul>
                                 </li>

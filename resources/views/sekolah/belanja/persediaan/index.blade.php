@@ -84,16 +84,27 @@ tr.shown td.details-control {
     <table class="table details-table" id="persediaan-{{id}}">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Bank account number</th>
-                <th>Company</th>
+                <th rowspan="2" class="align-middle">No</th>
+                <th rowspan="2" class="align-middle">Pilihan</th>
+                <th colspan="2" class="text-center">Data Persediaan</th>
+                <th colspan="2" class="text-center">Data Pembelian</th>
+            </tr>
+            <tr>
+                <th>Nama Persediaan</th>
+                <th>Harga Persediaan</th>
+
+                <th>Qty</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>Id</th>
-                <th>Bank account number</th>
-                <th>Company</th>
+                <th>No</th>
+                <th>Pilihan</th>
+                <th>Nama Persediaan</th>
+                <th>Harga Persediaan</th>
+                <th>Qty</th>
+                <th>Total: <span id="total"></span></th>
             </tr>
         </tfoot>
     </table>
@@ -107,10 +118,19 @@ tr.shown td.details-control {
             ajax: data.details_url,
             dom: 'frtp',
             columns: [
-                { data: 'id', name: 'id' },
-                { data: 'bank_acc_number', name: 'bank_acc_number' },
-                { data: 'company', name: 'company'}
-            ]
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'action', name: 'action', orderable: false, searchable: false},
+                { data: 'barang_persediaan.nama_persediaan', name: 'barang_persediaan.nama_persediaan' },
+                { data: 'barang_persediaan.harga_satuan', name: 'barang_persediaan.harga_satuan' },
+                { data: 'qty', name: 'qty' },
+                { data: 'total', name: 'total' },
+            ],
+            initComplete: function () {
+                $('#' + tableId +' '+ '#total').html( this.api().ajax.json().total );
+                $('.confirmation').on('click', function () {
+                    return confirm('Apakah anda yakin akan menghapus Trx ini?');
+                });
+            }
         });
     }
 

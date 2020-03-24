@@ -107,7 +107,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <th>Nama Persediaan</th>
                                             <th>Harga Persediaan</th>
                                             <th>Qty</th>
-                                            <th>Total</th>
+                                            <th>Total: <span id="total"></span></th>
                                         </tr>
                                     </tfoot>
 
@@ -134,8 +134,25 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
     $(document).ready(function () {
         var table = $('#tabelPersediaan').DataTable({
             order: [],
+            processing: true,
+            serverSide: true,
+            // responsive: true,
+            ajax: "{{ route('sekolah.belanja.getpersediaan',['id' => $belanja->id]) }}",
             dom: 'flrtp',
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'action', name: 'action', orderable: false, searchable: false},
+                { data: 'barang_persediaan.nama_persediaan', name: 'barang_persediaan.nama_persediaan' },
+                { data: 'barang_persediaan.harga_satuan', name: 'barang_persediaan.harga_satuan' },
+                { data: 'qty', name: 'qty' },
+                { data: 'total', name: 'total' },
+                
+            ],
             initComplete: function () {
+                $('#total').html( this.api().ajax.json().total );
+                $('.confirmation').on('click', function () {
+                    return confirm('Apakah anda yakin akan menghapus Trx ini?');
+                });
                 /*this.api().columns('.cari').every(function () {
                     var column = this;
                     var input = document.createElement('input');

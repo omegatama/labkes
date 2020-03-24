@@ -51,6 +51,13 @@ class Rka extends Model
         });
     }
 
+    public function scopeRekeningId($query, $rekening_id)
+    {
+        return $query->whereHas('rekening', function ($q) use ($rekening_id) {
+            $q->where('id', $rekening_id);
+        });
+    }
+
     public function scopeTa($query, $ta)
     {
 		$query->where('ta','=', $ta);   

@@ -11,9 +11,12 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Carbon\Carbon;
 use App\Belanja;
 use App\BelanjaModal;
+use App\BelanjaPersediaan;
+use App\PersediaanTrx;
 use App\KasTrx;
 use App\Saldo;
 use App\SaldoAwal;
+use App\StokAwal;
 use Auth;
 use Cookie;
 use Response;
@@ -151,6 +154,9 @@ class BelanjaController extends Controller
     				$belanja->rka_id = $rka_id;
     				$belanja->nama = $request->nama;
     				$belanja->nilai = $nominal;
+                    $belanja->ppn = $ppn;
+                    $belanja->pph21 = $pph21;
+                    $belanja->pph23 = $pph23;
     				$belanja->kas = $kas;
     				$belanja->nomor = $request->nomor;
     				$belanja->penerima = $request->penerima;
@@ -386,9 +392,202 @@ class BelanjaController extends Controller
         
     }
 
-    public function destroy()
+    public function destroy(Request $request, $id)
     {
-    	# code...
+    	$ta = $request->cookie('ta');
+        $belanja = Auth::user()->belanjas()->findOrFail($id);
+        // return $belanja;
+        $jenis_belanja = $belanja->jenis_belanja;
+
+        DB::beginTransaction();
+        switch ($jenis_belanja) {
+            case 1:
+                // Step 1: Delete Belanja Modal
+                try {
+                    $belanja->modals()->delete();
+                    // 
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Error: '.$e->getMessage());
+                    // 
+                }
+
+                // Step 2: Delete Belanja
+                /*try {
+                    $belanja->delete();
+                    //
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Error: '.$e->getMessage());
+                    //
+                }*/
+                break;
+
+            case 2:
+                $belanjapersediaan = $belanja->persediaans;
+                foreach ($belanjapersediaan as $key => $item) {
+                    $qty = $item->qty;
+                    $persediaan = $item->barang_persediaan;
+                    $barang_persediaan_id = $item->barang_persediaan_id;
+                    
+                    // Step 1: Update stok
+                    try {
+                        $persediaan->stok -= $qty;
+                        $persediaan->save();
+
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return redirect()->back()
+                            ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+                    }
+
+                    // Step 2: Update Stok Awal
+                    try {
+                        try {
+                            $stokawal = StokAwal::where(
+                                [
+                                    'ta' => $ta,
+                                    'npsn' => $belanja->npsn,
+                                    'barang_persediaan_id' => $barang_persediaan_id,
+                                    'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                                ]
+                            )->firstOrFail();
+
+                            $stokawal->stok -= $qty;
+                            $stokawal->save();
+
+                        } catch (\Exception $e) {
+                            $stokawal = new StokAwal;
+                            $stokawal->ta = $ta;
+                            $stokawal->npsn = $belanja->npsn;
+                            $stokawal->barang_persediaan_id = $barang_persediaan_id;
+                            $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                            $stokawal->stok = $persediaan->stok;
+                            $stokawal->save();
+                        }
+
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return redirect()->back()
+                            ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+                    }
+
+                    // Step 3: Hapus Belanja Persediaan
+                    try {
+                        $item->delete();
+                        
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return redirect()->back()->withErrors('Error: '.$e->getMessage());
+                    }
+                    
+                }
+                // Step 4: Hapus Belanja
+                /*try {
+                    $belanja->delete();
+                    
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()->withErrors('Error: '.$e->getMessage());
+                }*/
+                // return $belanjapersediaan;
+                break;
+            
+            default:
+                // return $belanja;
+                break;
+        }
+        
+        $kas = $belanja->kas;
+        $tanggal = $belanja->tanggal;
+        $triwulan = GetTriwulan($tanggal);
+        $saldo = Auth::user()->saldos()->where('ta', '=', $ta)->firstOrFail();
+        $nominal = $belanja->nilai;
+        $realisasi_triwulan= 'realisasi_tw'.$triwulan;
+        $transaksi = $belanja->transaksi;
+        $rka = $belanja->rka;
+        if ($kas=='B') {
+            $source = 'saldo_bank';
+            
+        }
+        else if ($kas=='T') {
+            $source = 'saldo_tunai';
+            
+        }
+
+        // Hapus Transaksi
+        try {
+            $transaksi->delete();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        // Hapus Transaksi
+        try {
+            $belanja->delete();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        // Kembalikan Saldo
+        try {
+            $saldo->$source += $nominal;
+            $saldo->save();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        // Update Saldo Awal
+        try {
+            try {
+                $saldoawal = Auth::user()->saldo_awals()
+                ->where(
+                    [
+                        'ta' => $ta,
+                        'periode' => $tanggal->addMonth()->startOfMonth()
+                    ]
+                )->firstOrFail();
+                $saldoawal->$source += $nominal;
+                $saldoawal->save();
+
+            } catch (\Exception $e) {
+                $saldoawal = new SaldoAwal; 
+                $saldoawal->ta = $ta;
+                // $saldoawal->npsn = $belanja->npsn;
+                $saldoawal->periode = $tanggal->addMonth()->startOfMonth();
+                $saldoawal->saldo_bank = $saldo->saldo_bank;
+                $saldoawal->saldo_tunai = $saldo->saldo_tunai;
+                // $saldoawal->save();
+                Auth::user()->saldo_awals()->save($saldoawal);
+            }
+            
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        // Update RKA
+        try {
+            $rka->$realisasi_triwulan -= $nominal;
+            $rka->save();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+        
+        // return $belanja;
+        // DB::rollback();
+        DB::commit();
+        return redirect()->back()->with(['success'=>'Data Belanja Berhasil dihapus!']);
+        
     }
 
     public function a2(Request $request, $id)
@@ -628,8 +827,293 @@ class BelanjaController extends Controller
     
     }
 
+    public function storepersediaan(Request $request, $id)
+    {
+        $sekolah = Auth::user();
+        $belanja = $sekolah->belanjas()->findOrFail($id);
+        $barang_persediaan_id = $request->barang_persediaan_id;
+        $persediaan= $sekolah->persediaans()
+        ->findOrFail($barang_persediaan_id);
+        $ta = $request->cookie('ta');
+        $npsn = $sekolah->npsn;
+        $qty = $request->qty;
+
+        DB::beginTransaction();
+        // Step 1: Buat Transaksi Persediaan
+        /*try {
+            $trx = new PersediaanTrx;
+            $trx->ta = $ta;
+            $trx->barang_persediaan_id = $barang_persediaan_id;
+            $trx->io = 'i';
+            $trx->jenis = 'Purchase';
+            $trx->qty = $qty;
+            $trx->keterangan = $belanja->nama;
+            $trx->tanggal = $belanja->tanggal;
+            $trx->save();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }*/
+
+        // Step 2: Tambah Stok
+        try {
+            $persediaan->stok += $qty;
+            $persediaan->save();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        // Step 3: Update Stok Awal
+        try {
+            try {
+                $stokawal = StokAwal::where(
+                    [
+                        'ta' => $ta,
+                        'npsn' => $npsn,
+                        'barang_persediaan_id' => $barang_persediaan_id,
+                        'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                    ]
+                )->firstOrFail();
+
+                $stokawal->stok += $qty;
+
+                $stokawal->save();
+
+            } catch (\Exception $e) {
+                $stokawal = new StokAwal;
+                $stokawal->ta = $ta;
+                $stokawal->npsn = $npsn;
+                $stokawal->barang_persediaan_id = $barang_persediaan_id;
+                $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                $stokawal->stok = $persediaan->stok;
+                $stokawal->save();
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        // Step 4: Simpan Belanja Persediaan
+        try {
+            $belanjapersediaan = new BelanjaPersediaan;
+            $belanjapersediaan->barang_persediaan_id = $barang_persediaan_id;
+            $belanjapersediaan->qty = $request->qty;
+            $belanjapersediaan->total = floatval(str_replace(',', '.', $request->total));
+            $belanja->persediaans()->save($belanjapersediaan);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        DB::commit();
+        return redirect()->route('sekolah.belanja.persediaan',['id'=>$id])
+        ->with(['success'=>'Belanja Persediaan berhasil disimpan']);
+
+        // return $belanja;
+    }
+
+    public function editpersediaan($id, $modal_id)
+    {
+        $aksi="edit";
+        $belanja = Auth::user()->belanjas()->with('rka.rekening')->persediaan()->findOrFail($id);
+        $belanjapersediaan = $belanja->persediaans()->with('barang_persediaan')->findOrFail($modal_id);
+        $nama= $belanja->nama;
+        return view('sekolah.belanja.persediaan.tambah', compact('aksi','nama','id', 'belanjapersediaan'));
+    }
+
+    public function updatepersediaan(Request $request, $id, $persediaan_id)
+    {
+        $sekolah = Auth::user();
+        $belanja = $sekolah->belanjas()->findOrFail($id);
+        $belanjapersediaan = $belanja->persediaans()->findOrFail($persediaan_id);
+        $persediaan = $belanjapersediaan->barang_persediaan;
+        $ta = $request->cookie('ta');
+        $npsn = $sekolah->npsn;
+        $barang_persediaan_id = $belanjapersediaan->barang_persediaan_id;
+
+        $qty_lama = $belanjapersediaan->qty;
+        $qty_baru = $request->qty;
+        $selisih = $qty_baru - $qty_lama;
+
+        DB::beginTransaction();
+
+        // Step 1: Update stok
+        try {
+            $persediaan->stok += $selisih;
+            $persediaan->save();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        // Step 2: Update Stok Awal
+        try {
+            try {
+                $stokawal = StokAwal::where(
+                    [
+                        'ta' => $ta,
+                        'npsn' => $npsn,
+                        'barang_persediaan_id' => $barang_persediaan_id,
+                        'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                    ]
+                )->firstOrFail();
+
+                $stokawal->stok += $selisih;
+                $stokawal->save();
+
+            } catch (\Exception $e) {
+                $stokawal = new StokAwal;
+                $stokawal->ta = $ta;
+                $stokawal->npsn = $npsn;
+                $stokawal->barang_persediaan_id = $barang_persediaan_id;
+                $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                $stokawal->stok = $persediaan->stok;
+                $stokawal->save();
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        // Step 3: Update Belanja Persediaan
+        try {
+            $belanjapersediaan->qty += $selisih;
+            $belanjapersediaan->total = floatval(str_replace(',', '.', $request->total));
+            $belanjapersediaan->save();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        // return $belanjapersediaan;
+        DB::commit();
+        return redirect()->route('sekolah.belanja.persediaan',['id'=>$id])
+        ->with(['success'=>'Belanja Persediaan berhasil diperbarui']);
+
+    }
+
+    public function destroypersediaan(Request $request, $id, $persediaan_id)
+    {
+        $ta = $request->cookie('ta');
+        $sekolah = Auth::user();
+        $npsn = $sekolah->npsn;
+        $belanja = $sekolah->belanjas()->findOrFail($id);
+        $belanjapersediaan = $belanja->persediaans()->findOrFail($persediaan_id);
+        $persediaan = $belanjapersediaan->barang_persediaan;
+        $barang_persediaan_id = $belanjapersediaan->barang_persediaan_id;
+        $qty = $belanjapersediaan->qty;
+
+        DB::beginTransaction();
+
+        // Step 1: Update stok
+        try {
+            $persediaan->stok -= $qty;
+            $persediaan->save();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        // Step 2: Update Stok Awal
+        try {
+            try {
+                $stokawal = StokAwal::where(
+                    [
+                        'ta' => $ta,
+                        'npsn' => $npsn,
+                        'barang_persediaan_id' => $barang_persediaan_id,
+                        'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                    ]
+                )->firstOrFail();
+
+                $stokawal->stok -= $qty;
+                $stokawal->save();
+
+            } catch (\Exception $e) {
+                $stokawal = new StokAwal;
+                $stokawal->ta = $ta;
+                $stokawal->npsn = $npsn;
+                $stokawal->barang_persediaan_id = $barang_persediaan_id;
+                $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                $stokawal->stok = $persediaan->stok;
+                $stokawal->save();
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withErrors(['msg' => 'Error: '.$e->getMessage()]);
+        }
+
+        // Step 3: Hapus Belanja Persediaan
+        try {
+            $belanjapersediaan->delete();
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        DB::commit();
+        return redirect()->route('sekolah.belanja.persediaan',['id'=>$id]);
+        
+    }
+
     public function getpersediaan($id)
     {
-    	# code...
+    	// if(request()->ajax()) {
+            $ta = Cookie::get('ta');
+            $belanja = Auth::user()->belanjas()->findOrFail($id);
+            $query = $belanja->persediaans()->ta($ta)->with('barang_persediaan');
+            $bpersediaan = $belanja->persediaans()->ta($ta)->with('barang_persediaan')->get();
+            
+            return DataTables::eloquent($query)
+            // ->filter(function ($query) use ($ta) {
+            //     $query->where('ta', '=', $ta);
+            // },true)
+            ->with('total', function() use ($bpersediaan) {
+                $total=0;
+                foreach ($bpersediaan as $key => $item) {
+                    $total += $item->qty * $item->barang_persediaan->harga_satuan;
+                }
+                return FormatMataUang($total);
+            })
+            ->editColumn('barang_persediaan.harga_satuan', function ($belanjapersediaan) {
+                return FormatMataUang($belanjapersediaan->barang_persediaan->harga_satuan);
+            })
+            ->addColumn('total', function ($belanjapersediaan) {
+                return FormatMataUang(($belanjapersediaan->qty * $belanjapersediaan->barang_persediaan->harga_satuan));
+            })
+            ->addColumn('action', function($belanjapersediaan) {
+                $urledit= route('sekolah.belanja.editpersediaan', ['id' => $belanjapersediaan->belanja_id, 'modal_id' => $belanjapersediaan->id]);
+                $urlhapus= route('sekolah.belanja.destroypersediaan', ['id' => $belanjapersediaan->belanja_id, 'modal_id' => $belanjapersediaan->id]);
+                
+                $btnaction =
+                    RenderTombol("success", $urledit, "Edit")." ".
+                    RenderTombol("danger confirmation", $urlhapus, "Hapus");
+
+                return $btnaction;
+            })
+            ->addIndexColumn()
+            ->make(true);
+            // return $belanja;
+        // }
     }
 }

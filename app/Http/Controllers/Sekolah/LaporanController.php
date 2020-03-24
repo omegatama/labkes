@@ -671,7 +671,106 @@ class LaporanController extends Controller
 
     public function proses_persediaan(Request $request)
     {
-    	# code...
+        $ta = $request->cookie('ta');
+        $triwulan = $request->triwulan;
+        $sekolah = Auth::user();
+        $nama_sekolah = $sekolah->name;
+        $npsn = $sekolah->npsn;
+
+        switch ($triwulan) {
+            case '1':
+                # code...
+                $twhuruf= "I";
+                break;
+            case '2':
+                # code...
+                $twhuruf= "II";
+                break;
+            case '3':
+                # code...
+                $twhuruf= "III";
+                break;
+            case '4':
+                # code...
+                $twhuruf= "IV";
+                break;
+            
+            default:
+                # code...
+                $twhuruf="-";
+                break;
+        }
+
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= $sekolah->nip_kepsek;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+
+        $persediaans = $sekolah->persediaans()->get();
+        $persediaan_all = array();
+        $pengeluaran_persediaan = array();
+
+        foreach ($persediaans as $key => $persediaan) {
+            $persediaan_all[$key]['nama_persediaan'] = $persediaan->nama_persediaan;
+            $persediaan_all[$key]['satuan'] = $persediaan->satuan;
+            $persediaan_all[$key]['harga_satuan'] = $persediaan->harga_satuan;
+
+            if ($triwulan==1) {
+                $saldo= 0;
+            }
+            else{
+                $saldo= 0;
+            }
+
+            $persediaan_all[$key]['saldo'] = $saldo;
+            
+            $penerimaan_1 = 0;
+            $penerimaan_2 = 0;
+            $penerimaan_3 = 0;
+
+            $persediaan_all[$key]['penerimaan_1'] = $penerimaan_1;
+            $persediaan_all[$key]['penerimaan_2'] = $penerimaan_2;
+            $persediaan_all[$key]['penerimaan_3'] = $penerimaan_3;
+            
+        }
+        // return $persediaan_all;
+
+    	// Excel
+        $spreadsheet = IOFactory::load('storage/format/belanja_persediaan1.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        $spreadsheet->getActiveSheet()->setAutoFilter('B9:AA209');
+        
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('nama_kecamatan')->setValue($nama_kecamatan);
+        $worksheet->getCell('ta')->setValue($ta);
+        $worksheet->getCell('twhuruf')->setValue($twhuruf);
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+
+        $worksheet->fromArray(
+            $persediaan_all,
+            null,
+            'B10'
+        );
+
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('AA');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            'A'
+        );
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'B_Persediaan_tw_'.$triwulan."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
     }
 
     public function bku()
@@ -695,8 +794,18 @@ class LaporanController extends Controller
         $tanggal = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan)."-1")->endOfMonth();
         $tempat_tanggal = "Kab. Semarang, ".$tanggal->locale('id_ID')->isoFormat('LL');
         $periode= IntBulan($bulan);
+        $saldoakhir = $sekolah->saldo_awals()
+        ->where(
+            [
+                'ta' =>$ta,
+                'periode' => Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan+1)."-1")->format('Y-m-d')
+            ]
+        )->firstOrFail();
+        $saldo_akhir = $saldoakhir->saldo_bank + $saldoakhir->saldo_tunai;
+        $saldo_tunai = $saldoakhir->saldo_tunai;
+        $saldo_bank = $saldoakhir->saldo_bank;
 
-        // return $periode;
+        // return $saldo_akhir;
 
         $bku_content= array();
 
@@ -875,7 +984,9 @@ class LaporanController extends Controller
         $worksheet->getCell('nip_kepsek')->setValue($nip_kepsek);
         $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
         $worksheet->getCell('nip_bendahara')->setValue($nip_bendahara);
-        
+        $worksheet->getCell('saldo_akhir')->setValue($saldo_akhir);
+        $worksheet->getCell('saldo_tunai')->setValue($saldo_tunai);
+        $worksheet->getCell('saldo_bank')->setValue($saldo_bank);
               
         $worksheet->fromArray(
             $bku_content,

@@ -353,7 +353,6 @@ class RkaController extends Controller
     {
         $sekolah= Auth::user();
         $ta = $request->cookie('ta');
-        $rkas = Auth::user()->rkas()->where('ta','=',$request->cookie('ta'))->get()->sortBy('parent');
         $programs = KodeProgram::all();
         $kegiatans = Auth::user()->kegiatans()->get();
         $nama_sekolah = $sekolah->name;
@@ -361,6 +360,24 @@ class RkaController extends Controller
         $nama_kepsek = $sekolah->nama_kepsek;
         $nip_kepsek = $sekolah->nip_kepsek;
 
+        $rkas = Auth::user()->rkas()->where('ta','=',$request->cookie('ta'))->get()->sortBy('parent');
+        $sorted = $rkas->sort(function($a, $b) {
+            if ($a->parent == $b->parent)
+            {
+                if ($a->kode_program_id == $b->kode_program_id) {
+                    if ($a->kegiatan_id > $b->kegiatan_id) return 1;
+                }
+                else {
+                    if ($a->kode_program_id > $b->kode_program_id) return 1;
+                }
+
+            }
+
+            return $a->parent > $b->parent ? 1 : -1;
+            
+        });
+
+        $rkas_sorted = $sorted->values()->all();
 
         $parents = [
             [
@@ -387,7 +404,7 @@ class RkaController extends Controller
 
         $hasil= array();
 
-        foreach($rkas as $i => $rka)
+        foreach($rkas_sorted as $i => $rka)
         {
             $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['snp'] = $rka->rekening->parent_id.".".$rka->rekening->kode_rekening;
             $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['uraian'] = $rka->uraian;

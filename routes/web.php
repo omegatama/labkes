@@ -20,6 +20,10 @@ Route::group([
 ], function () {
     Route::view('/', 'admin.index')->name('admin');;
 
+    // Select Data
+    Route::get('/select/kecamatan', 'Admin\Master\SelectDataController@selectKecamatan')->name('admin.select.kecamatan'); 
+    // 
+
     // Start Kode Barang
     Route::resource('/kodebarang', 'Admin\Master\KodeBarangController', ['as' => 'admin'])
 	->except([
@@ -64,11 +68,11 @@ Route::group([
     // End Penerimaan
 
     // Start Sekolah
+    Route::get('/sekolah/select', 'Admin\SekolahController@selectSekolah')->name('admin.sekolah.select');
     Route::resource('/sekolah', 'Admin\SekolahController', ['as' => 'admin'])
     ->except([
         'destroy'
     ]);
-    Route::get('/sekolah/select', 'Admin\SekolahController@selectSekolah')->name('admin.sekolah.select');
     Route::get('/sekolah/delete/{id}', 'Admin\SekolahController@destroy')->name('admin.sekolah.destroy');
     Route::get('/sekolah/reset/{id}', 'Admin\SekolahController@reset')->name('admin.sekolah.reset');
     // End Sekolah
@@ -82,6 +86,11 @@ Route::group([
     Route::get('/penggunaan', 'Admin\TransaksiPersediaanController@penggunaan_index')->name('admin.persediaan.penggunaan');
     Route::get('/penyesuaian', 'Admin\TransaksiPersediaanController@penyesuaian_index')->name('admin.persediaan.penyesuaian');
     // End Persediaan
+
+    // Start Laporan
+    Route::get('/laporan/rkaall', 'Admin\LaporanController@rkaall')->name('admin.laporan.rkaall');
+    Route::post('/proses/rkaall', 'Admin\LaporanController@proses_rkaall')->name('admin.proses.rkaall');
+    // End Laporan
 });
 
 Route::group([
@@ -208,6 +217,8 @@ Route::group([
     Route::post('/belanja/persediaan/{id}/update/{persediaan_id}', 'Sekolah\BelanjaController@updatepersediaan')->name('sekolah.belanja.updatepersediaan');
 
     Route::get('/belanja/persediaan/{id}/destroy/{persediaan_id}', 'Sekolah\BelanjaController@destroypersediaan')->name('sekolah.belanja.destroypersediaan');
+
+    Route::get('/belanja/getpersediaan/{id}', 'Sekolah\BelanjaController@getpersediaan')->name('sekolah.belanja.getpersediaan');
 
 
     // End Belanja Th Berjalan

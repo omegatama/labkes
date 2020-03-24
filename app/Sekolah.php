@@ -91,4 +91,19 @@ class Sekolah extends Authenticatable
         return $this->hasMany('App\Kegiatan', 'npsn', 'npsn');
     }
 
+    public function scopeKecamatanId($query, $kecamatan_id)
+    {
+        return $query->where('kecamatan_id','=', $kecamatan_id);
+    }
+
+    public function scopeJenjang($query, $jenjang)
+    {
+        return $query->where('jenjang','=', $jenjang);
+    }
+
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status','=', $status);
+    }
+
 }

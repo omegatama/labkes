@@ -43,7 +43,7 @@ class BelanjaPersediaanController extends Controller
 	            return $btnaction;
             })
             ->addColumn('details_url', function($belanja) {
-                return route('sekolah.belanja.getmodal', $belanja->id);
+                return route('sekolah.belanja.getpersediaan', $belanja->id);
             })
             ->addIndexColumn()
             ->make(true);
