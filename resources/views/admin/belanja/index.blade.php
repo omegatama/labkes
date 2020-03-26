@@ -34,11 +34,11 @@
                                             <th class="cari" width="5">No Bukti</th>
                                             <th class="cari">Uraian</th>
                                             <th>Nominal</th>
-                                            <th class="cari">Kegiatan</th>
-                                            <th class="cari">RKA</th>
-                                            <th class="cari">Nama Rekening</th>
-                                            <th class="cari">Nama Program</th>
-                                            <th class="cari">Nama Komponen</th>
+                                            <th>Kegiatan</th>
+                                            <th>RKA</th>
+                                            <th>Nama Rekening</th>
+                                            <th>Nama Program</th>
+                                            <th>Nama Komponen</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -80,7 +80,7 @@
         $('#tabelBelanja').DataTable({
             processing: true,
             serverSide: true,
-            // responsive: true,
+            responsive: true,
             ajax: "{{ route('admin.belanja.index') }}",
             dom: 'flrtp',
             /*columnDefs: [

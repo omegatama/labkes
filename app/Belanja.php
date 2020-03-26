@@ -11,7 +11,7 @@ class Belanja extends Model
 
     protected $dates = ['tanggal', 'created_at', 'updated_at', 'deleted_at'];
 
-    protected $fillable = ['ta', 'npsn', 'sumber', 'nominal', 'keterangan', 'tanggal'];
+    protected $fillable = ['triwulan', 'npsn', 'rka_id', 'nama', 'nilai', 'kas', 'tanggal', 'nomor', 'penerima', 'ppn', 'pph21', 'pph23'];
 
     protected $appends = ['jenis_belanja', 'keterangan'];
 
@@ -136,6 +136,7 @@ class Belanja extends Model
         switch ($this->jenis_belanja) {
             case 1:
                 // Modal...
+                $this->load('modals');
                 if ($this->nilai==$this->modals()->sum('total')) {
                     # code...
                     return 1;
@@ -144,8 +145,10 @@ class Belanja extends Model
                     return -1;
                 }
                 break;
+
             case 2:
                 // Persediaan
+                $this->load('persediaans');
                 if ($this->nilai==$this->persediaans()->sum('total')) {
                     # code...
                     return 1;
@@ -154,6 +157,7 @@ class Belanja extends Model
                     return -1;
                 }
                 break;
+
             default:
                 // Something else
                 # code...

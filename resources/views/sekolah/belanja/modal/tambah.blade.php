@@ -129,7 +129,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="qty">Qty</label>
-                                                    <input type="text" id="qty" class="form-control" name="qty" required value="{{ (isset($belanjamodal))? $belanjamodal->qty : '' }}" placeholder="Masukkan Qty">
+                                                    <input type="text" id="qty" class="form-control" name="qty" onchange="hitungTotal()" required value="{{ (isset($belanjamodal))? $belanjamodal->qty : '' }}" placeholder="Masukkan Qty">
                                                 </div>
                                             </div>
 
@@ -143,7 +143,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="harga_satuan">Harga Satuan</label>
-                                                    <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" required value="{{ (isset($belanjamodal))? str_replace(".",",", $belanjamodal->harga_satuan) : '' }}">
+                                                    <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" onchange="hitungTotal()" required value="{{ (isset($belanjamodal))? str_replace(".",",", $belanjamodal->harga_satuan) : '' }}">
                                                 </div>
                                             </div>
 
@@ -191,6 +191,15 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 <script src="{{ asset('app-assets/vendors/js/inputmask/jquery.inputmask.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('app-assets/vendors/js/toastr.min.js') }}" type="text/javascript"></script>
 <script>
+
+    function hitungTotal () {
+        var qty= $("#qty").val();
+        var hargasatuan= $("#harga_satuan").inputmask('unmaskedvalue');
+        hargasatuan= parseFloat(hargasatuan.replace(",", "."));
+        var total= qty * hargasatuan;
+        $("#total").val(total);
+        // alert(total); 
+    }
 
     $(document).ready(function () {
         $('#kode_barang_id').select2({

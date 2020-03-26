@@ -91,6 +91,12 @@ Route::group([
 
     // Start Belanja
     Route::get('/belanja', 'Admin\BelanjaController@index')->name('admin.belanja.index');
+
+    Route::get('/belanja/modal/{id}', 'Admin\BelanjaController@modal')->name('admin.belanja.modal');
+    Route::get('/belanja/getmodal/{id}', 'Admin\BelanjaController@getmodal')->name('admin.belanja.getmodal');
+
+    Route::get('/belanja/persediaan/{id}', 'Admin\BelanjaController@persediaan')->name('admin.belanja.persediaan');
+    Route::get('/belanja/getpersediaan/{id}', 'Admin\BelanjaController@getpersediaan')->name('admin.belanja.getpersediaan');
     // End Belanja
 
     // Start Persediaan

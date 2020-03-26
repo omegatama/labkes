@@ -86,6 +86,9 @@ class BelanjaController extends Controller
 	            $btnaction .= (!empty($urltambahan)) ? RenderTombol("warning", $urltambahan, $labeltambahan) : "" ;
 	            return $btnaction;
             })
+            ->setRowClass(function ($belanja) {
+                return $belanja->keterangan == -1 ? 'bg-red text-white' : '';
+            })
             ->addIndexColumn()
             ->make(true);
     	}
