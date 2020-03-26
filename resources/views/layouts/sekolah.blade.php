@@ -423,11 +423,11 @@
                                         <i class="ft-edit mr-2"></i>
                                         <span>Profil</span>
                                     </a>
-                                    <a href="javascript:;" class="dropdown-item py-1"
+                                    {{-- <a href="javascript:;" class="dropdown-item py-1"
                                       >
                                         <i class="ft-mail mr-2"></i>
                                         <span>Informasi</span>
-                                    </a>
+                                    </a> --}}
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item py-1" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();

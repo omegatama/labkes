@@ -34,10 +34,10 @@
                                             <td>Desa</td>
                                             <td>Kecamatan</td>
                                             <td>Telepon</td>
-                                            <td>Nip Kepsek</td>
-                                            <td>Nama Kepsek</td>
-                                            <td>Nip Bendahara</td>
+                                            <td>Nama Kepala Sekolah</td>
+                                            <td>Nip Kepala Sekolah</td>
                                             <td>Nama Bendahara</td>
+                                            <td>Nip Bendahara</td>
                                             
                                         </tr>
                                     </thead>
@@ -53,10 +53,10 @@
                                             <td>Desa</td>
                                             <td>Kecamatan</td>
                                             <td>Telepon</td>
-                                            <td>Nip Kepsek</td>
                                             <td>Nama Kepsek</td>
-                                            <td>Nip Bendahara</td>
+                                            <td>Nip Kepsek</td>
                                             <td>Nama Bendahara</td>
+                                            <td>Nip Bendahara</td>
                                             
                                         </tr>
                                     </tfoot>
@@ -92,10 +92,10 @@
                 { data: 'desa', name: 'desa' },
                 { data: 'kecamatan.nama_kecamatan', name: 'kecamatan.nama_kecamatan' },
                 { data: 'telepon', name: 'telepon' },
-                { data: 'nip_kepsek', name: 'nip_kepsek' },
                 { data: 'nama_kepsek', name: 'nama_kepsek' },
+                { data: 'nip_kepsek', name: 'nip_kepsek' },
+                { data: 'nama_bendahara', name: 'nama_bendahara' },
                 { data: 'nip_bendahara', name: 'nip_bendahara' },
-                { data: 'nama_bendahara', name: 'nama_bendahara' }
             ],
             initComplete: function () {
                 this.api().columns(':gt(1)').every(function () {

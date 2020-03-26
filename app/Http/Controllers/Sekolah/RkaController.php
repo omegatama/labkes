@@ -231,15 +231,22 @@ class RkaController extends Controller
             $selisih_alokasi_tw3 = $alokasi_tw3_baru - $alokasi_tw3_lama;
             $selisih_alokasi_tw4 = $alokasi_tw4_baru - $alokasi_tw4_lama;
 
-            if (
+            /*if (
                 ($selisih_alokasi_tw1 + $pagu->penggunaan_tw1) <= (0.2 * $pagu->pagu) &&
                 ($selisih_alokasi_tw2 + $pagu->penggunaan_tw2) <= (0.4 * $pagu->pagu) &&
                 ($selisih_alokasi_tw3 + $pagu->penggunaan_tw3) <= (0.2 * $pagu->pagu) &&
                 ($selisih_alokasi_tw4 + $pagu->penggunaan_tw4) <= (0.2 * $pagu->pagu)    
-            ) {
+            )*/
+            if($selisih_jumlah <= $pagu->sisa)
+            {
                 DB::beginTransaction();
                 try {
                     // Step 1: Update RKA
+                    $rka->kode_program_id= $request->kode_program_id;
+                    $rka->kegiatan_id= $request->kegiatan_id;
+                    $rka->komponen_pembiayaan_id= $request->komponen_pembiayaan_id;
+                    $rka->kode_rekening_id= $request->kode_rekening_id;
+                    
                     $rka->uraian = $request->uraian;
                     $rka->volume = $request->volume;
                     $rka->satuan = $request->satuan;

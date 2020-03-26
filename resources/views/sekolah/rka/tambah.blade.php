@@ -383,10 +383,10 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 
 @isset ($rka)
     <script>
-        $('#kode_program_id').attr("readonly", "readonly");
-        $('#kegiatan_id').attr("readonly", "readonly");
-        $('#komponen_pembiayaan_id').attr("readonly", "readonly");
-        $('#kode_rekening_id').attr("readonly", "readonly");
+        // $('#kode_program_id').attr("readonly", "readonly");
+        // $('#kegiatan_id').attr("readonly", "readonly");
+        // $('#komponen_pembiayaan_id').attr("readonly", "readonly");
+        // $('#kode_rekening_id').attr("readonly", "readonly");
     </script>
 @endisset
 @endsection

@@ -20,6 +20,14 @@ Route::group([
 ], function () {
     Route::view('/', 'admin.index')->name('admin');;
 
+    // Start Profil
+    Route::get('/profil', 'Admin\ProfilController@index')->name('admin.profil.index');
+    Route::get('/profil/edit', 'Admin\ProfilController@edit')->name('admin.profil.edit');
+    Route::post('/profil/update', 'Admin\ProfilController@update')->name('admin.profil.update');
+    Route::get('/password/edit', 'Admin\ProfilController@passwordedit')->name('admin.password.edit');
+    Route::post('/password/update', 'Admin\ProfilController@passwordupdate')->name('admin.password.update'); 
+    // End Profil
+
     // Select Data
     Route::get('/select/kecamatan', 'Admin\Master\SelectDataController@selectKecamatan')->name('admin.select.kecamatan'); 
     // 
@@ -80,6 +88,10 @@ Route::group([
     // Start Rka
     Route::get('/rka', 'Admin\RkaController@index')->name('admin.rka.index');
     // End Rka
+
+    // Start Belanja
+    Route::get('/belanja', 'Admin\BelanjaController@index')->name('admin.belanja.index');
+    // End Belanja
 
     // Start Persediaan
     Route::get('/stok', 'Admin\TransaksiPersediaanController@stok_index')->name('admin.persediaan.stok');

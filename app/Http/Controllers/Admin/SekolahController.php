@@ -75,7 +75,8 @@ class SekolahController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Sekolah::findOrFail($id);
+        return view('admin.sekolah.edit', compact('user'));
     }
 
     /**
@@ -87,7 +88,26 @@ class SekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user= Sekolah::findOrFail($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->telepon = $request->telepon;
+        $user->kecamatan_id = $request->kecamatan_id;
+        $user->desa = $request->desa;
+        $user->alamat = $request->alamat;
+        $user->nama_kepsek = $request->nama_kepsek;
+        $user->nip_kepsek = $request->nip_kepsek;
+        $user->nama_bendahara = $request->nama_bendahara;
+        $user->nip_bendahara = $request->nip_bendahara;
+        
+        try {
+            $user->save();
+            return redirect()->route('admin.sekolah.index');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 
     /**
