@@ -171,10 +171,10 @@
                                             <a href="{{ route('admin.belanja.index') }}" class="menu-item">Data Belanja</a>
                                         </li>
                                         <li>
-                                            <a href="#belanjapersediaan" class="menu-item">Data Persediaan</a>
+                                            <a href="{{ route('admin.belanjapersediaan.index') }}" class="menu-item">Data Persediaan</a>
                                         </li>
                                         <li>
-                                            <a href="#belanjamodal" class="menu-item">Data Belanja Modal</a>
+                                            <a href="{{ route('admin.belanjamodal.index') }}" class="menu-item">Data Belanja Modal</a>
                                         </li>
                                     </ul>
                                 </li>
