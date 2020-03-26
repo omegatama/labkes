@@ -45,6 +45,9 @@ class BelanjaPersediaanController extends Controller
             ->addColumn('details_url', function($belanja) {
                 return route('sekolah.belanja.getpersediaan', $belanja->id);
             })
+            ->setRowClass(function ($belanja) {
+                return $belanja->keterangan == -1 ? 'bg-red text-white' : '';
+            })
             ->addIndexColumn()
             ->make(true);
     	}

@@ -44,7 +44,7 @@ tr.shown td.details-control {
                                             <th>Nominal</th>
                                             {{-- <th class="cari">Kegiatan</th> --}}
                                             {{-- <th class="cari">RKA</th> --}}
-                                            <th class="cari">Nama Rekening</th>
+                                            <th>Nama Rekening</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -171,7 +171,7 @@ tr.shown td.details-control {
                 
             ],
             initComplete: function () {
-                /*this.api().columns('.cari').every(function () {
+                this.api().columns('.cari').every(function () {
                     var column = this;
                     var input = document.createElement('input');
                     $(input).addClass('form-control m-0');
@@ -187,7 +187,7 @@ tr.shown td.details-control {
 
                 $('.confirmation').on('click', function () {
                     return confirm('Apakah anda yakin akan menghapus Trx ini?');
-                });*/
+                });
             }
         });
 

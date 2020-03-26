@@ -46,7 +46,7 @@ tr.shown td.details-control {
                                             <th>Nominal</th>
                                             {{-- <th class="cari">Kegiatan</th> --}}
                                             {{-- <th class="cari">RKA</th> --}}
-                                            <th class="cari">Nama Rekening</th>
+                                            <th>Nama Rekening</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
