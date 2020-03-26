@@ -168,13 +168,13 @@
                                     <a href="javascript:void(0)" class="menu-item">Belanja Th Berjalan</a>
                                     <ul class="menu-content">
                                         <li>
-                                            <a href="belanja" class="menu-item">Data Belanja</a>
+                                            <a href="{{ route('admin.belanja.index') }}" class="menu-item">Data Belanja</a>
                                         </li>
                                         <li>
-                                            <a href="belanjapersediaan" class="menu-item">Data Persediaan</a>
+                                            <a href="#belanjapersediaan" class="menu-item">Data Persediaan</a>
                                         </li>
                                         <li>
-                                            <a href="belanjamodal" class="menu-item">Data Belanja Modal</a>
+                                            <a href="#belanjamodal" class="menu-item">Data Belanja Modal</a>
                                         </li>
                                     </ul>
                                 </li>

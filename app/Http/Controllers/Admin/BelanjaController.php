@@ -49,12 +49,12 @@ class BelanjaController extends Controller
 
                 switch ($jenisrekening) {
                 	case '1':
-                		$urltambahan = route('admin.belanja.modal', ['id' => $belanja->id]);
+                		$urltambahan = "#";//route('admin.belanja.modal', ['id' => $belanja->id]);
                 		$labeltambahan = "Belanja Modal";
                 		break;
 
                 	case '2':
-                		$urltambahan = route('admin.belanja.persediaan', ['id' => $belanja->id]);
+                		$urltambahan = "#";//route('admin.belanja.persediaan', ['id' => $belanja->id]);
                 		$labeltambahan = "Belanja Persediaan";
                 		break;
                 	
