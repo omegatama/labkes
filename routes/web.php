@@ -99,6 +99,14 @@ Route::group([
     Route::get('/belanja/getpersediaan/{id}', 'Admin\BelanjaController@getpersediaan')->name('admin.belanja.getpersediaan');
     // End Belanja
 
+    // Start Belanja Modal Th Berjalan
+    Route::get('/belanjamodal', 'Admin\BelanjaModalController@index')->name('admin.belanjamodal.index');
+    // End Belanja Modal Th Berjalan
+
+    // Start Belanja Persediaan Th Berjalan
+    Route::get('/belanjapersediaan', 'Admin\BelanjaPersediaanController@index')->name('admin.belanjapersediaan.index');
+    // End Belanja Persediaan Th Berjalan
+
     // Start Persediaan
     Route::get('/stok', 'Admin\TransaksiPersediaanController@stok_index')->name('admin.persediaan.stok');
     Route::get('/penggunaan', 'Admin\TransaksiPersediaanController@penggunaan_index')->name('admin.persediaan.penggunaan');
