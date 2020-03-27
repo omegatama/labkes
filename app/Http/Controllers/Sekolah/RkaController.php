@@ -308,6 +308,10 @@ class RkaController extends Controller
     {
         try {
             $rka = Auth::user()->rkas()->findOrFail($id);
+            // return $rka->belanjas()->count();
+            if ($rka->belanjas()->count() > 0) {
+                return redirect()->route('sekolah.rka.index')->withErrors(['msg' => 'RKA tidak bisa dihapus karena sudah digunakan!']);
+            }
 
             DB::beginTransaction();
             try {

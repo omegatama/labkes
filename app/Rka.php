@@ -44,6 +44,11 @@ class Rka extends Model
 	    return $this->belongsTo('App\KodeRekening','kode_rekening_id');
 	}
 
+    public function belanjas()
+    {
+        return $this->hasMany('App\Belanja');
+    }
+
 	public function scopeParentRekening($query, $rekening)
     {
         return $query->whereHas('rekening', function ($q) use ($rekening) {
