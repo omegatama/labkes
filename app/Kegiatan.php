@@ -19,4 +19,9 @@ class Kegiatan extends Model
     protected $fillable = [
         'npsn', 'uraian'
     ];
+
+    public function rkas()
+    {
+        return $this->hasMany('App\Rka');
+    }
 }

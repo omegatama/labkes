@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Sekolah\Master;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Kegiatan;
@@ -58,8 +59,17 @@ class KegiatanController extends Controller
 
 	public function destroy($id)
 	{
-	    $kegiatan = Kegiatan::where('id',$id)->delete();
-	 
+		DB::beginTransaction();
+		$count = Kegiatan::find($id)->rkas()->count();
+		if ($count==0) {
+			# code...
+	    	$kegiatan = Kegiatan::where('id',$id)->delete();
+	    	DB::commit();
+		}
+		else{
+	 		DB::rollback();
+	    	$kegiatan = 0;
+		}
 	    return Response::json($kegiatan);
 	}
 }

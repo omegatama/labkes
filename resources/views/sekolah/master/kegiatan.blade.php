@@ -131,14 +131,27 @@ $(function() {
 		            type: "get",
 		            url: "kegiatan/delete/"+kegiatan_id,
 		            success: function (data) {
-		            	swal(
-					        'Data Terhapus!',
-					        'Data Kegiatan telah dihapus',
-					        'success'
-					    ).then(function() {
-					    	var oTable = $('#tabelkegiatan').dataTable(); 
-			            	oTable.fnDraw(false);
-					    });
+		            	console.log(data);
+		            	if(data){
+			            	swal(
+						        'Data Terhapus!',
+						        'Data Kegiatan telah dihapus',
+						        'success'
+						    ).then(function() {
+						    	var oTable = $('#tabelkegiatan').dataTable(); 
+				            	oTable.fnDraw(false);
+						    });
+		            	}
+		            	else{
+		            		swal(
+						        'Error!',
+						        'Data Kegiatan Telah digunakan\nData Kegiatan Tidak dapat dihapus!',
+						        'error'
+						    ).then(function() {
+						    	var oTable = $('#tabelkegiatan').dataTable(); 
+				            	oTable.fnDraw(false);
+						    });
+		            	}
 		            },
 		            error: function (data) {
 		                console.log('Error:', data);
