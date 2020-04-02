@@ -267,6 +267,27 @@ class RkaController extends Controller
                 }
 
                 try {
+                    // Step 1.1 Tambahan pemeriksaan Jumlah RKA
+                    if($rka->jumlah != 
+                        (
+                            $rka->alokasi_tw1 + 
+                            $rka->alokasi_tw2 + 
+                            $rka->alokasi_tw3 + 
+                            $rka->alokasi_tw4
+                        )
+                    ){
+                        DB::rollback();
+                        return redirect()->back()
+                        ->withErrors(['msg' => 'Jumlah RKA tidak sesuai dengan alokasi Triwulan!']);
+                    }
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->back()
+                    ->withErrors(['msg' => 'Oops, ada yang salah! (RE-1.1)']);
+                
+                }
+
+                try {
                     // Step 2: Update Pagu
                     $pagu->penggunaan_tw1 += $selisih_alokasi_tw1;
                     $pagu->penggunaan_tw2 += $selisih_alokasi_tw2;
