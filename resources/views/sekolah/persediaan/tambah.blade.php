@@ -147,7 +147,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                         results: data.items.map(function (item) {
                             return {
                                 id: item.id,
-                                text: item.nama_persediaan
+                                text: item.nama_persediaan + " - " + item.harga_satuan
                             };
                         }),
                         pagination: {

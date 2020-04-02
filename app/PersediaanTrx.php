@@ -33,4 +33,28 @@ class PersediaanTrx extends Model
             });
         });
     }
+
+    public function scopeTa($query, $ta)
+    {
+        // if (!empty($ta)) {
+            return $query->where('ta','=', $ta);
+        // }
+    }
+
+    public function scopePersediaanId($query, $barang_id)
+    {
+        // if (!empty($ta)) {
+            return $query->where('barang_persediaan_id','=', $barang_id);
+        // }
+    }
+
+    public function scopeIn($query)
+    {
+        return $query->where('io','=', 'i');
+    }
+
+    public function scopeOut($query)
+    {
+        return $query->where('io','=', 'o');
+    }
 }

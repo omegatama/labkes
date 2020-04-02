@@ -47,4 +47,18 @@ class BelanjaPersediaan extends Model
             $q->where('triwulan','=', $tw);   
         });
     }
+
+    public function scopeBulan($query, $bulan)
+    {
+        return $query->whereHas('belanja', function ($q) use ($bulan) {
+            $q->whereMonth('tanggal', $bulan);   
+        });
+    }
+
+    public function scopePersediaanId($query, $barang_id)
+    {
+        // if (!empty($barang_id)) {
+            return $query->where('barang_persediaan_id','=', $barang_id);
+        // }
+    }
 }

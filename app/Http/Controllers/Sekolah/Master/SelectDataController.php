@@ -82,7 +82,7 @@ class SelectDataController extends Controller
     {
         $search = $request->get('search');
         // $npsn = Auth::user()->npsn;
-        $data = Auth::user()->persediaans()->select(['id', 'nama_persediaan'])
+        $data = Auth::user()->persediaans()->select(['id', 'nama_persediaan', 'harga_satuan'])
             ->where([
                 ['nama_persediaan', 'like', '%' . $search . '%'],
                 // ['npsn', '=', $npsn],

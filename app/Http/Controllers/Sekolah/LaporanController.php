@@ -11,8 +11,10 @@ use Carbon\Carbon;
 use App\KodeProgram;
 use App\Belanja;
 use App\BelanjaModal;
+use App\BelanjaPersediaan;
 use App\KodeRekening;
 use App\KomponenPembiayaan;
+use App\PersediaanTrx;
 
 use Auth;
 use Cookie;
@@ -701,11 +703,19 @@ class LaporanController extends Controller
                 break;
         }
 
+        $triwulan1= [1 ,2 ,3 ];
+        $triwulan2= [4 ,5 ,6 ];
+        $triwulan3= [7 ,8 ,9 ];
+        $triwulan4= [10,11,12];
+
+        $bulan = ${"triwulan".$triwulan};
+
         $nama_kepsek= $sekolah->nama_kepsek;
         $nip_kepsek= $sekolah->nip_kepsek;
         $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
 
         $persediaans = $sekolah->persediaans()->get();
+        
         $persediaan_all = array();
         $pengeluaran_persediaan = array();
 
@@ -727,12 +737,39 @@ class LaporanController extends Controller
             $penerimaan_2 = 0;
             $penerimaan_3 = 0;
 
+            $pengeluaran_1 = 0;
+            $pengeluaran_2 = 0;
+            $pengeluaran_3 = 0;
+
+            $trx_masuk_1 = PersediaanTrx::npsn($npsn)->ta($ta)->in()->persediaanId($persediaan->id)->whereMonth('tanggal', $bulan[0])->sum('qty');
+            $trx_masuk_2 = PersediaanTrx::npsn($npsn)->ta($ta)->in()->persediaanId($persediaan->id)->whereMonth('tanggal', $bulan[1])->sum('qty');
+            $trx_masuk_3 = PersediaanTrx::npsn($npsn)->ta($ta)->in()->persediaanId($persediaan->id)->whereMonth('tanggal', $bulan[2])->sum('qty');
+
+            $belanja_1 = BelanjaPersediaan::npsn($npsn)->ta($ta)->triwulan($triwulan)->bulan($bulan[0])->persediaanId($persediaan->id)->sum('qty');
+            $belanja_2 = BelanjaPersediaan::npsn($npsn)->ta($ta)->triwulan($triwulan)->bulan($bulan[1])->persediaanId($persediaan->id)->sum('qty');
+            $belanja_3 = BelanjaPersediaan::npsn($npsn)->ta($ta)->triwulan($triwulan)->bulan($bulan[2])->persediaanId($persediaan->id)->sum('qty');
+
+            $penerimaan_1 += $trx_masuk_1 + $belanja_1;
+            $penerimaan_2 += $trx_masuk_2 + $belanja_2;
+            $penerimaan_3 += $trx_masuk_3 + $belanja_3;
+
+            $trx_keluar_1 = PersediaanTrx::npsn($npsn)->ta($ta)->out()->persediaanId($persediaan->id)->whereMonth('tanggal', $bulan[0])->sum('qty');
+            $trx_keluar_2 = PersediaanTrx::npsn($npsn)->ta($ta)->out()->persediaanId($persediaan->id)->whereMonth('tanggal', $bulan[1])->sum('qty');
+            $trx_keluar_3 = PersediaanTrx::npsn($npsn)->ta($ta)->out()->persediaanId($persediaan->id)->whereMonth('tanggal', $bulan[2])->sum('qty');
+
+            $pengeluaran_1 += $trx_keluar_1;
+            $pengeluaran_2 += $trx_keluar_2;
+            $pengeluaran_3 += $trx_keluar_3;
+
             $persediaan_all[$key]['penerimaan_1'] = $penerimaan_1;
             $persediaan_all[$key]['penerimaan_2'] = $penerimaan_2;
             $persediaan_all[$key]['penerimaan_3'] = $penerimaan_3;
             
+            $pengeluaran_persediaan[$key]['pengeluaran_1'] = $pengeluaran_1;
+            $pengeluaran_persediaan[$key]['pengeluaran_2'] = $pengeluaran_2;
+            $pengeluaran_persediaan[$key]['pengeluaran_3'] = $pengeluaran_3;
         }
-        // return $persediaan_all;
+        // return $pengeluaran_persediaan;
 
     	// Excel
         $spreadsheet = IOFactory::load('storage/format/belanja_persediaan1.xlsx');
@@ -750,6 +787,12 @@ class LaporanController extends Controller
             $persediaan_all,
             null,
             'B10'
+        );
+
+        $worksheet->fromArray(
+            $pengeluaran_persediaan,
+            null,
+            'M10'
         );
 
         $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
