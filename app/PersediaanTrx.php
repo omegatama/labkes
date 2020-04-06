@@ -43,7 +43,7 @@ class PersediaanTrx extends Model
 
     public function scopePersediaanId($query, $barang_id)
     {
-        // if (!empty($ta)) {
+        // if (!empty($barang_id)) {
             return $query->where('barang_persediaan_id','=', $barang_id);
         // }
     }

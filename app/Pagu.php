@@ -25,4 +25,9 @@ class Pagu extends Model
 	{
 	    return $this->belongsTo('App\Sekolah', 'npsn', 'npsn');
 	}
+
+    public function scopeTa($query, $ta)
+    {
+        $query->where('ta','=', $ta);   
+    }
 }

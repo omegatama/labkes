@@ -126,8 +126,8 @@ Route::group([
 	'prefix'     => 'sekolah',
 	'middleware' => 'auth:sekolah'
 ], function () {
-    Route::view('/', 'sekolah.index')->name('sekolah');
-    
+    // Route::view('/', 'sekolah.index')->name('sekolah');
+    Route::get('/', 'Sekolah\DashboardController@index')->name('sekolah');
     // Profil
     Route::get('/profil', 'Sekolah\ProfilController@index')->name('sekolah.profil.index');
     Route::get('/profil/edit', 'Sekolah\ProfilController@edit')->name('sekolah.profil.edit');

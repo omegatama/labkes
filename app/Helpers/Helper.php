@@ -35,8 +35,8 @@ if (!function_exists('FormatMataUang')) {
 }
 
 if (!function_exists('FormatUang')) {
-    function FormatUang($expression) {
-        return number_format($expression, 0, ',', '.');
+    function FormatUang($expression, $prefix="") {
+        return $prefix.number_format($expression, 0, ',', '.');
     }
 }
 
