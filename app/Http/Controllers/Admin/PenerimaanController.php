@@ -69,6 +69,8 @@ class PenerimaanController extends Controller
      */
     public function store(Request $request)
     {
+        $ta= $request->cookie('ta');
+        $npsn= $request->npsn;
         DB::beginTransaction();
         try {
             // Step 1 : Create Pendapatan
@@ -160,7 +162,7 @@ class PenerimaanController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->route('admin.penerimaan.create')
-            ->withErrors(['msg' => 'Oops, ada yang salah! (P4)']);
+            ->withErrors(['msg' => $e->getMessage().' (P4)']);
         }
 
         DB::commit(); // All transaction will commit if statement reach on this
@@ -233,11 +235,11 @@ class PenerimaanController extends Controller
                 $msg= 'Saldo Tunai tidak Cukup';
             }
 
-            if ($selisih > $saldo->$target) {
-                return redirect()->route('admin.penerimaan.index')->withErrors(['msg'=> $msg]);
-            }
+            // if ($selisih > $saldo->$target) {
+            //     return redirect()->route('admin.penerimaan.index')->withErrors(['msg'=> $msg]);
+            // }
 
-            else{
+            // else{
 
                 DB::beginTransaction();
                 // Step 1: Update Penerimaan dan Transaksi
@@ -289,7 +291,7 @@ class PenerimaanController extends Controller
                 return redirect()->route('admin.penerimaan.index')
                     ->with(['success'=> 'Data Penerimaan berhasil diperbarui!']);
 
-            }
+            // }
             // return json_encode($penerimaan);
 
         } catch (\Exception $e) {
