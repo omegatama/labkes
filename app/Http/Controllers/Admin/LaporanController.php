@@ -20,6 +20,7 @@ class LaporanController extends Controller
 
     public function proses_rkaall(Request $request)
     {
+        set_time_limit(1800);
     	$sekolah = Sekolah::where('id', '>', '2');
     	$ta = $request->cookie('ta');
 

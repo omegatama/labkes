@@ -378,7 +378,7 @@ class PenerimaanController extends Controller
                 } catch (\Exception $e) {
                     DB::rollback();
                     return redirect()->back()
-                    ->withErrors(['msg'=> 'Oops, ada yang salah! (PD-3)']);
+                    ->withErrors(['msg'=>  $e->getMessage().'(PD-3)']);
                 
                 }
 
