@@ -25,8 +25,20 @@ class SekolahController extends Controller
             return DataTables::eloquent($model)
             ->addColumn('action', function(Sekolah $sekolah) {
                 $urledit= route('admin.sekolah.edit', ['id' => $sekolah->id]);
-                $urlreset= route('admin.sekolah.reset', ['id' => $sekolah->id]);                
-                return RenderTombol("success", $urledit, "Edit")." ".RenderTombol("warning confirmation", $urlreset, "Reset");
+                $urlreset= route('admin.sekolah.reset', ['id' => $sekolah->id]);
+                if ($sekolah->kunci_rka) {
+                    $urlkunci= route('admin.sekolah.unlockrka', ['id' => $sekolah->id]);
+                    $labelkunci= 'Unlock RKA';
+                }
+                else
+                {
+                    $urlkunci= route('admin.sekolah.lockrka', ['id' => $sekolah->id]);
+                    $labelkunci= 'Lock RKA';
+                }
+                               
+                return RenderTombol("success", $urledit, "Edit")." ".
+                RenderTombol("warning confirmation", $urlreset, "Reset")." ".
+                RenderTombol("secondary", $urlkunci, $labelkunci);
             })
             ->addIndexColumn()
             ->make(true);
@@ -132,6 +144,34 @@ class SekolahController extends Controller
 
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Reset Password Gagal!');
+        }
+    }
+
+    public function lockrka($id)
+    {
+        $sekolah = Sekolah::findOrFail($id);
+        $sekolah->kunci_rka = 1;
+
+        try {
+            $sekolah->save();
+            return redirect()->back()->with(['success'=> 'RKA di Kunci!']);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Kunci RKA Gagal!');
+        }
+    }
+
+    public function unlockrka($id)
+    {
+        $sekolah = Sekolah::findOrFail($id);
+        $sekolah->kunci_rka = 0;
+
+        try {
+            $sekolah->save();
+            return redirect()->back()->with(['success'=> 'RKA di Buka!']);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Unlock RKA Gagal!');
         }
     }
 

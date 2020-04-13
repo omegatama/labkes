@@ -21,7 +21,11 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <a href="{{ route('sekolah.rka.create') }}" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
+                            @if (!(Auth::user()->kunci_rka))
+                                {{-- expr --}}
+                                <a href="{{ route('sekolah.rka.create') }}" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
+                            @endif
+
                             <a href="{{ route('sekolah.rka.cetak') }}" class="btn btn-dark btn-sm m-0" id="tambah-data">Cetak</a>
 
                             <div class="table-responsive">

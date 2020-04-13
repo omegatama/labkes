@@ -43,7 +43,13 @@ class RkaController extends Controller
                 $urledit= route('sekolah.rka.edit', ['id' => $rka->id]);
                 $urlhapus= route('sekolah.rka.destroy', ['id' => $rka->id]);
                 
-                return RenderTombol("success", $urledit, "Edit")." ".RenderTombol("danger confirmation", $urlhapus, "Hapus");
+                if (!(Auth::user()->kunci_rka)) {
+                    # code...
+                    return RenderTombol("success", $urledit, "Edit")." ".RenderTombol("danger confirmation", $urlhapus, "Hapus");
+                }
+                else{
+                    return "-";
+                }
             })
             ->editColumn('harga_satuan', '{{FormatMataUang($harga_satuan)}}')
             ->editColumn('jumlah', '{{FormatMataUang($jumlah)}}')

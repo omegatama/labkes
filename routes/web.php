@@ -65,10 +65,12 @@ Route::group([
     // End Pagu
 
     // Start Penerimaan
+    Route::get('/penerimaan/upload', 'Admin\PenerimaanController@upload')->name('admin.penerimaan.upload');
+    Route::post('/penerimaan/upload', 'Admin\PenerimaanController@proses_upload')->name('admin.penerimaan.proses_upload');
+
     Route::resource('/penerimaan', 'Admin\PenerimaanController', ['as' => 'admin'])
     ->except('destroy');
-    Route::get('/penerimaan/delete/{id}', 'Admin\PenerimaanController@destroy')->name('admin.penerimaan.destroy');
-    
+    Route::get('/penerimaan/delete/{id}', 'Admin\PenerimaanController@destroy')->name('admin.penerimaan.destroy');    
 
     Route::get('/saldo', 'Admin\KasController@saldo_index')->name('admin.kas.saldo');
 
@@ -77,12 +79,20 @@ Route::group([
 
     // Start Sekolah
     Route::get('/sekolah/select', 'Admin\SekolahController@selectSekolah')->name('admin.sekolah.select');
+
+    Route::get('/sekolah/delete/{id}', 'Admin\SekolahController@destroy')->name('admin.sekolah.destroy');
+
+    Route::get('/sekolah/reset/{id}', 'Admin\SekolahController@reset')->name('admin.sekolah.reset');
+
+    Route::get('/sekolah/lockrka/{id}', 'Admin\SekolahController@lockrka')->name('admin.sekolah.lockrka');
+
+    Route::get('/sekolah/unlockrka/{id}', 'Admin\SekolahController@unlockrka')->name('admin.sekolah.unlockrka');
+
     Route::resource('/sekolah', 'Admin\SekolahController', ['as' => 'admin'])
     ->except([
         'destroy'
     ]);
-    Route::get('/sekolah/delete/{id}', 'Admin\SekolahController@destroy')->name('admin.sekolah.destroy');
-    Route::get('/sekolah/reset/{id}', 'Admin\SekolahController@reset')->name('admin.sekolah.reset');
+    
     // End Sekolah
 
     // Start Rka
