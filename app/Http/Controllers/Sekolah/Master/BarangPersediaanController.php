@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Sekolah\Master;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\BarangPersediaan;
@@ -64,7 +64,18 @@ class BarangPersediaanController extends Controller
 
     public function destroy($id)
 	{
-	    $barangpersediaan = BarangPersediaan::find($id)->delete();
+		DB::beginTransaction();
+		$counttrx = BarangPersediaan::find($id)->trxpersediaans()->count();
+		$countbelanja = BarangPersediaan::find($id)->belanja_persediaans()->count();
+		if ($counttrx==0 && $countbelanja==0) {
+			# code...
+	    	$barangpersediaan = BarangPersediaan::find($id)->delete();
+			DB::commit();
+		}
+		else{
+	 		DB::rollback();
+	    	$barangpersediaan = 0;
+		}
 	 
 	    return Response::json($barangpersediaan);
 	}

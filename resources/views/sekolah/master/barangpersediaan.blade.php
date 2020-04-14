@@ -188,14 +188,28 @@ $(function() {
 		            type: "get",
 		            url: "barangpersediaan/delete/"+barangpersediaan_id,
 		            success: function (data) {
-		            	swal(
-					        'Data Terhapus!',
-					        'Barang Persediaan telah dihapus',
-					        'success'
-					    ).then(function() {
-					    	var oTable = $('#tabelbarangpersediaan').dataTable(); 
-			            	oTable.fnDraw(false);
-					    });
+		            	console.log(data);
+		            	if(data){
+			            	swal(
+						        'Data Terhapus!',
+						        'Barang Persediaan telah dihapus',
+						        'success'
+						    ).then(function() {
+						    	var oTable = $('#tabelbarangpersediaan').dataTable(); 
+				            	oTable.fnDraw(false);
+						    });
+		            	}
+		            	else{
+		            		swal(
+						        'Error!',
+						        'Barang Persediaan Telah digunakan\nBarang Persediaan Tidak dapat dihapus!',
+						        'error'
+						    ).then(function() {
+						    	var oTable = $('#tabelbarangpersediaan').dataTable(); 
+				            	oTable.fnDraw(false);
+						    });
+		            	}
+		            	
 		            },
 		            error: function (data) {
 		                console.log('Error:', data);

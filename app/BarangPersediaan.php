@@ -25,6 +25,11 @@ class BarangPersediaan extends Model
         return $this->hasMany('App\PersediaanTrx');
     }
 
+    public function belanja_persediaans()
+    {
+        return $this->hasMany('App\BelanjaPersediaan');
+    }
+
     public function sekolah()
     {
         return $this->belongsTo('App\Sekolah', 'npsn', 'npsn');
