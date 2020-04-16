@@ -28,7 +28,7 @@ class BelanjaController extends Controller
     {
     	if(request()->ajax()) {
             $ta = Cookie::get('ta');
-    		$query = Auth::user()->belanjas()->ta($ta)->with('rka.rekening','rka.program','rka.kp','rka.kegiatan');
+    		$query = Auth::user()->belanjas()->ta($ta)->with('rka.rekening','rka.program','rka.kp','rka.kegiatan')->select('belanjas.*');
 
             return DataTables::eloquent($query)
             // ->filter(function ($query) use ($ta) {
@@ -1102,7 +1102,7 @@ class BelanjaController extends Controller
                 return FormatMataUang($belanjapersediaan->barang_persediaan->harga_satuan);
             })
             ->addColumn('total', function ($belanjapersediaan) {
-                return FormatMataUang(($belanjapersediaan->qty * $belanjapersediaan->barang_persediaan->harga_satuan));
+                return FormatMataUang(($belanjapersediaan->total));
             })
             ->addColumn('action', function($belanjapersediaan) {
                 $urledit= route('sekolah.belanja.editpersediaan', ['id' => $belanjapersediaan->belanja_id, 'modal_id' => $belanjapersediaan->id]);

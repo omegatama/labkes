@@ -13,7 +13,7 @@ class Belanja extends Model
 
     protected $fillable = ['triwulan', 'npsn', 'rka_id', 'nama', 'nilai', 'kas', 'tanggal', 'nomor', 'penerima', 'ppn', 'pph21', 'pph23'];
 
-    protected $appends = ['jenis_belanja', 'keterangan'];
+    protected $appends = ['jenis_belanja', 'total_detail', 'keterangan'];
 
     public function sekolah()
 	{
@@ -127,6 +127,18 @@ class Belanja extends Model
         // return "{$this->first_name} {$this->last_name}";
         if($this->rka->rekening->jenis){
             return $this->rka->rekening->jenis;
+        }
+        // ;
+    }
+
+    public function getTotalDetailAttribute()
+    {
+        // return "{$this->first_name} {$this->last_name}";
+        if($this->rka->rekening->jenis==1){
+            return $this->modals()->sum('total');
+        }
+        else if($this->rka->rekening->jenis==2){
+            return $this->persediaans()->sum('total');
         }
         // ;
     }
