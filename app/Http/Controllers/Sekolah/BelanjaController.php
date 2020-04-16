@@ -1094,7 +1094,7 @@ class BelanjaController extends Controller
             ->with('total', function() use ($bpersediaan) {
                 $total=0;
                 foreach ($bpersediaan as $key => $item) {
-                    $total += $item->qty * $item->barang_persediaan->harga_satuan;
+                    $total += $item->total;
                 }
                 return FormatMataUang($total);
             })
