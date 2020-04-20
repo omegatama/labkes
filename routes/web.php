@@ -18,7 +18,8 @@ Route::group([
 	'prefix'     => 'admin',
 	'middleware' => 'auth:admin'
 ], function () {
-    Route::view('/', 'admin.index')->name('admin');;
+    // Route::view('/', 'admin.index')->name('admin');;
+    Route::get('/', 'Admin\DashboardController@index')->name('admin');
 
     // Start Profil
     Route::get('/profil', 'Admin\ProfilController@index')->name('admin.profil.index');
@@ -196,6 +197,9 @@ Route::group([
     Route::get('/saldo', 'Sekolah\KasController@saldo_index')->name('sekolah.kas.saldo');
 
     Route::get('/saldolalu', 'Sekolah\KasController@saldolalu_index')->name('sekolah.kas.saldolalu');
+
+    Route::get('/saldoawal', 'Sekolah\SaldoAwalController@index')->name('sekolah.saldoawal.index');
+
 
     Route::resource('/trxkas', 'Sekolah\TransaksiKasController', ['as' => 'sekolah'])
     ->except([

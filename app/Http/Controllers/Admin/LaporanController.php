@@ -171,6 +171,11 @@ class LaporanController extends Controller
             $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['tw2'] = $rka->alokasi_tw2;
             $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['tw3'] = $rka->alokasi_tw3;
             $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['tw4'] = $rka->alokasi_tw4;
+            // REALISASI
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['realisasi_tw1'] = $rka->realisasi_tw1;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['realisasi_tw2'] = $rka->realisasi_tw2;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['realisasi_tw3'] = $rka->realisasi_tw3;
+            $hasil[$rka->parent][$rka->kode_program_id][$rka->kegiatan_id][$i]['realisasi_tw4'] = $rka->realisasi_tw4;
         }
 
         // return json_encode($kegiatans);
@@ -257,7 +262,11 @@ class LaporanController extends Controller
                     $baris[$indexbaris]['tw2'] = '';
                     $baris[$indexbaris]['tw3'] = '';
                     $baris[$indexbaris]['tw4'] = '';
-
+                    // REALISASI
+                    $baris[$indexbaris]['rtw1'] = '';
+                    $baris[$indexbaris]['rtw2'] = '';
+                    $baris[$indexbaris]['rtw3'] = '';
+                    $baris[$indexbaris]['rtw4'] = '';
 
                     foreach ($kegiatan as $l => $rkadetail) {
                         # code...
@@ -274,6 +283,11 @@ class LaporanController extends Controller
                         $baris[$indexbaris]['tw2'] = $rkadetail['tw2'];
                         $baris[$indexbaris]['tw3'] = $rkadetail['tw3'];
                         $baris[$indexbaris]['tw4'] = $rkadetail['tw4'];
+                        // REALISASI
+                        $baris[$indexbaris]['rtw1'] = $rkadetail['realisasi_tw1'];
+                        $baris[$indexbaris]['rtw2'] = $rkadetail['realisasi_tw2'];
+                        $baris[$indexbaris]['rtw3'] = $rkadetail['realisasi_tw3'];
+                        $baris[$indexbaris]['rtw4'] = $rkadetail['realisasi_tw4'];
 
                         // Hitung
                         $jumlahperparent[$i]['jumlah'] += $rkadetail['jumlah'];
@@ -306,7 +320,7 @@ class LaporanController extends Controller
 
         // return json_encode($baris);
         // Excel
-        $spreadsheet = IOFactory::load('storage/format/rkas.xlsx');
+        $spreadsheet = IOFactory::load('storage/format/rkas-2.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
         $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
         $worksheet->getCell('desa_kecamatan')->setValue($desa_kecamatan);
