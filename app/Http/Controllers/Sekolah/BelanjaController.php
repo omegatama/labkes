@@ -605,7 +605,7 @@ class BelanjaController extends Controller
     		)
     		->firstOrFail();*/
     		->findOrFail($id);
-
+            // return $belanja->rka->rekening->parent->kode_rekening.".".$belanja->rka->rekening->kode_rekening;
     		$tanggal= $belanja->tanggal->locale('id_ID')->isoFormat('LL');
     		$npsn= $belanja->npsn;
     		$namaprogram= $belanja->rka->program->nama_program;
@@ -621,7 +621,7 @@ class BelanjaController extends Controller
 			$uang_terbilang= "# ( ".ucwords(Terbilang($uang_digit)." rupiah")." ) #";
 			$pembayaran= $belanja->nama;
 			$keperluan= $namaprogram." / ".$namakp;
-			$kode_rekening="";
+			$kode_rekening= $belanja->rka->rekening->parent->kode_rekening.".".$belanja->rka->rekening->kode_rekening." - ".$belanja->rka->rekening->nama_rekening;
 			$jumlah_kotor= $belanja->nilai;
 			$ppn= "PPN: ".FormatUang($belanja->ppn);
 			$pph_21= "PPH21: ".FormatUang($belanja->pph21);
