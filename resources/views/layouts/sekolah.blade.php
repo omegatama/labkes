@@ -385,7 +385,7 @@
                             <i class="ft-more-vertical"></i>
                         </a>
                     </span>
-                    <h4 class="text-bold-600 navbar-left text align-middle mt-2 pt-1">@yield('namaUser', Auth::user()->name)</h4>
+                    <h4 class="text-bold-600 navbar-left text align-middle mt-2 pt-1">@yield('namaUser', Auth::user()->name." ( ".Auth::user()->npsn." )")</h4>
                 </div>
                 <div class="navbar-container">
                     <div id="navbarSupportedContent" class="collapse navbar-collapse">
