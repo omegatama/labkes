@@ -366,10 +366,14 @@ class TransaksiPersediaanController extends Controller
             $barang_persediaan_id = $trx->barang_persediaan_id;
             // return json_encode($trx);
 
-            if ($qty > $trx->persediaan->stok) {
-                return redirect()->back()->withErrors(['msg'=> 'Maaf stok barang persediaan terkait tidak cukup!']);
+            if ($io == 'i') {
+                if ($qty > $trx->persediaan->stok) {
+                    # code...
+                    return redirect()->back()->withErrors(['msg'=> 'Maaf stok barang persediaan terkait tidak cukup!']);
+                }
             }
-            else{
+
+            // else{
 
                 DB::beginTransaction();
 
@@ -433,7 +437,7 @@ class TransaksiPersediaanController extends Controller
                     return redirect()->route('sekolah.persediaan.penggunaan')->with('success','Data Trx berhasil dihapus!');
                 }
 
-            }
+            // }
 
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['msg'=> $e->getMessage()]);

@@ -4,6 +4,7 @@
 
 @section('extraCss')
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/js/dt/datatables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/toastr.css') }}">
 @endsection
 
 @section('content')
@@ -48,6 +49,7 @@
 
 @section('extraJs')
 <script src="{{ asset('app-assets/vendors/js/dt/datatables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('app-assets/vendors/js/toastr.min.js') }}" type="text/javascript"></script>
 <script>
     $(function() {
         $('#tabelPenggunaan').DataTable({

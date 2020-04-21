@@ -48,7 +48,8 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                     <div class="row">
                                         <div class="form-group col-12 mb-1">
                                             <label class="m-0" for="jenis">Jenis</label>
-                                            <select name="jenis" id="jenis" class="form-control">
+                                            <select name="jenis" id="jenis" class="form-control" required>
+                                                <option></option>
                                                 <option value="Usage">Penggunaan</option>
                                                 <option value="Adjustment">Penyesuaian</option>
                                             </select>
@@ -58,7 +59,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                     <div class="row">
                                         <div class="form-group col-12 mb-1">
                                             <label class="m-0" for="io">Tipe</label>
-                                            <select name="io" id="io" class="form-control">
+                                            <select name="io" id="io" class="form-control" required>
                                                 <option></option>
                                                 <option value="i">Masuk</option>
                                                 <option value="o">Keluar</option>
@@ -69,7 +70,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                     <div class="row">
                                         <div class="form-group col-12 mb-1">
                                             <label class="m-0" for="barang_persediaan_id">Barang Persediaan</label>
-                                            <select name="barang_persediaan_id" id="barang_persediaan_id" class="form-control">
+                                            <select name="barang_persediaan_id" id="barang_persediaan_id" class="form-control" required>
                                                 
                                             </select>
                                         </div>
