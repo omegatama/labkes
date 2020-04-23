@@ -259,6 +259,28 @@ class RkaController extends Controller
 
                     $rka->harga_satuan += $selisih_harga_satuan;
                     $rka->jumlah += $selisih_jumlah;
+
+                    if ($alokasi_tw1_baru < $rka->realisasi_tw1) {
+                        DB::rollback();
+                        return redirect()->back()
+                        ->withErrors(['msg' => 'Error! Realisasi TW1 lebih besar dari Alokasi TW1! (RE-1)']);
+                    }
+                    if ($alokasi_tw2_baru < $rka->realisasi_tw2) {
+                        DB::rollback();
+                        return redirect()->back()
+                        ->withErrors(['msg' => 'Error! Realisasi TW2 lebih besar dari Alokasi TW2! (RE-1)']);
+                    }
+                    if ($alokasi_tw3_baru < $rka->realisasi_tw3) {
+                        DB::rollback();
+                        return redirect()->back()
+                        ->withErrors(['msg' => 'Error! Realisasi TW3 lebih besar dari Alokasi TW3! (RE-1)']);
+                    }
+                    if ($alokasi_tw4_baru < $rka->realisasi_tw4) {
+                        DB::rollback();
+                        return redirect()->back()
+                        ->withErrors(['msg' => 'Error! Realisasi TW4 lebih besar dari Alokasi TW4! (RE-1)']);
+                    }
+
                     $rka->alokasi_tw1 += $selisih_alokasi_tw1;
                     $rka->alokasi_tw2 += $selisih_alokasi_tw2;
                     $rka->alokasi_tw3 += $selisih_alokasi_tw3;
