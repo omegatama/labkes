@@ -49,7 +49,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="nomor">Nomor Bukti</label>
-                                                    <input type="text" id="nomor" class="form-control" name="nomor" required value="{{ (isset($belanja))? $belanja->nomor : '' }}" placeholder="Masukkan Nomor Bukti" autofocus>
+                                                    <input type="number" id="nomor" class="form-control" name="nomor" required value="{{ (isset($belanja))? $belanja->nomor : '' }}" placeholder="Masukkan Nomor Bukti" autofocus>
                                                 </div>
                                             </div>
 
