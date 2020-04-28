@@ -199,6 +199,7 @@ Route::group([
     Route::get('/saldolalu', 'Sekolah\KasController@saldolalu_index')->name('sekolah.kas.saldolalu');
 
     Route::get('/saldoawal', 'Sekolah\SaldoAwalController@index')->name('sekolah.saldoawal.index');
+    Route::get('/saldoawal/{id}/hitung', 'Sekolah\SaldoAwalController@hitung')->name('sekolah.saldoawal.hitung');
 
 
     Route::resource('/trxkas', 'Sekolah\TransaksiKasController', ['as' => 'sekolah'])

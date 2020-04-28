@@ -153,6 +153,9 @@
                                 <li>
                                     <a href="{{ route('sekolah.kas.saldo') }}" class="menu-item">Saldo Kas</a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('sekolah.saldoawal.index') }}" class="menu-item">Saldo Awal</a>
+                                </li>
 
                                 {{-- <li>
                                     <a href="#" class="menu-item">Saldo Awal</a>
@@ -269,7 +272,7 @@
                                         <li>
                                             <a href="{{ route('sekolah.laporan.persediaan') }}" class="menu-item">Belanja Persediaan</a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a href="{{ route('sekolah.laporan.bku') }}" class="menu-item">BKU</a>
                                         </li>
                                         <li>
@@ -280,7 +283,7 @@
                                         </li>
                                         <li>
                                             <a href="{{ route('sekolah.laporan.bukupajak') }}" class="menu-item">Buku Pajak</a>
-                                        </li>
+                                        </li> --}}
                                         
                                     </ul>
                                 </li>
