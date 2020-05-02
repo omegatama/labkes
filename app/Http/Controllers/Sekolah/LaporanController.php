@@ -904,6 +904,16 @@ class LaporanController extends Controller
             }
         }
 
+        $sorted = $trx->sort(function($a, $b) {
+            if ($a->tanggal == $b->tanggal)
+            {
+                if ($a->nomor_bukti > $b->nomor_bukti) return 1;
+            }
+            return $a->tanggal > $b->tanggal ? 1 : -1;
+        });
+
+        $trx= $sorted->values()->all();
+
         $i = 0;
         $a= array();
         foreach ($trx as $key => $item) {
@@ -1134,12 +1144,23 @@ class LaporanController extends Controller
             $bku_content[0][1]= null;
             $bku_content[0][2]= null;
             $bku_content[0][3]= 'Saldo Bulan Lalu';
-            $bku_content[0][4]= $saldo_awal->saldo_bank + $saldo_awal->saldo_tunai;
+            $bku_content[0][4]= $saldo_awal->saldo_bank;
             $bku_content[0][5]= 0;
         }
 
         $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
         $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+
+        $sorted = $trx->sort(function($a, $b) {
+            if ($a->tanggal == $b->tanggal)
+            {
+                if ($a->nomor_bukti > $b->nomor_bukti) return 1;
+            }
+            return $a->tanggal > $b->tanggal ? 1 : -1;
+        });
+
+        $trx= $sorted->values()->all();
+
         $i = 0;
         $a= array();
         foreach ($trx as $key => $item) {
@@ -1386,12 +1407,23 @@ class LaporanController extends Controller
             $bku_content[0][1]= null;
             $bku_content[0][2]= null;
             $bku_content[0][3]= 'Saldo Bulan Lalu';
-            $bku_content[0][4]= $saldo_awal->saldo_bank + $saldo_awal->saldo_tunai;
+            $bku_content[0][4]= $saldo_awal->saldo_tunai;
             $bku_content[0][5]= 0;
         }
 
         $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
         $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+
+        $sorted = $trx->sort(function($a, $b) {
+            if ($a->tanggal == $b->tanggal)
+            {
+                if ($a->nomor_bukti > $b->nomor_bukti) return 1;
+            }
+            return $a->tanggal > $b->tanggal ? 1 : -1;
+        });
+
+        $trx= $sorted->values()->all();
+
         $i = 0;
         $a= array();
         foreach ($trx as $key => $item) {
@@ -1642,6 +1674,17 @@ class LaporanController extends Controller
 
         $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
         $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+
+        $sorted = $trx->sort(function($a, $b) {
+            if ($a->tanggal == $b->tanggal)
+            {
+                if ($a->nomor_bukti > $b->nomor_bukti) return 1;
+            }
+            return $a->tanggal > $b->tanggal ? 1 : -1;
+        });
+
+        $trx= $sorted->values()->all();
+        
         $i = 0;
         $a= array();
         foreach ($trx as $key => $item) {

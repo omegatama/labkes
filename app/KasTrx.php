@@ -20,6 +20,8 @@ class KasTrx extends Model
 
     protected $fillable = ['ta', 'npsn', 'kas', 'io', 'nominal', 'saldo_tunai', 'saldo_bank', 'reference_id'];
 
+    protected $appends = ['nomor_bukti'];
+
     public function kas_trx_detail()
     {
         if (empty($this->io)) {
@@ -36,6 +38,16 @@ class KasTrx extends Model
     public function pendapatan()
     {
         return $this->hasOne('App\Pendapatan','id','reference_id');
+    }
+
+    public function getNomorBuktiAttribute()
+    {
+        if($this->io == 'o'){
+            return $this->belanja->nomor;
+        }
+        else{
+            return null;
+        }
     }
 
     // Kas berisi B, T atau Null
