@@ -34,4 +34,9 @@ class BarangPersediaan extends Model
     {
         return $this->belongsTo('App\Sekolah', 'npsn', 'npsn');
     }
+
+    public function stok_awals()
+    {
+        return $this->hasMany('App\StokAwal');
+    }
 }

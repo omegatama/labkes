@@ -197,7 +197,8 @@ class LaporanController extends Controller
             }
         }
         $paragraf_terakhir= "penggunaan Dana BOS pada ".$twloop." Tahun Anggaran ".$ta." dengan rincian sebagai berikut:";
-        $saldo_thlalu= $sekolah->saldos()->where('ta','=',$ta-1)->sum('saldo_bank') + $sekolah->saldos()->where('ta','=',$ta-1)->sum('saldo_tunai');;
+        // $saldo_thlalu= $sekolah->saldos()->where('ta','=',$ta-1)->sum('saldo_bank') + $sekolah->saldos()->where('ta','=',$ta-1)->sum('saldo_tunai');
+        $saldo_thlalu= $sekolah->pendapatans()->whereYear('tanggal', $ta)->where('sumber', 'SILPA BOS')->sum('nominal');      
         // return $saldo_thlalu;
         $penerimaan_cw1=0;
         $penerimaan_cw2=0;
@@ -224,10 +225,10 @@ class LaporanController extends Controller
         $tanggal_tempat= "Kab. Semarang, ".$tanggal;
         
         if($triwulan<4){
-            $kas_tunai = $sekolah->saldo_awals()->where('periode','=',AwalTriwulan($triwulan+1,$ta))->sum('saldo_tunai');
+            $kas_tunai = $sekolah->saldo_awals()->where('periode','=',AwalTriwulan(($triwulan+1),$ta)->format('Y-m-d'))->sum('saldo_tunai');
         }
         else{
-            $kas_tunai = $sekolah->saldo_awals()->where('periode','=',AwalTriwulan(($triwulan+1)-4, $ta+1))->sum('saldo_tunai');
+            $kas_tunai = $sekolah->saldo_awals()->where('periode','=',AwalTriwulan((($triwulan+1)-4), ($ta+1))->format('Y-m-d'))->sum('saldo_tunai');
         }
         // return $kas_tunai;
 
@@ -709,6 +710,9 @@ class LaporanController extends Controller
         $triwulan4= [10,11,12];
 
         $bulan = ${"triwulan".$triwulan};
+        $bulan_sebelumnya = ${"triwulan".($triwulan-1)};
+        $bulan_sebelumnya[3] = $bulan[0];
+        // return $bulan_sebelumnya;
 
         $nama_kepsek= $sekolah->nama_kepsek;
         $nip_kepsek= $sekolah->nip_kepsek;
@@ -724,12 +728,24 @@ class LaporanController extends Controller
             $persediaan_all[$key]['satuan'] = $persediaan->satuan;
             $persediaan_all[$key]['harga_satuan'] = $persediaan->harga_satuan;
 
-            if ($triwulan==1) {
-                $saldo= 0;
-            }
-            else{
-                $saldo= 0;
-            }
+            // if ($triwulan<4) {
+                /*$saldo= $persediaan->stok_awals()
+                ->where('periode', AwalTriwulan(($triwulan),$ta)->format('Y-m-d'))
+                ->sum('stok');*/
+                // $saldo= 0;
+            // }
+
+            // ikiyo
+            for ($i=3; $i > 0; $i--) { 
+                $saldo= $persediaan->stok_awals()
+                    ->where('periode', Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan_sebelumnya[$i])."-1")->startOfMonth())->get();
+                if ($saldo->isNotEmpty()) {
+                    break;
+                }
+            }   
+            $saldo= $saldo->sum('stok');
+            
+            // return AwalTriwulan(($triwulan),$ta)->format('Y-m-d');//$saldo;
 
             $persediaan_all[$key]['saldo'] = $saldo;
             
@@ -769,6 +785,7 @@ class LaporanController extends Controller
             $pengeluaran_persediaan[$key]['pengeluaran_2'] = $pengeluaran_2;
             $pengeluaran_persediaan[$key]['pengeluaran_3'] = $pengeluaran_3;
         }
+        // return $persediaan_all;
         // return $pengeluaran_persediaan;
 
     	// Excel
@@ -879,6 +896,14 @@ class LaporanController extends Controller
 
         $kodebku = $uraian = $nomorbukti = $nominalpendapatan = $nominalbelanja = array();
         $trx = Auth::user()->kas_trxs()->whereMonth('tanggal', $bulan)->orderBy('tanggal')->get();
+        foreach ($trx as $key => $value) {
+            if ($value->io == 'o') {
+                if (!isset($value->belanja->rka)) {
+                    return $value;
+                }
+            }
+        }
+
         $i = 0;
         $a= array();
         foreach ($trx as $key => $item) {
@@ -984,7 +1009,7 @@ class LaporanController extends Controller
                 }
 
                 else if (empty($item->io)) {
-                    $a[]= $item->kas_trx_detail;
+                    // $a[]= $item->kas_trx_detail;
                     $kodebku[$i] = $item->kas_trx_detail->tipe;
 
                     switch ($kodebku[$i]) {
@@ -1231,7 +1256,7 @@ class LaporanController extends Controller
                 }
 
                 else if (empty($item->io)) {
-                    $a[]= $item->kas_trx_detail;
+                    // $a[]= $item->kas_trx_detail;
                     $kodebku[$i] = $item->kas_trx_detail->tipe;
 
                     switch ($kodebku[$i]) {
@@ -1483,7 +1508,7 @@ class LaporanController extends Controller
                 }
 
                 else if (empty($item->io)) {
-                    $a[]= $item->kas_trx_detail;
+                    // $a[]= $item->kas_trx_detail;
                     $kodebku[$i] = $item->kas_trx_detail->tipe;
 
                     switch ($kodebku[$i]) {

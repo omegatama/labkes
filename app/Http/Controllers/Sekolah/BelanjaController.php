@@ -138,12 +138,23 @@ class BelanjaController extends Controller
     		return redirect()->back()->withErrors($msg." saldo:" .$saldo->$source. " nominal ".$nominal);
     	}
     	else{
-    		$alokasi_triwulan= 'alokasi_tw'.$triwulan;
-    		$realisasi_triwulan= 'realisasi_tw'.$triwulan;
+            // $alokasi_triwulan= 'alokasi_tw'.$triwulan;
+            $realisasi_triwulan= 'realisasi_tw'.$triwulan;
+            $total_sisa_sampai_tw= 0;
+            for ($i=1; $i <= $triwulan; $i++) { 
+    		    $alokasi_tw= 'alokasi_tw'.$i;
+                $realisasi_tw= 'realisasi_tw'.$i;
+                $sisa_tw= $rka->$alokasi_tw - $rka->$realisasi_tw;
+                $total_sisa_sampai_tw += $sisa_tw;
+            }
 
-    		if ($rka->$realisasi_triwulan + $nominal > $rka->$alokasi_triwulan) {
+    		/*if ($rka->$realisasi_triwulan + $nominal > $rka->$alokasi_triwulan) {
     			return redirect()->back()->withErrors('Alokasi Triwulan '.$triwulan.' untuk RKA terkait tidak cukup!');
-    		}
+    		}*/
+            //cek dulu
+            if ($nominal > $total_sisa_sampai_tw) {
+                return redirect()->back()->withErrors('Alokasi Triwulan '.$triwulan.' untuk RKA terkait tidak cukup!');
+            }
 
     		else{
     			//di sini
@@ -206,7 +217,7 @@ class BelanjaController extends Controller
     					->where(
 		                    [
 		                        'ta' => $transaksi->ta,
-		                        'periode' => $transaksi->tanggal->addMonth()->startOfMonth()
+		                        'periode' => $transaksi->tanggal->addMonthNoOverflow()->startOfMonth()
 		                    ]
 		                )->firstOrFail();
 		                $saldoawal->$source -= $nominal;
@@ -216,7 +227,7 @@ class BelanjaController extends Controller
     					$saldoawal = new SaldoAwal; 
 		                $saldoawal->ta = $ta;
 		                // $saldoawal->npsn = $belanja->npsn;
-		                $saldoawal->periode = $transaksi->tanggal->addMonth()->startOfMonth();
+		                $saldoawal->periode = $transaksi->tanggal->addMonthNoOverflow()->startOfMonth();
 		                $saldoawal->saldo_bank = $saldo->saldo_bank;
 		                $saldoawal->saldo_tunai = $saldo->saldo_tunai;
 		                // $saldoawal->save();
@@ -354,7 +365,7 @@ class BelanjaController extends Controller
                         ->where(
                             [
                                 'ta' => $transaksi->ta,
-                                'periode' => $transaksi->tanggal->addMonth()->startOfMonth()
+                                'periode' => $transaksi->tanggal->addMonthNoOverflow()->startOfMonth()
                             ]
                         )->firstOrFail();
                         $saldoawal->$source -= $selisih;
@@ -364,7 +375,7 @@ class BelanjaController extends Controller
                         $saldoawal = new SaldoAwal; 
                         $saldoawal->ta = $transaksi->ta;
                         // $saldoawal->npsn = $belanja->npsn;
-                        $saldoawal->periode = $transaksi->tanggal->addMonth()->startOfMonth();
+                        $saldoawal->periode = $transaksi->tanggal->addMonthNoOverflow()->startOfMonth();
                         $saldoawal->saldo_bank = $saldo->saldo_bank;
                         $saldoawal->saldo_tunai = $saldo->saldo_tunai;
                         // $saldoawal->save();
@@ -452,7 +463,7 @@ class BelanjaController extends Controller
                                     'ta' => $ta,
                                     'npsn' => $belanja->npsn,
                                     'barang_persediaan_id' => $barang_persediaan_id,
-                                    'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                                    'periode' => $belanja->tanggal->addMonthNoOverflow()->startOfMonth()
                                 ]
                             )->firstOrFail();
 
@@ -464,7 +475,7 @@ class BelanjaController extends Controller
                             $stokawal->ta = $ta;
                             $stokawal->npsn = $belanja->npsn;
                             $stokawal->barang_persediaan_id = $barang_persediaan_id;
-                            $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                            $stokawal->periode = $belanja->tanggal->addMonthNoOverflow()->startOfMonth();
                             $stokawal->stok = $persediaan->stok;
                             $stokawal->save();
                         }
@@ -553,7 +564,7 @@ class BelanjaController extends Controller
                 ->where(
                     [
                         'ta' => $ta,
-                        'periode' => $tanggal->addMonth()->startOfMonth()
+                        'periode' => $tanggal->addMonthNoOverflow()->startOfMonth()
                     ]
                 )->firstOrFail();
                 $saldoawal->$source += $nominal;
@@ -563,7 +574,7 @@ class BelanjaController extends Controller
                 $saldoawal = new SaldoAwal; 
                 $saldoawal->ta = $ta;
                 // $saldoawal->npsn = $belanja->npsn;
-                $saldoawal->periode = $tanggal->addMonth()->startOfMonth();
+                $saldoawal->periode = $tanggal->addMonthNoOverflow()->startOfMonth();
                 $saldoawal->saldo_bank = $saldo->saldo_bank;
                 $saldoawal->saldo_tunai = $saldo->saldo_tunai;
                 // $saldoawal->save();
@@ -879,7 +890,7 @@ class BelanjaController extends Controller
                         'ta' => $ta,
                         'npsn' => $npsn,
                         'barang_persediaan_id' => $barang_persediaan_id,
-                        'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                        'periode' => $belanja->tanggal->addMonthNoOverflow()->startOfMonth()
                     ]
                 )->firstOrFail();
 
@@ -892,7 +903,7 @@ class BelanjaController extends Controller
                 $stokawal->ta = $ta;
                 $stokawal->npsn = $npsn;
                 $stokawal->barang_persediaan_id = $barang_persediaan_id;
-                $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                $stokawal->periode = $belanja->tanggal->addMonthNoOverflowNoOverflow()->startOfMonth();
                 $stokawal->stok = $persediaan->stok;
                 $stokawal->save();
             }
@@ -968,7 +979,7 @@ class BelanjaController extends Controller
                         'ta' => $ta,
                         'npsn' => $npsn,
                         'barang_persediaan_id' => $barang_persediaan_id,
-                        'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                        'periode' => $belanja->tanggal->addMonthNoOverflow()->startOfMonth()
                     ]
                 )->firstOrFail();
 
@@ -980,7 +991,7 @@ class BelanjaController extends Controller
                 $stokawal->ta = $ta;
                 $stokawal->npsn = $npsn;
                 $stokawal->barang_persediaan_id = $barang_persediaan_id;
-                $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                $stokawal->periode = $belanja->tanggal->addMonthNoOverflow()->startOfMonth();
                 $stokawal->stok = $persediaan->stok;
                 $stokawal->save();
             }
@@ -1042,7 +1053,7 @@ class BelanjaController extends Controller
                         'ta' => $ta,
                         'npsn' => $npsn,
                         'barang_persediaan_id' => $barang_persediaan_id,
-                        'periode' => $belanja->tanggal->addMonth()->startOfMonth()
+                        'periode' => $belanja->tanggal->addMonthNoOverflow()->startOfMonth()
                     ]
                 )->firstOrFail();
 
@@ -1054,7 +1065,7 @@ class BelanjaController extends Controller
                 $stokawal->ta = $ta;
                 $stokawal->npsn = $npsn;
                 $stokawal->barang_persediaan_id = $barang_persediaan_id;
-                $stokawal->periode = $belanja->tanggal->addMonth()->startOfMonth();
+                $stokawal->periode = $belanja->tanggal->addMonthNoOverflow()->startOfMonth();
                 $stokawal->stok = $persediaan->stok;
                 $stokawal->save();
             }
