@@ -292,9 +292,17 @@ Route::group([
 
     Route::post('/proses/k7kab', 'Sekolah\LaporanController@proses_k7kab')->name('sekolah.proses.k7kab');
 
+    Route::get('/laporan/k7kabv2', 'Sekolah\LaporanController@k7kabv2')->name('sekolah.laporan.k7kabv2');
+
+    Route::post('/proses/k7kabv2', 'Sekolah\LaporanController@proses_k7kabv2')->name('sekolah.proses.k7kabv2');
+
     Route::get('/laporan/k7prov', 'Sekolah\LaporanController@k7prov')->name('sekolah.laporan.k7prov');
 
     Route::post('/proses/k7prov', 'Sekolah\LaporanController@proses_k7prov')->name('sekolah.proses.k7prov');
+
+    Route::get('/laporan/k7provv2', 'Sekolah\LaporanController@k7provv2')->name('sekolah.laporan.k7provv2');
+
+    Route::post('/proses/k7provv2', 'Sekolah\LaporanController@proses_k7provv2')->name('sekolah.proses.k7provv2');
 
     Route::get('/laporan/modal', 'Sekolah\LaporanController@modal')->name('sekolah.laporan.modal');
 

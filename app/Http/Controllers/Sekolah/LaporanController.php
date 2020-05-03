@@ -382,6 +382,31 @@ class LaporanController extends Controller
         $saldo_tw_lalu=0;
         $penerimaan_tw_sekarang=0;
 
+        $fromDate = AwalTriwulan($triwulan, $ta)->startOfMonth();
+        $tillDate = AkhirTriwulan($triwulan, $ta)->endOfMonth();
+        // return $tillDate;
+        
+        if ($triwulan == 1) {
+            $saldo_tw_lalu= $sekolah->pendapatans()
+            ->where('sumber','SILPA BOS')
+            ->sum('nominal');
+        }
+        else if ($triwulan > 1) {
+            $saldobank_twlalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_bank');
+            $saldotunai_twlalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_tunai');
+            $saldo_tw_lalu= $saldobank_twlalu + $saldotunai_twlalu;
+        }
+        // return $saldo_tw_lalu;
+
+        $penerimaan_tw_sekarang= $sekolah->pendapatans()
+        ->whereBetween('tanggal',[$fromDate, $tillDate])
+        ->where('sumber','!=','SILPA BOS')
+        // ->get();
+        ->sum('nominal');
+        // return $penerimaan_tw_sekarang;
+
         $program = KodeProgram::all();
         $komponen = KomponenPembiayaan::all();
         $program_kp= array();
@@ -439,6 +464,112 @@ class LaporanController extends Controller
         return $documento;
     }
 
+    public function k7provv2()
+    {
+        return view('sekolah.laporan.k7provv2');
+    }
+
+    public function proses_k7provv2(Request $request)
+    {
+        $ta = $request->cookie('ta');
+        $bulan_awal = $request->bulan_awal;
+        $bulan_akhir = $request->bulan_akhir;
+
+        $sekolah = Auth::user();
+        $npsn = $sekolah->npsn;
+        $nama_sekolah= $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= $sekolah->nip_kepsek;
+        $nama_bendahara= $sekolah->nama_bendahara;
+        $nip_bendahara= $sekolah->nip_bendahara;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+
+        $saldo_periodelalu=0;
+        $penerimaan_periodesekarang=0;
+
+        $fromDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan_awal)."-1");
+        $tillDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan_akhir)."-1")->endOfMonth();
+        
+        $periode= $fromDate->locale('id_ID')->isoFormat('LL')." - ".$tillDate->locale('id_ID')->isoFormat('LL');
+        // return $periode;
+
+        if ($bulan_awal == 1) {
+            $saldo_periodelalu= $sekolah->pendapatans()
+            ->where('sumber','SILPA BOS')
+            ->sum('nominal');
+        }
+        else if ($bulan_awal>1) {
+            $saldobank_periodelalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_bank');
+            $saldotunai_periodelalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_tunai');
+            $saldo_periodelalu= $saldobank_periodelalu + $saldotunai_periodelalu;
+        }
+        // return $saldo_periodelalu;
+
+        $penerimaan_periodesekarang= $sekolah->pendapatans()
+        ->whereBetween('tanggal',[$fromDate, $tillDate])
+        ->where('sumber','!=','SILPA BOS')
+        ->sum('nominal');
+        // return $penerimaan_periodesekarang;
+
+        $program = KodeProgram::all();
+        $komponen = KomponenPembiayaan::all();
+        $program_kp= array();
+        // return json_encode($komponen);
+
+        foreach ($program as $key => $p) {
+            foreach ($komponen as $kpkey => $kp) {
+                $program_id=$p->id;
+                $pembiayaan_id=$kp->id;
+                $program_kp_detail= $sekolah->belanjas()->ta($ta)
+                    ->whereBetween('tanggal',[$fromDate,$tillDate])
+                    ->whereHas('rka', function ($qrka) use ($program_id) {
+                        $qrka->where('kode_program_id', $program_id);
+                    })
+                    ->whereHas('rka', function ($qrka) use ($pembiayaan_id) {
+                        $qrka->where('komponen_pembiayaan_id', $pembiayaan_id);
+                    })
+                    ->sum('nilai');
+                
+                $program_kp[$p->id][$kp->id]=$program_kp_detail;
+            }
+        }
+        // return $program_kp;
+
+        // Excel
+        $spreadsheet = IOFactory::load('storage/format/k7_prov2.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('periode')->setValue($periode);
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('nama_kecamatan')->setValue($nama_kecamatan);
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+        $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+        $worksheet->getCell('nip_bendahara')->setValue("NIP.".$nip_bendahara);
+        // $worksheet->getCell('teks_saldo_tw')->setValue($teks_saldo_tw);
+        $worksheet->getCell('saldo_periodelalu')->setValue($saldo_periodelalu);
+        // $worksheet->getCell('teks_penerimaan_tw')->setValue($teks_penerimaan_tw);
+        $worksheet->getCell('penerimaan_periodesekarang')->setValue($penerimaan_periodesekarang);
+        $worksheet->fromArray(
+            $program_kp,
+            null,
+            'E16'
+        );
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'K7Prov_bulan_'.$bulan_awal."-".$bulan_akhir."-".$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+    }
+
     public function k7kab()
     {
     	return view('sekolah.laporan.k7kab');
@@ -471,17 +602,42 @@ class LaporanController extends Controller
         $bulan1= IntBulan($bulan[0]);
         $bulan2= IntBulan($bulan[1]);
         $bulan3= IntBulan($bulan[2]);
+        // return $bulan;
         // $nama_triwulan= "Triwulan ".$triwulan;
+        $fromDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan[0])."-1");
+        $tillDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan[2])."-1")->endOfMonth();
+        
+        if ($triwulan == 1) {
+            $saldo_twlalu= $sekolah->pendapatans()
+            ->where('sumber','SILPA BOS')
+            ->sum('nominal');
+        }
+        else if ($triwulan > 1) {
+            $saldobank_twlalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_bank');
+            $saldotunai_twlalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_tunai');
+            $saldo_twlalu= $saldobank_twlalu + $saldotunai_twlalu;
+        }
+        // return $saldo_twlalu;
+
+        $penerimaan_twsekarang= $sekolah->pendapatans()
+        ->whereBetween('tanggal',[$fromDate, $tillDate])
+        ->where('sumber','!=','SILPA BOS')
+        // ->get();
+        ->sum('nominal');
+        // return $penerimaan_twsekarang;
 
         $rek = KodeRekening::whereNotNull('parent_id')->orderBy('parent_id')->get();
+        // return $rek;
         
         foreach ($rek as $key => $item) {
-            $belanjaperrekening = Auth::user()->belanjas()->ta($ta)->rekening($item->id);
+            // $belanjaperrekening = $sekolah->belanjas()->ta($ta)->rekening($item->id);
             switch ($item->parent_id) {
                 case 1:
-                    $belanja_rek1_bln0 = $belanjaperrekening->whereMonth('tanggal', $bulan[0])->sum('nilai');
-                    $belanja_rek1_bln1 = $belanjaperrekening->whereMonth('tanggal', $bulan[1])->sum('nilai');
-                    $belanja_rek1_bln2 = $belanjaperrekening->whereMonth('tanggal', $bulan[2])->sum('nilai');
+                    $belanja_rek1_bln0 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[0])->sum('nilai');
+                    $belanja_rek1_bln1 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[1])->sum('nilai');
+                    $belanja_rek1_bln2 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[2])->sum('nilai');
                     
                     $belanja_pegawai[$key][0] = $belanja_rek1_bln0;
                     $belanja_pegawai[$key][1] = $belanja_rek1_bln1;
@@ -491,9 +647,9 @@ class LaporanController extends Controller
                     break;
 
                 case 2:
-                    $belanja_rek2_bln0 = $belanjaperrekening->whereMonth('tanggal', $bulan[0])->sum('nilai');
-                    $belanja_rek2_bln1 = $belanjaperrekening->whereMonth('tanggal', $bulan[1])->sum('nilai');
-                    $belanja_rek2_bln2 = $belanjaperrekening->whereMonth('tanggal', $bulan[2])->sum('nilai');
+                    $belanja_rek2_bln0 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[0])->sum('nilai');
+                    $belanja_rek2_bln1 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[1])->sum('nilai');
+                    $belanja_rek2_bln2 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[2])->sum('nilai');
                     
                     $belanja_barangjasa[$key][0] = $belanja_rek2_bln0;
                     $belanja_barangjasa[$key][1] = $belanja_rek2_bln1;
@@ -503,9 +659,9 @@ class LaporanController extends Controller
                     break;
                 
                 default:
-                    $belanja_rek345_bln0 = $belanjaperrekening->whereMonth('tanggal', $bulan[0])->sum('nilai');
-                    $belanja_rek345_bln1 = $belanjaperrekening->whereMonth('tanggal', $bulan[1])->sum('nilai');
-                    $belanja_rek345_bln2 = $belanjaperrekening->whereMonth('tanggal', $bulan[2])->sum('nilai');
+                    $belanja_rek345_bln0 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[0])->sum('nilai');
+                    $belanja_rek345_bln1 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[1])->sum('nilai');
+                    $belanja_rek345_bln2 = $sekolah->belanjas()->ta($ta)->rekening($item->id)->whereMonth('tanggal', $bulan[2])->sum('nilai');
                     
                     $belanja_modal[$key][0] = $belanja_rek345_bln0;
                     $belanja_modal[$key][1] = $belanja_rek345_bln1;
@@ -516,7 +672,7 @@ class LaporanController extends Controller
             }
         }
 
-        // return json_encode($belanja_modal);
+        // return json_encode($belanja_barangjasa);
         // Excel
         $spreadsheet = IOFactory::load('storage/format/k7_kab1.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
@@ -529,6 +685,8 @@ class LaporanController extends Controller
         $worksheet->getCell('bulan1')->setValue($bulan1);
         $worksheet->getCell('bulan2')->setValue($bulan2);
         $worksheet->getCell('bulan3')->setValue($bulan3);
+        $worksheet->getCell('penerimaan_twsekarang')->setValue($penerimaan_twsekarang);
+        $worksheet->getCell('saldo_twlalu')->setValue($saldo_twlalu);
         // $worksheet->getCell('nama_triwulan')->setValue($nama_triwulan);
         $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
         $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
@@ -562,6 +720,129 @@ class LaporanController extends Controller
         header('Content-Type: application/excel');
         return $documento;
         
+    }
+
+    public function k7kabv2()
+    {
+        return view('sekolah.laporan.k7kabv2');
+    }
+
+    public function proses_k7kabv2(Request $request)
+    {
+        $sekolah = Auth::user();
+        $bulan_awal = $request->bulan_awal;
+        $bulan_akhir = $request->bulan_akhir;
+
+        $ta = $request->cookie('ta');
+        $nama_sekolah= $sekolah->name;
+        $nama_kepsek= $sekolah->nama_kepsek;
+        $nip_kepsek= $sekolah->nip_kepsek;
+        $nama_bendahara= $sekolah->nama_bendahara;
+        $nip_bendahara= $sekolah->nip_bendahara;
+        $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
+
+        $fromDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan_awal)."-1");
+        $tillDate = Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan_akhir)."-1")->endOfMonth();
+        
+        $periode= $fromDate->locale('id_ID')->isoFormat('LL')." - ".$tillDate->locale('id_ID')->isoFormat('LL');
+        // return $periode;
+        
+        $saldo_periodelalu=0;
+        if ($bulan_awal == 1) {
+            $saldo_periodelalu= $sekolah->pendapatans()
+            ->where('sumber','SILPA BOS')
+            ->sum('nominal');
+        }
+        else if ($bulan_awal>1) {
+            $saldobank_periodelalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_bank');
+            $saldotunai_periodelalu= $sekolah->saldo_awals()
+            ->whereDate('periode',$fromDate)->sum('saldo_tunai');
+            $saldo_periodelalu= $saldobank_periodelalu + $saldotunai_periodelalu;
+        }
+        // return $saldo_periodelalu;
+
+        $penerimaan_periodesekarang= $sekolah->pendapatans()
+        ->whereBetween('tanggal',[$fromDate, $tillDate])
+        ->where('sumber','!=','SILPA BOS')
+        ->sum('nominal');
+        // return $penerimaan_periodesekarang;
+
+        $belanja_pegawai= array();
+        $belanja_barangjasa= array();
+        $belanja_modal= array();
+
+        $rek = KodeRekening::whereNotNull('parent_id')->orderBy('parent_id')->get();
+
+        foreach ($rek as $key => $item) {
+            $belanjaperrekening = Auth::user()->belanjas()->ta($ta)
+            ->whereMonth('tanggal','>=', $bulan_awal)
+            ->whereMonth('tanggal','<=', $bulan_akhir)
+            ->rekening($item->id);
+            switch ($item->parent_id) {
+                case 1:
+                    $belanja_rek1 = $belanjaperrekening->sum('nilai');
+                    
+                    $belanja_pegawai[$key][0] = $belanja_rek1;
+                    break;
+
+                case 2:
+                    $belanja_rek2 = $belanjaperrekening->sum('nilai');
+                    
+                    $belanja_barangjasa[$key][0] = $belanja_rek2;
+                    break;
+                
+                default:
+                    $belanja_rek345 = $belanjaperrekening->sum('nilai');
+                    
+                    $belanja_modal[$key][0] = $belanja_rek345;
+                    break;
+            }
+        }
+        // return $belanja_pegawai;
+
+        // Excel
+        $spreadsheet = IOFactory::load('storage/format/k7_kab2.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('npsn')->setValue($sekolah->npsn);
+        $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+        $worksheet->getCell('nama_kecamatan')->setValue($nama_kecamatan);
+        $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+        $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+        $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+        $worksheet->getCell('nip_bendahara')->setValue("NIP.".$nip_bendahara);
+        $worksheet->getCell('periode')->setValue($periode);
+        $worksheet->getCell('ta')->setValue($ta);
+        $worksheet->getCell('penerimaan_periodesekarang')->setValue($penerimaan_periodesekarang);
+        $worksheet->getCell('saldo_periodelalu')->setValue($saldo_periodelalu);
+        
+        $worksheet->fromArray(
+            $belanja_pegawai,
+            null,
+            'G12'
+        );
+        $worksheet->fromArray(
+            $belanja_barangjasa,
+            null,
+            'G17'
+        );
+        $worksheet->fromArray(
+            $belanja_modal,
+            null,
+            'G63'
+        );
+
+        // Cetak K7Kab Bulanan
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'K7Kab_bulan_'.$bulan_awal.'-'.$bulan_akhir.'-'.$sekolah->npsn.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
     }
 
     public function modal()
@@ -1684,7 +1965,7 @@ class LaporanController extends Controller
         });
 
         $trx= $sorted->values()->all();
-        
+
         $i = 0;
         $a= array();
         foreach ($trx as $key => $item) {

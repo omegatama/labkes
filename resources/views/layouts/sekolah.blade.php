@@ -264,7 +264,13 @@
                                             <a href="{{ route('sekolah.laporan.k7prov') }}" class="menu-item">K7 Provinsi</a>
                                         </li>
                                         <li>
+                                            <a href="{{ route('sekolah.laporan.k7provv2') }}" class="menu-item">K7 Prov Bulanan</a>
+                                        </li>
+                                        <li>
                                             <a href="{{ route('sekolah.laporan.k7kab') }}" class="menu-item">K7 Kabupaten</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('sekolah.laporan.k7kabv2') }}" class="menu-item">K7 Kab Bulanan</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('sekolah.laporan.modal') }}" class="menu-item">Belanja Modal</a>
