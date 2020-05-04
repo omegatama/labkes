@@ -991,8 +991,10 @@ class LaporanController extends Controller
         $triwulan4= [10,11,12];
 
         $bulan = ${"triwulan".$triwulan};
-        $bulan_sebelumnya = ${"triwulan".($triwulan-1)};
-        $bulan_sebelumnya[3] = $bulan[0];
+        if ($triwulan > 1) {
+            $bulan_sebelumnya = ${"triwulan".($triwulan-1)};
+            $bulan_sebelumnya[3] = $bulan[0];
+        }
         // return $bulan_sebelumnya;
 
         $nama_kepsek= $sekolah->nama_kepsek;
@@ -1017,14 +1019,19 @@ class LaporanController extends Controller
             // }
 
             // ikiyo
-            for ($i=3; $i > 0; $i--) { 
-                $saldo= $persediaan->stok_awals()
-                    ->where('periode', Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan_sebelumnya[$i])."-1")->startOfMonth())->get();
-                if ($saldo->isNotEmpty()) {
-                    break;
-                }
-            }   
-            $saldo= $saldo->sum('stok');
+            if ($triwulan > 1) {
+                for ($i=3; $i > 0; $i--) { 
+                    $saldo= $persediaan->stok_awals()
+                        ->where('periode', Carbon::createFromFormat("!Y-n-j", $ta."-".($bulan_sebelumnya[$i])."-1")->startOfMonth())->get();
+                    if ($saldo->isNotEmpty()) {
+                        break;
+                    }
+                }   
+                $saldo= $saldo->sum('stok');
+            }
+            else{
+                $saldo = 0;
+            }
             
             // return AwalTriwulan(($triwulan),$ta)->format('Y-m-d');//$saldo;
 
