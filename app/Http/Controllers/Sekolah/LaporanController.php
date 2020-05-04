@@ -1005,11 +1005,14 @@ class LaporanController extends Controller
         
         $persediaan_all = array();
         $pengeluaran_persediaan = array();
+        $kode_jenis = array();
 
         foreach ($persediaans as $key => $persediaan) {
             $persediaan_all[$key]['nama_persediaan'] = $persediaan->nama_persediaan;
             $persediaan_all[$key]['satuan'] = $persediaan->satuan;
             $persediaan_all[$key]['harga_satuan'] = $persediaan->harga_satuan;
+
+            // $kode_jenis[$key]['kode'] = $persediaan->kode_jenis;
 
             // if ($triwulan<4) {
                 /*$saldo= $persediaan->stok_awals()
@@ -1360,7 +1363,7 @@ class LaporanController extends Controller
             'B12'
         );
 
-        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I211');
+        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I311');
         
         $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
         $columnFilter = $autoFilter->getColumn('I');
