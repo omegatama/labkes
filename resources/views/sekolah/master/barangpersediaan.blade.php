@@ -5,6 +5,8 @@
 @section('extraCss')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/js/dt/datatables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/select2.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/select2/select2-bootstrap4.css') }}">
 @endsection
 
 @section('content')
@@ -21,28 +23,32 @@
                         </div>
                         <div class="card-body">
 	                        <a href="javascript:void(0)" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
-                            <table id="tabelbarangpersediaan" class="table table-bordered">
-								<thead>
-									<tr>
-										<th>No</th>
-										<th>Nama Persediaan</th>
-										<th>Satuan</th>
-										<th>Harga</th>
-										{{-- <th>Stok</th> --}}
-										<th>Pilihan</th>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<th>No</th>
-										<th>Nama Persediaan</th>
-										<th>Satuan</th>
-										<th>Harga</th>
-										{{-- <th>Stok</th> --}}
-										<th>Pilihan</th>
-									</tr>
-								</tfoot>
-                            </table>
+                            <div class="table-responsive">
+                            	<table id="tabelbarangpersediaan" class="table table-bordered">
+									<thead>
+										<tr>
+											<th>No</th>
+											<th>Jenis</th>
+											<th>Nama Persediaan</th>
+											<th>Satuan</th>
+											<th>Harga</th>
+											{{-- <th>Stok</th> --}}
+											<th>Pilihan</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th>No</th>
+											<th>Jenis</th>
+											<th>Nama Persediaan</th>
+											<th>Satuan</th>
+											<th>Harga</th>
+											{{-- <th>Stok</th> --}}
+											<th>Pilihan</th>
+										</tr>
+									</tfoot>
+	                            </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,6 +69,21 @@
 		        <form id="formBarangpersediaan" name="formBarangpersediaan" class="form-horizontal">
 		        	<input type="hidden" name="barangpersediaan_id" id="barangpersediaan_id">
 		            <div class="form-group">
+		                <label for="jenis" class="col-sm-12 control-label">Jenis</label>
+		                <div class="col-sm-12">
+		                    {{-- <input type="text" class="form-control" id="jenis" name="jenis" placeholder="Masukkan jenis" value="" required=""> --}}
+		                	<select name="jenis" id="jenis" required>
+		                		<option value=""></option>
+		                		<option value="1">Persediaan Alat Tulis Kantor</option>
+		                		<option value="2">Persediaan Alat Listrik dan Elektronik</option>
+		                		<option value="3">Persediaan Perangko, Materai dan Benda Pos Lainnya</option>
+		                		<option value="4">Persediaan Peralatan Kebersihan dan Bahan Pembersih</option>
+		                		<option value="5">Persediaan Pengisian Isi Tabung Gas</option>
+		                	</select>
+		                </div>
+		            </div>
+
+		            <div class="form-group">
 		                <label for="nama_persediaan" class="col-sm-12 control-label">Nama Persediaan</label>
 		                <div class="col-sm-12">
 		                    <input type="text" class="form-control" id="nama_persediaan" name="nama_persediaan" placeholder="Masukkan Nama" value="" maxlength="50" required="">
@@ -79,7 +100,7 @@
 		            <div class="form-group">
 		                <label for="harga_satuan" class="col-sm-12 control-label">Harga Satuan</label>
 		                <div class="col-sm-12">
-		                    <input type="text" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Masukkan Harga Satuan" value="" maxlength="50" required="">
+		                    <input type="text" class="rupiah form-control" id="harga_satuan" name="harga_satuan" placeholder="Masukkan Harga Satuan" value="" maxlength="50" required="">
 		                </div>
 		            </div>
 
@@ -103,9 +124,31 @@
 
 @section('extraJs')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="{{ asset('app-assets/vendors/js/select2.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('app-assets/vendors/js/inputmask/jquery.inputmask.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('app-assets/vendors/js/dt/datatables.min.js') }}" type="text/javascript"></script>
 <script>
 $(function() {
+	Inputmask.extendAliases({
+        rupiah: {
+            prefix: "Rp ",
+            alias: "numeric",
+            radixPoint: ',',
+            groupSeparator: '.',
+            autoGroup: true,
+            digits: 2,
+            digitsOptional: !1,
+            clearMaskOnLostFocus: !1,
+            removeMaskOnSubmit:true,
+        }
+    });
+
+    $(".rupiah").inputmask({ alias : "rupiah" });
+    $('#jenis').select2({
+    	placeholder: 'Silahkan pilih Jenis Persediaan',
+    	theme: 'bootstrap4'
+    });
+
 	$.ajaxSetup({
     	headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -119,6 +162,7 @@ $(function() {
         dom: 'flrtp',
         columns: [
         	{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},      
+            { data: 'jenis', name: 'jenis' },
             { data: 'nama_persediaan', name: 'nama_persediaan' },
             { data: 'satuan', name: 'satuan' },
             { data: 'harga_satuan', name: 'harga_satuan' },
@@ -145,7 +189,12 @@ $(function() {
     $('#tambah-data').click(function () {
         $('#btn-save').val("simpan-data");
         $('#barangpersediaan_id').val('');
+        $('#nama_persediaan-error').hide();
+		$('#satuan-error').hide();
+		$('#harga_satuan-error').hide();
+		$('#jenis-error').hide();
         $('#formBarangpersediaan').trigger("reset");
+        $('#jenis').trigger('change');
         $('#judulModal').html("Tambah Barang Persediaan");
         $('#ajax-modal').modal('show');
     });
@@ -156,13 +205,17 @@ $(function() {
 			$('#nama_persediaan-error').hide();
 			$('#satuan-error').hide();
 			$('#harga_satuan-error').hide();
+			$('#jenis-error').hide();
 			// $('#stok-error').hide();
+			// $('#jenis').trigger('change');
 			$('#judulModal').html("Edit Persediaan");
 		 	$('#btn-save').val("edit-data");
 			$('#ajax-modal').modal('show');
 			$('#barangpersediaan_id').val(data.id);
 			$('#nama_persediaan').val(data.nama_persediaan);
 			$('#satuan').val(data.satuan);
+			$('#jenis').val(data.jenis);
+			$('#jenis').trigger('change');
 			$('#harga_satuan').val(data.harga_satuan);
 			// $('#stok').val(data.stok);
 		});

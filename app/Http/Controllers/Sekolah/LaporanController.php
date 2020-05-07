@@ -1012,7 +1012,7 @@ class LaporanController extends Controller
             $persediaan_all[$key]['satuan'] = $persediaan->satuan;
             $persediaan_all[$key]['harga_satuan'] = $persediaan->harga_satuan;
 
-            // $kode_jenis[$key]['kode'] = $persediaan->kode_jenis;
+            $kode_jenis[$key]['kode'] = $persediaan->jenis;
 
             // if ($triwulan<4) {
                 /*$saldo= $persediaan->stok_awals()
@@ -1076,6 +1076,7 @@ class LaporanController extends Controller
             $pengeluaran_persediaan[$key]['pengeluaran_2'] = $pengeluaran_2;
             $pengeluaran_persediaan[$key]['pengeluaran_3'] = $pengeluaran_3;
         }
+        // return $kode_jenis;
         // return $persediaan_all;
         // return $pengeluaran_persediaan;
 
@@ -1101,6 +1102,12 @@ class LaporanController extends Controller
             $pengeluaran_persediaan,
             null,
             'M10'
+        );
+
+        $worksheet->fromArray(
+            $kode_jenis,
+            null,
+            'Y10'
         );
 
         $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
