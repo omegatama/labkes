@@ -8,35 +8,53 @@
         <section id="full-layout">
             
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="card gradient-green-tea">
-                        <div class="card-content">
-                            <div class="px-2 py-2">
-                                <div class="media">
-                                    <div class="media-body white text-center">
-                                        <span>NPSN</span>
-                                        <h3 class="text-bold-600 font-large-3">{{ Auth::user()->npsn }}</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 
-                <div class="col-lg-4">
-                    <div class="card gradient-ibiza-sunset">
-                        <div class="card-content">
-                            <div class="px-2 py-2">
-                                <div class="media">
-                                    <div class="media-body white text-center">
-                                        <span>Tahun Anggaran</span>
-                                        <h3 class="text-bold-600 font-large-3">{{ Cookie::get('ta') }}</h3>
+                @if (empty(Auth::user()->periode_awal) || empty(Auth::user()->periode_akhir))
+                    <div class="col-lg-4">
+                        <div class="card gradient-green-tea">
+                            <div class="card-content">
+                                <div class="px-2 py-2">
+                                    <div class="media">
+                                        <div class="media-body white text-center">
+                                            <span>NPSN</span>
+                                            <h3 class="text-bold-600 font-large-3">{{ Auth::user()->npsn }}</h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card gradient-ibiza-sunset">
+                            <div class="card-content">
+                                <div class="px-2 py-2">
+                                    <div class="media">
+                                        <div class="media-body white text-center">
+                                            <span>Tahun Anggaran</span>
+                                            <h3 class="text-bold-600 font-large-3">{{ Cookie::get('ta') }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="col-lg-8">
+                        <div class="card gradient-green-tea">
+                            <div class="card-content">
+                                <div class="px-2 py-2">
+                                    <div class="media">
+                                        <div class="media-body white text-center">
+                                            <span>Periode Akhif</span>
+                                            <h3 class="text-bold-600 font-large-1 py-2">{{ Carbon\Carbon::parse(Auth::user()->periode_awal)->format('d-m-Y')." s/d ".Carbon\Carbon::parse(Auth::user()->periode_akhir)->format('d-m-Y') }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="col-lg-4">
                     <div class="card gradient-purple-bliss">

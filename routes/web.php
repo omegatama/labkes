@@ -86,8 +86,18 @@ Route::group([
     Route::get('/sekolah/reset/{id}', 'Admin\SekolahController@reset')->name('admin.sekolah.reset');
 
     Route::get('/sekolah/lockrka/{id}', 'Admin\SekolahController@lockrka')->name('admin.sekolah.lockrka');
-
+    
     Route::get('/sekolah/unlockrka/{id}', 'Admin\SekolahController@unlockrka')->name('admin.sekolah.unlockrka');
+
+    Route::get('/sekolah/ubahperiode/{id}', 'Admin\SekolahController@ubah_periode')->name('admin.sekolah.ubahperiode');
+    Route::post('/sekolah/prosesperiode/{id}', 'Admin\SekolahController@proses_ubah_periode')->name('admin.sekolah.proses_ubahperiode');
+
+    Route::get('/sekolah/set/lockrka', 'Admin\SekolahController@set_lockrka')->name('admin.sekolah.set_lockrka');
+    Route::get('/sekolah/set/periode', 'Admin\SekolahController@set_periode')->name('admin.sekolah.set_periode');
+    
+    Route::post('/sekolah/set/proses_lockrka', 'Admin\SekolahController@proses_set_lockrka')->name('admin.sekolah.proses_set_lockrka');
+    Route::post('/sekolah/set/proses_periode', 'Admin\SekolahController@proses_set_periode')->name('admin.sekolah.proses_set_periode');
+
 
     Route::resource('/sekolah', 'Admin\SekolahController', ['as' => 'admin'])
     ->except([

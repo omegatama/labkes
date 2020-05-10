@@ -26,6 +26,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 </style>
 @endsection
 
+@php
+    $periode_awal= Auth::user()->periode_awal;
+    $periode_akhir= Auth::user()->periode_akhir;      
+@endphp
+
 @section('content')
 <div class="main-content">
     <div class="content-wrapper">
@@ -88,7 +93,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="tanggal">Tanggal</label>
-                                                    <input type="date" id="tanggal" class="form-control" name="tanggal" required value="{{ (isset($belanja))? $belanja->tanggal->format('Y-m-d') : '' }}">
+                                                    <input min="{{$periode_awal}}" max="{{$periode_akhir}}" type="date" id="tanggal" class="form-control" name="tanggal" required value="{{ (isset($belanja))? $belanja->tanggal->format('Y-m-d') : '' }}">
                                                 </div>
                                             </div>
 

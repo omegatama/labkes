@@ -24,7 +24,8 @@ class Sekolah extends Authenticatable
         'name', 'email', 'npsn', 'password',
         'jenjang', 'status', 'kecamatan_id', 'desa',
         'alamat', 'telepon', 'nama_kepsek', 'nip_kepsek',
-        'nama_bendahara', 'nip_bendahara'
+        'nama_bendahara', 'nip_bendahara', 'kunci_rka',
+        'periode_awal', 'periode_akhir'
     ];
 
     /**

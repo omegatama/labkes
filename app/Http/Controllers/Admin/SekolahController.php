@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -26,6 +27,8 @@ class SekolahController extends Controller
             ->addColumn('action', function(Sekolah $sekolah) {
                 $urledit= route('admin.sekolah.edit', ['id' => $sekolah->id]);
                 $urlreset= route('admin.sekolah.reset', ['id' => $sekolah->id]);
+                $urlsetperiode= route('admin.sekolah.ubahperiode', ['id' => $sekolah->id]);
+                
                 if ($sekolah->kunci_rka) {
                     $urlkunci= route('admin.sekolah.unlockrka', ['id' => $sekolah->id]);
                     $labelkunci= 'Unlock RKA';
@@ -38,7 +41,8 @@ class SekolahController extends Controller
                                
                 return RenderTombol("success", $urledit, "Edit")." ".
                 RenderTombol("warning confirmation", $urlreset, "Reset")." ".
-                RenderTombol("secondary", $urlkunci, $labelkunci);
+                RenderTombol("secondary", $urlkunci, $labelkunci)." ".
+                RenderTombol("primary", $urlsetperiode, 'Set Periode');
             })
             ->addIndexColumn()
             ->make(true);
@@ -74,10 +78,10 @@ class SekolahController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    /*public function show($id)
     {
         //
-    }
+    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -173,6 +177,83 @@ class SekolahController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Unlock RKA Gagal!');
         }
+    }
+
+    public function ubah_periode($id)
+    {
+        $sekolah = Sekolah::findOrFail($id);
+        return view('admin.sekolah.ubahperiode',compact('sekolah'));
+    }
+    
+    public function proses_ubah_periode(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            DB::table('sekolahs')
+            ->where('id', $id)
+            ->update(array(
+                'periode_awal' => $request->periode_awal,
+                'periode_akhir' => $request->periode_akhir,
+            ));
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        DB::commit();
+        return redirect()->route('admin.sekolah.index')->with(['success' => 'Periode Berhasil Di Setel']);
+        
+    }
+
+    public function set_lockrka()
+    {
+        return view('admin.sekolah.setlockrka');
+    }
+
+    public function proses_set_lockrka(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::table('sekolahs')
+            // ->where('npsn', 'tes')
+            ->update(array(
+                'kunci_rka' => $request->kunci_rka,
+            ));
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        DB::commit();
+        return redirect()->route('admin.sekolah.index')->with(['success' => 'Kunci RKA Berhasil Di Setel']);
+    }
+
+    public function set_periode()
+    {
+        return view('admin.sekolah.setperiode');
+    }
+
+    public function proses_set_periode(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::table('sekolahs')
+            // ->where('npsn', 'tes')
+            ->update(array(
+                'periode_awal' => $request->periode_awal,
+                'periode_akhir' => $request->periode_akhir,
+            ));
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Error: '.$e->getMessage());
+        }
+
+        DB::commit();
+        return redirect()->route('admin.sekolah.index')->with(['success' => 'Periode Berhasil Di Setel']);
+        // return $request;
     }
 
     public function selectSekolah(Request $request)

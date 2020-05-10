@@ -37,7 +37,21 @@ class TransaksiKasController extends Controller
                 $urledit= route('sekolah.trxkas.edit', ['id' => $trx->id]);
                 $urlhapus= route('sekolah.trxkas.destroy', ['id' => $trx->id]);
 
-                return RenderTombol("success", $urledit, "Edit")." ".RenderTombol("danger confirmation", $urlhapus, "Hapus");
+                $periode_awal= Auth::user()->periode_awal;
+                $periode_akhir= Auth::user()->periode_akhir;
+                
+                $btndasar = RenderTombol("success", $urledit, "Edit")." ".RenderTombol("danger confirmation", $urlhapus, "Hapus");
+                
+                if (isset($periode_awal) && isset($periode_akhir)) {
+                    if (
+                        $trx->tanggal < $periode_awal ||
+                        $trx->tanggal > $periode_akhir
+                    ) {
+                        $btndasar = "-";
+                    }
+                }
+
+                return $btndasar;
             })
             ->editColumn('tanggal', function ($trx) {
                 return $trx->tanggal->format('d/m/Y');

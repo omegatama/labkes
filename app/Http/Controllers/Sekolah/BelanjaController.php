@@ -62,6 +62,21 @@ class BelanjaController extends Controller
                 $urla2= route('sekolah.belanja.a2', ['id' => $belanja->id]);
                 $jenisrekening= $belanja->rka->rekening->jenis; //1: Belanja Modal //2: Belanja Persediaan
 
+                $periode_awal= Auth::user()->periode_awal;
+                $periode_akhir= Auth::user()->periode_akhir;
+                
+                $btndasar = RenderTombol("success", $urledit, "Edit")." ".
+                RenderTombol("danger confirmation", $urlhapus, "Hapus")." ";
+                
+                if (isset($periode_awal) && isset($periode_akhir)) {
+                    if (
+                        $belanja->tanggal < $periode_awal ||
+                        $belanja->tanggal > $periode_akhir
+                    ) {
+                        $btndasar = "";
+                    }
+                }
+
                 switch ($jenisrekening) {
                 	case '1':
                 		$urltambahan = route('sekolah.belanja.modal', ['id' => $belanja->id]);
@@ -79,8 +94,7 @@ class BelanjaController extends Controller
                 }
 
                 $btnaction =
-	                RenderTombol("success", $urledit, "Edit")." ".
-	                RenderTombol("danger confirmation", $urlhapus, "Hapus")." ".
+                    $btndasar.
 	                RenderTombol("info", $urla2, "Download A2")." ";
 
 	            $btnaction .= (!empty($urltambahan)) ? RenderTombol("warning", $urltambahan, $labeltambahan) : "" ;

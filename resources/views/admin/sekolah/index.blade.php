@@ -21,6 +21,10 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <a href="{{ route('admin.sekolah.create') }}" class="btn btn-info btn-sm mb-2" id="tambah-data">Tambah</a>
+                                <a href="{{ route('admin.sekolah.set_lockrka') }}" class="btn btn-secondary btn-sm mb-2" id="tambah-data">Setel RKA</a>
+                                <a href="{{ route('admin.sekolah.set_periode') }}" class="btn btn-primary btn-sm mb-2" id="tambah-data">Setel Periode</a>
+
                                 <table id="tabelSekolah" class="table table-bordered nowrap">
                                     <thead>
                                         <tr>
