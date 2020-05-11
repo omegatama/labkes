@@ -247,10 +247,10 @@
                                         <li>
                                             <a href="{{ route('admin.laporan.rka') }}" class="menu-item">RKA per Sekolah</a>
                                         </li>
-                                        {{-- <li>
-                                            <a href="#" class="menu-item">Lap Realisasi</a>
-                                        </li>
                                         <li>
+                                            <a href="{{ route('admin.laporan.realisasi') }}" class="menu-item">Lap Realisasi</a>
+                                        </li>
+                                        {{-- <li>
                                             <a href="#" class="menu-item">SPTJ</a>
                                         </li>
                                         <li>

@@ -252,6 +252,11 @@ class LaporanController extends Controller
                     $indexbaris++;
                     $baris[$indexbaris]['koderekening'] = '';
                     $baris[$indexbaris]['snp'] = $j.".".$k." ";
+                    /*try {
+                        $kegiatans->findOrFail($k)->uraian;
+                    } catch (\Exception $e) {
+                        return $k;
+                    }*/
                     $baris[$indexbaris]['uraian'] = $kegiatans->find($k)->uraian;
                     $baris[$indexbaris]['kp'] = '';
                     $baris[$indexbaris]['vol'] = '';
@@ -356,5 +361,93 @@ class LaporanController extends Controller
         header("Content-Disposition: attachment; filename= ".$file."");
         header('Content-Type: application/excel');
         return $documento;
+    }
+
+    public function realisasi()
+    {
+        return view('admin.laporan.realisasi');
+    }
+    public function proses_realisasi(Request $request)
+    {
+        set_time_limit(1800);
+        $sekolah = Sekolah::where('id', '>', '2');
+        $ta = $request->cookie('ta');
+        $triwulan = $request->triwulan;
+
+        $triwulan1= [1 ,2 ,3 ];
+        $triwulan2= [4 ,5 ,6 ];
+        $triwulan3= [7 ,8 ,9 ];
+        $triwulan4= [10,11,12];
+
+        $bulan = ${"triwulan".$triwulan};
+        $bulan1= IntBulan($bulan[0]);
+        $bulan2= IntBulan($bulan[1]);
+        $bulan3= IntBulan($bulan[2]);
+
+        if ($request->filled('kecamatan_id')) {
+            // return $request->kecamatan_id;
+            $sekolah->kecamatanId($request->kecamatan_id);
+        }
+
+        if ($request->filled('status')) {
+            // return $request->status;
+            $sekolah->status($request->status);
+        }
+
+        if ($request->filled('jenjang')) {
+            // return $request->jenjang;
+            $sekolah->jenjang($request->jenjang);
+        }
+
+        $filteredSekolah = $sekolah->has('rkas')->get();
+        $data = array();
+        $rekening = KodeRekening::whereNotNull('parent_id')->orderBy('parent_id')->get();
+        
+        foreach ($filteredSekolah as $key => $item) {
+            $data[$key]['npsn'] = $item->npsn;
+            $data[$key]['nama_sekolah'] = $item->name;
+            $data[$key]['kecamatan'] = $item->kecamatan->nama_kecamatan;
+
+            foreach ($bulan as $key_bln => $bln) {
+                foreach ($rekening as $key_rek => $rek) {
+                    $belanja_per_bln_per_rek= $item->belanjas()->ta($ta)->triwulan($triwulan)->whereMonth('tanggal', $bln)->rekening($rek->id)->sum('nilai');
+                    $data[$key]['bulan'.($bln).'_'.$rek->parent->kode_rekening.".".$rek->kode_rekening] = $belanja_per_bln_per_rek;//0;
+                }
+            }
+        }
+        
+        // return $data;
+        $spreadsheet = IOFactory::load('storage/format/lap_realisasi_admin.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        
+        $worksheet->fromArray(
+            $data,
+            null,
+            'B3'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('A2:FE201');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('FE');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            "A"
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'Realisasi_TA_'.$ta.'_TW_'.$triwulan.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+        
     }
 }
