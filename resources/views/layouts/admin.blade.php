@@ -250,6 +250,13 @@
                                         <li>
                                             <a href="{{ route('admin.laporan.realisasi') }}" class="menu-item">Lap Realisasi</a>
                                         </li>
+                                        <li>
+                                            <a href="{{ route('admin.laporan.modal') }}" class="menu-item">Lap B.Modal</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('admin.laporan.pajak') }}" class="menu-item">Lap Pajak</a>
+                                        </li>
+
                                         {{-- <li>
                                             <a href="#" class="menu-item">SPTJ</a>
                                         </li>

@@ -54,7 +54,7 @@ class TransaksiKasController extends Controller
                 return $btndasar;
             })
             ->editColumn('tanggal', function ($trx) {
-                return $trx->tanggal->format('d/m/Y');
+                return $trx->tanggal->locale('id_ID')->isoFormat('LL');
             })
             ->editColumn('nominal', function ($trx) {
                 return FormatMataUang($trx->nominal);

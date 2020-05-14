@@ -23,7 +23,7 @@ class BelanjaPersediaanController extends Controller
             //     $query->where('ta', '=', $ta);
             // },true)
             ->editColumn('tanggal', function ($belanja) {
-                return $belanja->tanggal->format('d/m/Y');
+                return $belanja->tanggal->locale('id_ID')->isoFormat('LL');
             })
             ->editColumn('nilai', function ($belanja) {
                 return FormatMataUang($belanja->nilai);

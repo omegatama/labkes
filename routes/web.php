@@ -144,6 +144,21 @@ Route::group([
     Route::get('/laporan/realisasi', 'Admin\LaporanController@realisasi')->name('admin.laporan.realisasi');
     Route::post('/proses/realisasi', 'Admin\LaporanController@proses_realisasi')->name('admin.proses.realisasi');
     
+    Route::get('/laporan/modal', 'Admin\LaporanController@modal')->name('admin.laporan.modal');
+    Route::post('/proses/modal', 'Admin\LaporanController@proses_modal')->name('admin.proses.modal');
+    
+    Route::get('/laporan/persediaan', 'Admin\LaporanController@persediaan')->name('admin.laporan.persediaan');
+    Route::post('/proses/persediaan', 'Admin\LaporanController@proses_persediaan')->name('admin.proses.persediaan');
+    
+    Route::get('/laporan/pajak', 'Admin\LaporanController@pajak')->name('admin.laporan.pajak');
+    Route::post('/proses/pajak', 'Admin\LaporanController@proses_pajak')->name('admin.proses.pajak');
+    
+    Route::get('/laporan/k8', 'Admin\LaporanController@k8')->name('admin.laporan.k8');
+    Route::post('/proses/k8', 'Admin\LaporanController@proses_k8')->name('admin.proses.k8');
+    
+    Route::get('/laporan/saldo', 'Admin\LaporanController@saldo')->name('admin.laporan.saldo');
+    Route::post('/proses/saldo', 'Admin\LaporanController@proses_saldo')->name('admin.proses.saldo');
+    
     // End Laporan
 });
 

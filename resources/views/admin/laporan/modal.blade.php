@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('titleBar', "Laporan Realisasi")
+@section('titleBar', "Laporan Belanja Modal")
 
 @section('extraCss')
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/select2.min.css') }}">
@@ -34,11 +34,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                Laporan Realisasi
+                                Laporan Belanja Modal
                             </h4>
                         </div>
                         <div class="card-body">
-                            <form class="form" method="POST" action="{{ route('admin.proses.realisasi') }}">
+                            <form class="form" method="POST" action="{{ route('admin.proses.modal') }}">
                                 @csrf
                                 
                                 <div class="form-body">

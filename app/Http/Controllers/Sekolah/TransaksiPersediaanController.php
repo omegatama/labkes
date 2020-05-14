@@ -34,7 +34,7 @@ class TransaksiPersediaanController extends Controller
                 ]);
             },true)
             ->editColumn('tanggal', function ($trx) {
-                return $trx->tanggal->format('d/m/Y');
+                return $trx->tanggal->locale('id_ID')->isoFormat('LL');
             })
             ->addColumn('action', function(PersediaanTrx $trx) {
                 $urledit= route('sekolah.trxpersediaan.edit', ['id' => $trx->id]);
@@ -64,7 +64,7 @@ class TransaksiPersediaanController extends Controller
                 ]);
             },true)
             ->editColumn('tanggal', function ($trx) {
-                return $trx->tanggal->format('d/m/Y');
+                return $trx->tanggal->locale('id_ID')->isoFormat('LL');
             })
             ->editColumn('io', function ($trx) {
                 switch ($trx->io) {

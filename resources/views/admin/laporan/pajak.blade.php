@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('titleBar', "Laporan Realisasi")
+@section('titleBar', "Laporan Pajak")
 
 @section('extraCss')
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/select2.min.css') }}">
@@ -34,11 +34,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                Laporan Realisasi
+                                Laporan Pajak
                             </h4>
                         </div>
                         <div class="card-body">
-                            <form class="form" method="POST" action="{{ route('admin.proses.realisasi') }}">
+                            <form class="form" method="POST" action="{{ route('admin.proses.pajak') }}">
                                 @csrf
                                 
                                 <div class="form-body">
@@ -82,6 +82,25 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                             
                                         </select>
                                     </div>
+
+                                    {{-- <div class="form-group mb-1">
+                                        <label class="m-0" for="bulan">Bulan</label>
+                                        <select id='bulan' class="form-control" name="bulan" style="width:100%" required>
+                                            <option>Pilih Bulan</option>
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div> --}}
 
                                 </div>
                                         

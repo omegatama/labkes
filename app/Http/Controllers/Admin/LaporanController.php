@@ -10,6 +10,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Sekolah;
 use App\KodeRekening;
 use App\KodeProgram;
+use App\BelanjaModal;
 
 class LaporanController extends Controller
 {
@@ -367,6 +368,7 @@ class LaporanController extends Controller
     {
         return view('admin.laporan.realisasi');
     }
+
     public function proses_realisasi(Request $request)
     {
         set_time_limit(1800);
@@ -450,4 +452,226 @@ class LaporanController extends Controller
         return $documento;
         
     }
+
+    public function modal()
+    {
+        return view('admin.laporan.modal');
+    }
+    
+    public function proses_modal(Request $request)
+    {
+        set_time_limit(1800);
+        $sekolah = Sekolah::where('id', '>', '2');
+        $ta = $request->cookie('ta');
+        $triwulan = $request->triwulan;
+
+        if ($request->filled('kecamatan_id')) {
+            // return $request->kecamatan_id;
+            $sekolah->kecamatanId($request->kecamatan_id);
+        }
+
+        if ($request->filled('status')) {
+            // return $request->status;
+            $sekolah->status($request->status);
+        }
+
+        if ($request->filled('jenjang')) {
+            // return $request->jenjang;
+            $sekolah->jenjang($request->jenjang);
+        }
+
+        $filteredSekolah = $sekolah->has('belanjas')->get();
+        $data = array();
+        // return $request;
+        $i=0;
+        foreach ($filteredSekolah as $key_sekolah => $item) {
+            $belanja= $item->belanjas()->modal()->ta($ta)->triwulan($triwulan)->get();
+            if ($belanja->isNotEmpty()) {
+                $belanjamodal = BelanjaModal::npsn($item->npsn)->ta($ta)->triwulan($triwulan)->get();
+                foreach ($belanjamodal as $key => $modal) {
+                    $data[$i]['npsn'] = $item->npsn;
+                    $data[$i]['nama_sekolah'] = $item->name;
+                    $data[$i]['kecamatan'] = $item->kecamatan->nama_kecamatan;
+                    
+                    $data[$i]['kode_barang']= $modal->kode_barang->kode_barang;
+                    $data[$i]['nama_barang']= $modal->nama_barang;
+                    $data[$i]['merek']= $modal->merek;
+                    $data[$i]['warna']= $modal->warna;
+                    $data[$i]['tipe']= $modal->tipe;
+                    $data[$i]['bahan']= $modal->bahan;
+                    $data[$i]['bukti_tanggal']= date('d', strtotime($modal->tanggal_bukti));
+                    $data[$i]['bukti_bulan']= IntBulan(date('n', strtotime($modal->tanggal_bukti)));
+                    $data[$i]['bukti_nomor']= $modal->nomor_bukti;
+                    $data[$i]['qty']= $modal->qty;
+                    $data[$i]['satuan']= $modal->satuan;
+                    $data[$i]['jenis']= $modal->belanja->rka->rekening->parent_id;
+                    $data[$i]['harga_satuan']= $modal->harga_satuan;
+                    
+                    $i++;
+                }
+                
+            }
+        }
+        // return $data;
+
+        // return $data;
+        $spreadsheet = IOFactory::load('storage/format/lap_modal_admin.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        
+        $worksheet->fromArray(
+            $data,
+            null,
+            'B3'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('A2:T305');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('T');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            "A"
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'B_Modal_TA_'.$ta.'_TW_'.$triwulan.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+    }
+
+    public function pajak()
+    {
+        return view('admin.laporan.pajak');
+    }
+    
+    public function proses_pajak(Request $request)
+    {
+        set_time_limit(1800);
+        $sekolah = Sekolah::where('id', '>', '2');
+        $ta = $request->cookie('ta');
+        $triwulan = $request->triwulan;
+        // $bulan = $request->bulan;
+
+        if ($request->filled('kecamatan_id')) {
+            // return $request->kecamatan_id;
+            $sekolah->kecamatanId($request->kecamatan_id);
+        }
+
+        if ($request->filled('status')) {
+            // return $request->status;
+            $sekolah->status($request->status);
+        }
+
+        if ($request->filled('jenjang')) {
+            // return $request->jenjang;
+            $sekolah->jenjang($request->jenjang);
+        }
+
+        $filteredSekolah = $sekolah->has('belanjas')->get();
+        $data = array();
+        // return $filteredSekolah;
+        $i=0;
+        foreach ($filteredSekolah as $key_sekolah => $item) {
+            $pajak_belanja= $item->belanjas()
+            ->ta($ta)
+            // ->whereMonth('tanggal', $bulan)
+            ->where('triwulan', $triwulan)
+            ->where(function ($query){
+                $query->where('ppn','>',0)
+                ->orWhere('pph21','>',0)
+                ->orWhere('pph23','>',0)
+                ->orderBy('tanggal');
+            })
+            ->get();
+
+            if ($pajak_belanja->isNotEmpty()) {
+                foreach ($pajak_belanja as $key_pajak => $pajak) {
+                    $npsn         = $item->npsn;
+                    $nama_sekolah = $item->name;
+                    $kecamatan    = $item->kecamatan->nama_kecamatan;
+                    $tanggal      = $pajak->tanggal->locale('id_ID')->isoFormat('LL');
+                    $rekening     = $pajak->rka->rekening->parent->kode_rekening.'.';
+                    $rekening     .=$pajak->rka->rekening->kode_rekening;
+                    // PPN
+                    if ($pajak->ppn > 0) {
+                        $data[$i]['npsn'] = $npsn;
+                        $data[$i]['nama_sekolah'] = $nama_sekolah;
+                        $data[$i]['kecamatan'] = $kecamatan;
+                        $data[$i]['jenis'] = 'PPN';
+                        $data[$i]['tanggal'] = $tanggal;
+                        $data[$i]['jumlah'] = $pajak->ppn;
+                        $data[$i]['rekening'] = $rekening;
+                        $i++;
+                    }
+
+                    // PPH21
+                    if ($pajak->pph21 > 0) {
+                        $data[$i]['npsn'] = $npsn;
+                        $data[$i]['nama_sekolah'] = $nama_sekolah;
+                        $data[$i]['kecamatan'] = $kecamatan;
+                        $data[$i]['jenis'] = 'PPh 21';
+                        $data[$i]['tanggal'] = $tanggal;
+                        $data[$i]['jumlah'] = $pajak->pph21;
+                        $data[$i]['rekening'] = $rekening;
+                        $i++;
+                    }
+
+                    // PPH23
+                    if ($pajak->pph23 > 0) {
+                        $data[$i]['npsn'] = $npsn;
+                        $data[$i]['nama_sekolah'] = $nama_sekolah;
+                        $data[$i]['kecamatan'] = $kecamatan;
+                        $data[$i]['jenis'] = 'PPh 23';
+                        $data[$i]['tanggal'] = $tanggal;
+                        $data[$i]['jumlah'] = $pajak->pph23;
+                        $data[$i]['rekening'] = $rekening;
+                        $i++;
+                    }
+                }
+            }
+        }
+
+        // return $data;
+        $spreadsheet = IOFactory::load('storage/format/lap_pajak_admin.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        
+        $worksheet->fromArray(
+            $data,
+            null,
+            'B3'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('A2:I204');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('I');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            "A"
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'Pajak_TA_'.$ta.'_TW_'.$triwulan.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+    }
+
 }
