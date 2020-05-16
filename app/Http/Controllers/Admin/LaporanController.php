@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Carbon\Carbon;
 use App\Sekolah;
+use App\Kecamatan;
 use App\KodeRekening;
 use App\KodeProgram;
+use App\KomponenPembiayaan;
 use App\BelanjaModal;
 
 class LaporanController extends Controller
@@ -674,4 +677,247 @@ class LaporanController extends Controller
         return $documento;
     }
 
+    public function saldo()
+    {
+        return view('admin.laporan.saldo');
+    }
+    
+    public function proses_saldo(Request $request)
+    {
+        set_time_limit(1800);
+        $sekolah = Sekolah::where('id', '>', '2');
+        $ta = $request->cookie('ta');
+        // $triwulan = $request->triwulan;
+
+        if ($request->filled('kecamatan_id')) {
+            // return $request->kecamatan_id;
+            $sekolah->kecamatanId($request->kecamatan_id);
+        }
+
+        if ($request->filled('status')) {
+            // return $request->status;
+            $sekolah->status($request->status);
+        }
+
+        if ($request->filled('jenjang')) {
+            // return $request->jenjang;
+            $sekolah->jenjang($request->jenjang);
+        }
+
+        $filteredSekolah = $sekolah->get();
+        // $data = array();
+        // return $filteredSekolah;
+        $i=0;
+        foreach ($filteredSekolah as $key_sekolah => $item) {
+            $data[$i]['npsn'] = $item->npsn;
+            $data[$i]['nama_sekolah'] = $item->name;
+            $data[$i]['kecamatan'] = $item->kecamatan->nama_kecamatan;
+            
+            $saldo_tunai= array();
+            $saldo_bank= array();
+
+            for ($j=1; $j <= 12 ; $j++) {
+                
+                if ($j==12) {
+                    $saldotunai= 0;
+                    $saldobank= 0;
+                }
+                else{
+                    $fromDate = Carbon::createFromDate($ta, ($j+1), 1)->format('Y-m-d');
+                    $saldo_akhir = $item->saldo_awals()
+                    ->where('periode', $fromDate)->get();
+                    $saldobank = $saldo_akhir->sum('saldo_bank');
+                    $saldotunai = $saldo_akhir->sum('saldo_tunai');
+                }
+
+                $saldo_tunai[$j] = $saldotunai;
+                $saldo_bank[$j] = $saldobank;
+            }
+
+            for ($j=1; $j <= 12 ; $j++) {
+                $data[$i]['tunai_bln_'.$j] = $saldo_tunai[$j];
+            }
+
+            for ($j=1; $j <= 12 ; $j++) {
+                $data[$i]['bank_bln_'.$j] = $saldo_bank[$j];
+            }
+
+            $i++;
+        }
+        // return $data;
+        $spreadsheet = IOFactory::load('storage/format/lap_saldo_admin.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        
+        $worksheet->fromArray(
+            $data,
+            null,
+            'B3'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('A2:AC605');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('AC');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            "A"
+        );
+
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'Saldo_TA_'.$ta.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+    }
+
+    public function persediaan()
+    {
+        return view('admin.laporan.persediaan');
+    }
+    
+    public function proses_persediaan(Request $request)
+    {
+        set_time_limit(1800);
+        $sekolah = Sekolah::where('id', '>', '2');
+        $ta = $request->cookie('ta');
+        $triwulan = $request->triwulan;
+
+        if ($request->filled('kecamatan_id')) {
+            // return $request->kecamatan_id;
+            $sekolah->kecamatanId($request->kecamatan_id);
+        }
+
+        if ($request->filled('status')) {
+            // return $request->status;
+            $sekolah->status($request->status);
+        }
+
+        if ($request->filled('jenjang')) {
+            // return $request->jenjang;
+            $sekolah->jenjang($request->jenjang);
+        }
+
+        $filteredSekolah = $sekolah->get();
+        // $data = array();
+        // return $filteredSekolah;
+        $i=0;
+        foreach ($filteredSekolah as $key_sekolah => $item) {
+            $data[$i]['npsn'] = $item->npsn;
+            $data[$i]['nama_sekolah'] = $item->name;
+            $data[$i]['kecamatan'] = $item->kecamatan->nama_kecamatan;
+            
+            $i++;
+        }
+
+        return $data;
+    }
+
+    public function k8()
+    {
+        return view('admin.laporan.k8');
+    }
+    
+    public function proses_k8(Request $request)
+    {
+        set_time_limit(1800);
+        $sekolah = Sekolah::where('id', '>', '2');
+        $ta = $request->cookie('ta');
+        $triwulan = $request->triwulan;
+        
+        $judul= "REKAPITULASI REALISASI PENGGUNAAN DANA BOS ".$ta;
+        $periode="PERIODE TANGGAL : ".AwalTriwulan($triwulan, $ta)->locale('id_ID')->isoFormat('LL')." s/d ".AkhirTriwulan($triwulan, $ta)->locale('id_ID')->isoFormat('LL')." (Triwulan ".$triwulan." Tahun ".$ta.")";
+        // return $periode;
+        $nama_kecamatan=$status=$jenjang= "";
+
+        if ($request->filled('kecamatan_id')) {
+            // return $request->kecamatan_id;
+            $nama_kecamatan= Kecamatan::find($request->kecamatan_id)->nama_kecamatan;
+            $sekolah->kecamatanId($request->kecamatan_id);
+        }
+
+        if ($request->filled('status')) {
+            // return $request->status;
+            $status= $request->status;
+            $sekolah->status($request->status);
+        }
+
+        if ($request->filled('jenjang')) {
+            // return $request->jenjang;
+            $jenjang= $request->jenjang;
+            $sekolah->jenjang($request->jenjang);
+        }
+        // return $jenjang;
+
+        $filteredSekolah = $sekolah->get();
+        $data = array();
+        // return $filteredSekolah;
+        // $i=0;
+        $program = KodeProgram::all();
+        $komponen = KomponenPembiayaan::all();
+        // $program_kp= array();
+        // return json_encode($komponen);
+        foreach ($program as $key => $p) {
+            foreach ($komponen as $kpkey => $kp) {
+                $data[$p->id][$kp->id] = 0;
+            }
+        }
+        
+        foreach ($filteredSekolah as $key_sekolah => $item) {
+            $program_kp= array();
+            foreach ($program as $key => $p) {
+                foreach ($komponen as $kpkey => $kp) {
+                    $program_id=$p->id;
+                    $pembiayaan_id=$kp->id;
+                    $program_kp_detail= $item->belanjas()->ta($ta)->triwulan($triwulan)
+                        ->whereHas('rka', function ($qrka) use ($program_id) {
+                            $qrka->where('kode_program_id', $program_id);
+                        })
+                        ->whereHas('rka', function ($qrka) use ($pembiayaan_id) {
+                            $qrka->where('komponen_pembiayaan_id', $pembiayaan_id);
+                        })
+                        ->sum('nilai');
+                    
+                    $program_kp[$p->id][$kp->id] = $program_kp_detail;
+                    $data[$p->id][$kp->id] += $program_kp[$p->id][$kp->id];
+                }
+            }
+        }
+
+        // return $data;
+        $spreadsheet = IOFactory::load('storage/format/k8.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('judul')->setValue($judul);
+        $worksheet->getCell('periode')->setValue($periode);
+        $worksheet->getCell('jenjang')->setValue($jenjang);
+        $worksheet->getCell('status')->setValue($status);
+        $worksheet->getCell('kecamatan')->setValue($nama_kecamatan);
+        
+        
+        
+        $worksheet->fromArray(
+            $data,
+            null,
+            'E15'
+        );
+        
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'K8_TA_'.$ta.'_TW_'.$triwulan.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+    }
 }

@@ -256,6 +256,12 @@
                                         <li>
                                             <a href="{{ route('admin.laporan.pajak') }}" class="menu-item">Lap Pajak</a>
                                         </li>
+                                        <li>
+                                            <a href="{{ route('admin.laporan.saldo') }}" class="menu-item">Lap Saldo</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('admin.laporan.k8') }}" class="menu-item">Lap K8</a>
+                                        </li>
 
                                         {{-- <li>
                                             <a href="#" class="menu-item">SPTJ</a>
