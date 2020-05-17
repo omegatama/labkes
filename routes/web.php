@@ -156,6 +156,9 @@ Route::group([
     Route::get('/laporan/k8', 'Admin\LaporanController@k8')->name('admin.laporan.k8');
     Route::post('/proses/k8', 'Admin\LaporanController@proses_k8')->name('admin.proses.k8');
     
+    Route::get('/laporan/k8_bulanan', 'Admin\LaporanController@k8_bulanan')->name('admin.laporan.k8_bulanan');
+    Route::post('/proses/k8_bulanan', 'Admin\LaporanController@proses_k8_bulanan')->name('admin.proses.k8_bulanan');
+    
     Route::get('/laporan/saldo', 'Admin\LaporanController@saldo')->name('admin.laporan.saldo');
     Route::post('/proses/saldo', 'Admin\LaporanController@proses_saldo')->name('admin.proses.saldo');
     

@@ -1083,7 +1083,6 @@ class LaporanController extends Controller
     	// Excel
         $spreadsheet = IOFactory::load('storage/format/belanja_persediaan1.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
-        $spreadsheet->getActiveSheet()->setAutoFilter('B9:AA209');
         
         $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
         $worksheet->getCell('nama_kecamatan')->setValue($nama_kecamatan);
@@ -1110,6 +1109,8 @@ class LaporanController extends Controller
             'Y10'
         );
 
+        $spreadsheet->getActiveSheet()->setAutoFilter('B9:AA309');
+        
         $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
         $columnFilter = $autoFilter->getColumn('AA');
         $columnFilter->createRule()
@@ -1370,9 +1371,9 @@ class LaporanController extends Controller
             'B12'
         );
 
-        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I311');
+        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I411');
         
-        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $autoFilter = $spreadsheet->getActiveSheet()->AutoFilter();
         $columnFilter = $autoFilter->getColumn('I');
         $columnFilter->createRule()
         ->setRule(
@@ -1894,7 +1895,7 @@ class LaporanController extends Controller
             'B12'
         );
 
-        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I211');
+        $spreadsheet->getActiveSheet()->setAutoFilter('B11:I411');
         
         $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
         $columnFilter = $autoFilter->getColumn('I');

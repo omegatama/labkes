@@ -254,6 +254,9 @@
                                             <a href="{{ route('admin.laporan.modal') }}" class="menu-item">Lap B.Modal</a>
                                         </li>
                                         <li>
+                                            <a href="{{ route('admin.laporan.persediaan') }}" class="menu-item">Lap B.Persediaan</a>
+                                        </li>
+                                        <li>
                                             <a href="{{ route('admin.laporan.pajak') }}" class="menu-item">Lap Pajak</a>
                                         </li>
                                         <li>
@@ -261,6 +264,9 @@
                                         </li>
                                         <li>
                                             <a href="{{ route('admin.laporan.k8') }}" class="menu-item">Lap K8</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('admin.laporan.k8_bulanan') }}" class="menu-item">Lap K8 Bulan</a>
                                         </li>
 
                                         {{-- <li>
