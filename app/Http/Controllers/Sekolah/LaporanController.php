@@ -1373,7 +1373,7 @@ class LaporanController extends Controller
 
         $spreadsheet->getActiveSheet()->setAutoFilter('B11:I411');
         
-        $autoFilter = $spreadsheet->getActiveSheet()->AutoFilter();
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
         $columnFilter = $autoFilter->getColumn('I');
         $columnFilter->createRule()
         ->setRule(
