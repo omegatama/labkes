@@ -1489,7 +1489,7 @@ class LaporanController extends Controller
                     $bku_content[$i+1][5]= $nominalbelanja[$i];
                     $i++;
 
-                    if (($item->belanja->ppn)!=0) {
+                    /*if (($item->belanja->ppn)!=0) {
                         $kodebku[$i] = $kodebku[$i-1];
                         $nomorbukti[$i] = $nomorbukti[$i-1];
                         $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
@@ -1509,9 +1509,9 @@ class LaporanController extends Controller
                         $bku_content[$i+1][4]= 0;
                         $bku_content[$i+1][5]= $item->belanja->ppn;
                         $i++; 
-                    }
+                    }*/
 
-                    if (($item->belanja->pph21)!=0) {
+                    /*if (($item->belanja->pph21)!=0) {
                         $kodebku[$i] = $kodebku[$i-1];
                         $nomorbukti[$i] = $nomorbukti[$i-1];
                         $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
@@ -1531,9 +1531,9 @@ class LaporanController extends Controller
                         $bku_content[$i+1][4]= 0;
                         $bku_content[$i+1][5]= $item->belanja->pph21;
                         $i++; 
-                    }
+                    }*/
 
-                    if (($item->belanja->pph23)!=0) {
+                    /*if (($item->belanja->pph23)!=0) {
                         $kodebku[$i] = $kodebku[$i-1];
                         $nomorbukti[$i] = $nomorbukti[$i-1];
                         $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
@@ -1553,7 +1553,7 @@ class LaporanController extends Controller
                         $bku_content[$i+1][4]= 0;
                         $bku_content[$i+1][5]= $item->belanja->pph23;
                         $i++; 
-                    }
+                    }*/
                 }
             }
 
@@ -1752,7 +1752,7 @@ class LaporanController extends Controller
                     $bku_content[$i+1][5]= $nominalbelanja[$i];
                     $i++;
 
-                    if (($item->belanja->ppn)!=0) {
+                    /*if (($item->belanja->ppn)!=0) {
                         $kodebku[$i] = $kodebku[$i-1];
                         $nomorbukti[$i] = $nomorbukti[$i-1];
                         $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
@@ -1772,9 +1772,9 @@ class LaporanController extends Controller
                         $bku_content[$i+1][4]= 0;
                         $bku_content[$i+1][5]= $item->belanja->ppn;
                         $i++; 
-                    }
+                    }*/
 
-                    if (($item->belanja->pph21)!=0) {
+                    /*if (($item->belanja->pph21)!=0) {
                         $kodebku[$i] = $kodebku[$i-1];
                         $nomorbukti[$i] = $nomorbukti[$i-1];
                         $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
@@ -1794,9 +1794,9 @@ class LaporanController extends Controller
                         $bku_content[$i+1][4]= 0;
                         $bku_content[$i+1][5]= $item->belanja->pph21;
                         $i++; 
-                    }
+                    }*/
 
-                    if (($item->belanja->pph23)!=0) {
+                    /*if (($item->belanja->pph23)!=0) {
                         $kodebku[$i] = $kodebku[$i-1];
                         $nomorbukti[$i] = $nomorbukti[$i-1];
                         $bku_content[$i+1][0]= $item->tanggal->locale('id_ID')->isoFormat('DD MMM YY');
@@ -1816,7 +1816,7 @@ class LaporanController extends Controller
                         $bku_content[$i+1][4]= 0;
                         $bku_content[$i+1][5]= $item->belanja->pph23;
                         $i++; 
-                    }
+                    }*/
                 }
             }
 
