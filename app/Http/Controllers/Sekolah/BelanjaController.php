@@ -848,9 +848,12 @@ class BelanjaController extends Controller
     {
         $aksi="tambah";
         $belanja = Auth::user()->belanjas()->with('rka.rekening')->persediaan()->findOrFail($id);
-        $persediaans = Auth::user()->persediaans()->get();
+        $jenis= intval($belanja->rka->rekening->kode_rekening);
+        $persediaans = Auth::user()->persediaans()
+        ->where('jenis', $jenis)
+        ->get();
         $nama= $belanja->nama;
-        // $parent= $belanja->rka->rekening->parent_id;
+        // return $jenis;
         return view('sekolah.belanja.persediaan.tambah', compact('aksi','nama','id', 'persediaans'));
     
     }
