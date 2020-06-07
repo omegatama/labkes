@@ -24,6 +24,8 @@
                         <div class="card-body">
                             <a href="{{ route('admin.penerimaan.create') }}" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
 
+                            <a href="{{ route('admin.penerimaan.upload') }}" class="btn btn-secondary btn-sm m-0" id="tambah-data">Upload</a>
+
                             <table id="tabelPenerimaan" class="table table-bordered">
                                 <thead>
                                     <tr>

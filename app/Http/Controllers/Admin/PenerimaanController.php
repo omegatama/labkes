@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use App\Sekolah;
 use App\Saldo;
 use App\SaldoAwal;
 use App\Pendapatan;
@@ -167,6 +172,156 @@ class PenerimaanController extends Controller
 
         DB::commit(); // All transaction will commit if statement reach on this
         return redirect()->route('admin.penerimaan.index')->with('success','Data Penerimaan berhasil disimpan!');
+    }
+
+    public function upload()
+    {
+        return view('admin.penerimaan.upload');
+    }
+
+    public function proses_upload(Request $request)
+    {
+        $ta = $request->cookie('ta');
+
+        $this->validate($request, [
+            'file' => 'required|max:1024|mimes:xlsx'
+        ]);
+
+        $sumber = $request->sumber;
+        $tanggal = $request->tanggal;
+        $keterangan = $request->keterangan;
+
+        $filename = "penerimaan_".$sumber."_".$tanggal;
+
+        $path = Storage::putFileAs(
+            'uploads', 
+            $request->file('file'), 
+            $filename.'.'.$request->file('file')->getClientOriginalExtension()
+        );
+
+        $spreadsheet = IOFactory::load('storage/'.$path);
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $highestRow = $worksheet->getHighestRow(); // e.g. 10
+
+        $pendapatans = array();
+        $kas_trxes = array();
+        $saldos = array();
+        $saldo_awals = array();
+
+        $i=0;
+
+        DB::beginTransaction();
+
+        for ($row = 2; $row <= $highestRow; ++$row) {
+            $arraypenerimaan = array();
+            $arraykastrx = array();
+
+            $npsn = $worksheet->getCellByColumnAndRow(2, $row)->getCalculatedValue();
+            
+            if (empty($npsn)) {
+                continue;
+            }
+
+            else{
+                $nominal = $worksheet->getCellByColumnAndRow(4, $row)->getCalculatedValue();
+                
+                // Step 1: Tabel Pendapatan
+                $arraypenerimaan['ta'] = $ta;
+                $arraypenerimaan['npsn'] = $npsn;
+                $arraypenerimaan['sumber'] = $sumber;
+                $arraypenerimaan['nominal'] = $nominal;
+                $arraypenerimaan['keterangan'] = $keterangan;
+                $arraypenerimaan['tanggal'] = $tanggal;
+                
+                try {
+                    $pendapatan = Pendapatan::create($arraypenerimaan);
+                    $pendapatans[$i] = $pendapatan;
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->route('admin.penerimaan.upload')
+                    ->withErrors(['msg' => $e->getMessage().' (Import-P1)']);
+                }
+
+                // Step 2: Tabel KasTrx
+                $arraykastrx['ta'] = $ta;
+                $arraykastrx['npsn'] = $npsn;
+                $arraykastrx['kas'] = 'B';
+                $arraykastrx['io'] = 'i';
+                $arraykastrx['nominal'] = $nominal;
+                $arraykastrx['reference_id'] = $pendapatan->id;
+                $arraykastrx['tanggal'] = $tanggal;
+
+                try {
+                    $kastrx = KasTrx::create($arraykastrx);
+                    $kas_trxes[$i] = $kastrx;
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->route('admin.penerimaan.upload')
+                    ->withErrors(['msg' => $e->getMessage().' (Import-P2)']);
+                }
+
+                //$sekolah = Sekolah::npsn($npsn);
+                
+                // Step 3: Tabel Saldo
+                try {
+                    $saldo = Saldo::lockForUpdate()->firstOrNew(
+                        [
+                            'ta' => $ta,
+                            'npsn' => $npsn
+                        ]
+                    );
+                    $saldo->saldo_bank += $nominal;
+                    $saldo->save();
+                    $saldos[$i] = $saldo;
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->route('admin.penerimaan.upload')
+                    ->withErrors(['msg' => $e->getMessage().' (Import-P3)']);
+                }
+
+                // Step 4: Tabel Saldo Awal
+                try {
+                    try {
+                        $saldoawal = SaldoAwal::lockForUpdate()->where(
+                            [
+                                'ta' => $ta,
+                                'npsn' => $npsn,
+                                'periode' => $pendapatan->tanggal->addMonthsNoOverflow()->startOfMonth()
+                            ]
+                        )->firstOrFail();
+
+                        $saldoawal->saldo_bank += $nominal;
+                        $saldoawal->save();
+                        $saldo_awals[$i] = $saldoawal;
+
+                    } catch (\Exception $e) {
+                        $saldoawal = new SaldoAwal; 
+                        $saldoawal->ta = $ta;
+                        $saldoawal->npsn = $npsn;
+                        $saldoawal->periode = $pendapatan->tanggal->addMonthsNoOverflow()->startOfMonth();
+                        $saldoawal->saldo_bank = $saldo->saldo_bank;
+                        $saldoawal->saldo_tunai = $saldo->saldo_tunai;
+                        $saldoawal->save();
+                        $saldo_awals[$i] = $saldoawal;
+                    }
+                    
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect()->route('admin.penerimaan.upload')
+                    ->withErrors(['msg' => $e->getMessage().' (Import-P4)']);
+                }
+            
+            }
+
+            $i++;
+        }
+
+        // DB::rollback();
+        // return $saldo_awals;
+        DB::commit(); // All transaction will commit if statement reach on this
+        return redirect()->route('admin.penerimaan.index')->with('success','Data Penerimaan berhasil diimport!');
     }
 
     /**

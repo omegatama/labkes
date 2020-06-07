@@ -18,7 +18,7 @@ class KasTrx extends Model
 
     protected $table = 'kas_trxes';
 
-    protected $fillable = ['ta', 'npsn', 'kas', 'io', 'nominal', 'saldo_tunai', 'saldo_bank', 'reference_id'];
+    protected $fillable = ['ta', 'npsn', 'kas', 'io', 'nominal', 'saldo_tunai', 'saldo_bank', 'reference_id', 'tanggal'];
 
     protected $appends = ['nomor_bukti'];
 
