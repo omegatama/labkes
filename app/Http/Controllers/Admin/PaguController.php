@@ -39,7 +39,9 @@ class PaguController extends Controller
                     return RenderTombol("success", $urledit, "Edit")." ".RenderTombol("danger", "#", "Hapus", $fungsidelete);
                 }
                 else{
-                    return '-';
+                    // return '-';
+                    $urledit= route('admin.pagu.edit', ['id' => $pagu->id]);
+                    return RenderTombol("success", $urledit, "Edit");
                 }
             })
             ->editColumn('pagu', function ($pagu) {
@@ -239,49 +241,96 @@ class PaguController extends Controller
         return $documento;
     }
 
-    // public function proses_update_upload(Request $request)
-    // {
-    //     $ta = $request->cookie('ta');
-    //     // $ta = 2020;
+    public function proses_update_upload(Request $request)
+    {
+        $ta = $request->cookie('ta');
+        // $ta = 2020;
 
-    //     $this->validate($request, [
-    //         'file' => 'required|max:1024|mimes:xlsx'
-    //     ]);
+        $this->validate($request, [
+            'file' => 'required|max:1024|mimes:xlsx'
+        ]);
         
-    //     $filename = "pagu_perubahan_".$ta;
+        $filename = "pagu_perubahan_".$ta;
 
-    //     $path = Storage::putFileAs(
-    //         'uploads', 
-    //         $request->file('file'), 
-    //         $filename.'.'.$request->file('file')->getClientOriginalExtension()
-    //     );
+        $path = Storage::putFileAs(
+            'uploads', 
+            $request->file('file'), 
+            $filename.'.'.$request->file('file')->getClientOriginalExtension()
+        );
 
-    //     $spreadsheet = IOFactory::load('storage/'.$path);
-    //     $worksheet = $spreadsheet->getActiveSheet();
-    //     $highestRow = $worksheet->getHighestRow(); // e.g. 10
+        $spreadsheet = IOFactory::load('storage/'.$path);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $highestRow = $worksheet->getHighestRow(); // e.g. 10
 
-    //     $pagus = array();
-    //     $i=0;
+        $pagus = array();
+        $i=0;
+        $excelvalid= true;
 
-    //     for ($row = 2; $row <= $highestRow; ++$row) {
-    //         $npsn = $worksheet->getCellByColumnAndRow(2, $row)->getCalculatedValue();
+        DB::beginTransaction();
+
+        for ($row = 2; $row <= $highestRow; ++$row) {
+            $arraypagu= array();
+
+            $npsn = $worksheet->getCellByColumnAndRow(2, $row)->getCalculatedValue();
             
-    //         if (empty($npsn)) {
-    //             continue;
-    //         }
+            if (empty($npsn)) {
+                continue;
+            }
 
-    //         else{
-    //             $pagu_baru = $worksheet->getCellByColumnAndRow(5, $row)->getCalculatedValue();
-    //             $sisa_baru = $worksheet->getCellByColumnAndRow(11, $row)->getCalculatedValue();
+            else{
+                $pagu = Pagu::where([
+                    'ta' =>$ta,
+                    'npsn' => $npsn
+                ]);
+                $check= $pagu->doesntExist();
+
+                if ($check) {
+                    break;
+                }
+
+                $pagu_baru = $worksheet->getCellByColumnAndRow(5, $row)->getCalculatedValue();
+                $sisa_baru = $worksheet->getCellByColumnAndRow(11, $row)->getCalculatedValue();
                 
-    //             if ($sisa_baru < 0) {
-    //                 break;
-    //             }
-    //         }
+                if ($sisa_baru < 0) {
+                    break;
+                }
+
+                if (empty($pagu_baru)) {
+                    continue;
+                }
+
+                $datapagu = $pagu->first();
+                //$pagu_lama = $datapagu->pagu;
+                $datapagu->pagu = $pagu_baru;
+                $sisa_pagu = $pagu_baru - ($datapagu->penggunaan_tw1 + $datapagu->penggunaan_tw2 + $datapagu->penggunaan_tw3 + $datapagu->penggunaan_tw4);
+                if($sisa_pagu == $sisa_baru){
+                    $datapagu->sisa = $sisa_baru;
+                    $datapagu->save();
+                    $pagus[$i]= $datapagu;
+                }
+                else{
+                    $excelvalid = false;
+                    break;
+                }
+
+            }
             
-    //         $i++;
-    //     }
-    // }
+            $i++;
+        }
+
+        // DB::rollback();
+        if ($excelvalid) {
+            // return $pagus;
+            DB::commit();
+            return redirect()->route('admin.pagu.index');
+        }
+
+        else{
+            DB::rollback();
+            // return "Penggunaan Pagu per TW untuk NPSN ".$npsn." pada Excel tidak valid";
+            return back()->withErrors(['msg' => "Penggunaan Pagu per TW untuk NPSN ".$npsn." pada Excel tidak valid"]);
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -327,9 +376,17 @@ class PaguController extends Controller
     public function update(Request $request, $id)
     {
         $pagu= Pagu::find($id);
-        $pagu->pagu= floatval(str_replace(",",".",$request->nominal));
-        $pagu->sisa= $pagu->pagu;
-        if ($pagu->save()) {
+        $pagu_lama= $pagu->pagu;
+        $pagu_baru= floatval(str_replace(",",".",$request->nominal));
+        $selisih = $pagu_baru - $pagu_lama;
+        $pagu->pagu += $selisih;
+        $sisa_baru = $pagu->pagu - ($pagu->penggunaan_tw1 + $pagu->penggunaan_tw2 + $pagu->penggunaan_tw3 + $pagu->penggunaan_tw4);
+        
+        $pagu->sisa= $sisa_baru;
+        if ($pagu->sisa < 0) {
+            return redirect()->back()->withErrors(['msg' => 'Error. Pagu baru dibawah realisasi!']);
+        }
+        else if ($pagu->save()) {
             return redirect()->route('admin.pagu.index');
         }
     }
