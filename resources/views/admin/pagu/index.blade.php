@@ -23,6 +23,10 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('admin.pagu.create') }}" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
+                            <a href="{{ route('admin.pagu.upload') }}" class="btn btn-secondary btn-sm m-0" id="tambah-data">Upload</a>
+                            <a href="{{ route('admin.pagu.update_upload') }}" class="btn btn-warning btn-sm m-0" id="tambah-data">Update</a>
+                            
+
                             <table id="tabelPagu" class="table table-bordered">
                                 <thead>
                                     <tr>

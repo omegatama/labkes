@@ -62,6 +62,13 @@ Route::group([
     // End Kode Rekening
 
     // Start Pagu
+    Route::get('/pagu/upload', 'Admin\PaguController@upload')->name('admin.pagu.upload');
+    Route::post('/pagu/upload', 'Admin\PaguController@proses_upload')->name('admin.pagu.proses_upload');
+
+    Route::get('/pagu/download_pagulama', 'Admin\PaguController@download_pagulama')->name('admin.pagu.download_pagulama');
+    Route::get('/pagu/update/upload', 'Admin\PaguController@update_upload')->name('admin.pagu.update_upload');
+    Route::post('/pagu/update/upload', 'Admin\PaguController@proses_update_upload')->name('admin.pagu.proses_update_upload');
+
     Route::resource('/pagu', 'Admin\PaguController', ['as' => 'admin']);
     // End Pagu
 
