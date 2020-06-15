@@ -997,6 +997,10 @@ class LaporanController extends Controller
         }
         // return $bulan_sebelumnya;
 
+        $bulan1= IntBulan($bulan[0]);
+        $bulan2= IntBulan($bulan[1]);
+        $bulan3= IntBulan($bulan[2]);
+
         $nama_kepsek= $sekolah->nama_kepsek;
         $nip_kepsek= $sekolah->nip_kepsek;
         $nama_kecamatan= $sekolah->kecamatan->nama_kecamatan;
@@ -1090,6 +1094,9 @@ class LaporanController extends Controller
         $worksheet->getCell('twhuruf')->setValue($twhuruf);
         $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
         $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+        $worksheet->getCell('bulan1')->setValue($bulan1);
+        $worksheet->getCell('bulan2')->setValue($bulan2);
+        $worksheet->getCell('bulan3')->setValue($bulan3);
 
         $worksheet->fromArray(
             $persediaan_all,
