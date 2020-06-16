@@ -230,9 +230,9 @@
                                 <li>
                                     <a href="{{ route('sekolah.persediaan.penggunaan') }}" class="menu-item">Penggunaan</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="{{ route('sekolah.persediaan.penyesuaian') }}" class="menu-item">Penyesuaian</a>
-                                </li>
+                                </li> --}}
 
                                 {{-- <li>
                                     <a href="#" class="menu-item">Stok Awal</a>
