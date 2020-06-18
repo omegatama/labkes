@@ -206,10 +206,10 @@ class LaporanController extends Controller
         $penerimaanpercw="penerimaan_cw";
 
         // tw1= 123 //cw1
-        // tw2= 456 //cw1
-        // tw3= 789 //cw2
+        // tw2= 456 //cw2
+        // tw3= 789 //cw3
         // tw4= 101112 //cw3
-        $cw = ($triwulan > 1) ?  ($triwulan > 3) ? 3 : 2 : 1 ;
+        $cw = ($triwulan > 1) ?  ($triwulan > 2) ? 3 : 2 : 1 ;
         // return $cw;
         for ($i=1; $i <= $cw ; $i++) { 
             ${$penerimaanpercw.$i} = $sekolah->pendapatans()->whereBetween('tanggal', [AwalCaturwulan($i, $ta), AkhirCaturwulan($i, $ta)])->sum('nominal');
