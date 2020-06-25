@@ -275,8 +275,11 @@
                                         <li>
                                             <a href="{{ route('sekolah.laporan.modal') }}" class="menu-item">Belanja Modal</a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a href="{{ route('sekolah.laporan.persediaan') }}" class="menu-item">Belanja Persediaan</a>
+                                        </li> --}}
+                                        <li>
+                                            <a href="{{ route('sekolah.laporan.persediaantahun') }}" class="menu-item">Belanja Persediaan</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('sekolah.laporan.bku') }}" class="menu-item">BKU</a>

@@ -352,6 +352,11 @@ Route::group([
 
     Route::post('/proses/persediaan', 'Sekolah\LaporanController@proses_persediaan')->name('sekolah.proses.persediaan');
 
+    Route::get('/laporan/persediaantahun', 'Sekolah\LaporanController@persediaan_tahun')->name('sekolah.laporan.persediaantahun');
+
+    Route::post('/proses/persediaantahun', 'Sekolah\LaporanController@proses_persediaan_tahun')->name('sekolah.proses.persediaantahun');
+
+
     Route::get('/laporan/bku', 'Sekolah\LaporanController@bku')->name('sekolah.laporan.bku');
 
     Route::post('/proses/bku', 'Sekolah\LaporanController@proses_bku')->name('sekolah.proses.bku');
