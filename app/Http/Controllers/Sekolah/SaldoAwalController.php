@@ -78,6 +78,13 @@ class SaldoAwalController extends Controller
         else{
             $saldo_awal = $sekolah->saldo_awals()
             ->where('periode', $fromDate)->get();
+            // return $saldo_awal->count();
+            if ($saldo_awal->count()>1) {
+                $sekolah->saldo_awals()
+                ->where('periode', $fromDate)
+                ->first()->delete();
+            }
+
             $saldoawal_bank = $saldo_awal->sum('saldo_bank');
             $saldoawal_tunai = $saldo_awal->sum('saldo_tunai');
 
@@ -116,6 +123,7 @@ class SaldoAwalController extends Controller
             $sa->saldo_bank = $saldoakhir_bank;
             $sa->saldo_tunai = $saldoakhir_tunai;
             $sa->save();
+            // return $sa;
             return redirect()->route('sekolah.saldoawal.index')->with(['success' => 'Berhasil Update Saldo Awal']);
             
         } catch (\Exception $e) {
