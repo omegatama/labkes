@@ -973,6 +973,171 @@ class LaporanController extends Controller
         return $documento;
     }
 
+    public function persediaan_tahun()
+    {
+        return view('admin.laporan.persediaantahun');
+    }
+    
+    public function proses_persediaan_tahun(Request $request)
+    {
+        set_time_limit(1800);
+        $sekolah = Sekolah::where('id', '>', '2');
+        $ta = $request->cookie('ta');
+
+        if ($request->filled('kecamatan_id')) {
+            // return $request->kecamatan_id;
+            $sekolah->kecamatanId($request->kecamatan_id);
+        }
+
+        if ($request->filled('status')) {
+            // return $request->status;
+            $sekolah->status($request->status);
+        }
+
+        if ($request->filled('jenjang')) {
+            // return $request->jenjang;
+            $sekolah->jenjang($request->jenjang);
+        }
+
+        $filteredSekolah = $sekolah->get();
+        $data = array();
+        // return $filteredSekolah;
+
+        $i=0;
+        $kode_jenis = array();
+        foreach ($filteredSekolah as $key_sekolah => $item) {
+            $npsn = $item->npsn;
+            $nama_sekolah = $item->name;
+            $kecamatan = $item->kecamatan->nama_kecamatan;
+            
+            $persediaans = $item->persediaans()->get();
+        
+            $persediaan_all = array();
+            $pengeluaran_persediaan = array();
+            
+            $data_keluar = array();
+            foreach ($persediaans as $key => $persediaan) {
+                $data[$i]['npsn'] = $npsn;
+                $data[$i]['nama_sekolah'] = $nama_sekolah;
+                $data[$i]['kecamatan'] = $kecamatan;
+                
+                $data[$i]['nama_persediaan'] = $persediaan->nama_persediaan;
+                $data[$i]['satuan'] = $persediaan->satuan;
+                $data[$i]['harga_satuan'] = $persediaan->harga_satuan;
+
+                $kode_jenis[$i]['kode'] = $persediaan->jenis;
+
+                $saldo = 0;
+                
+                // return AwalTriwulan(($triwulan),$ta)->format('Y-m-d');//$saldo;
+
+                $data[$i]['saldo'] = $saldo;
+                
+                $penerimaan_1 = 0;
+                $penerimaan_2 = 0;
+                $penerimaan_3 = 0;
+                $penerimaan_4 = 0;
+                $penerimaan_5 = 0;
+                $penerimaan_6 = 0;
+                $penerimaan_7 = 0;
+                $penerimaan_8 = 0;
+                $penerimaan_9 = 0;
+                $penerimaan_10 = 0;
+                $penerimaan_11 = 0;
+                $penerimaan_12 = 0;
+
+
+                $pengeluaran_1 = 0;
+                $pengeluaran_2 = 0;
+                $pengeluaran_3 = 0;
+                $pengeluaran_4 = 0;
+                $pengeluaran_5 = 0;
+                $pengeluaran_6 = 0;
+                $pengeluaran_7 = 0;
+                $pengeluaran_8 = 0;
+                $pengeluaran_9 = 0;
+                $pengeluaran_10 = 0;
+                $pengeluaran_11 = 0;
+                $pengeluaran_12 = 0;
+
+                for ($j=0; $j < 12 ; $j++) { 
+                    $trx_masuk_bulan = "trx_masuk_".($j+1);
+                    $$trx_masuk_bulan = PersediaanTrx::npsn($npsn)->ta($ta)->in()->persediaanId($persediaan->id)->whereMonth('tanggal', ($j+1))->sum('qty');  
+                
+                    $belanja_bulan = "belanja_".($j+1);
+                    $$belanja_bulan = BelanjaPersediaan::npsn($npsn)->ta($ta)->bulan(($j+1))->persediaanId($persediaan->id)->sum('qty');
+                    
+                    $penerimaan_bulan = "penerimaan_".($j+1);
+                    $$penerimaan_bulan += $$trx_masuk_bulan + $$belanja_bulan;
+                
+                    $data[$i][$penerimaan_bulan] = $$penerimaan_bulan;
+                
+                    $trx_keluar_bulan = "trx_keluar_".($j+1);
+                    $$trx_keluar_bulan = PersediaanTrx::npsn($npsn)->ta($ta)->out()->persediaanId($persediaan->id)->whereMonth('tanggal', ($j+1))->sum('qty');
+                
+                    $pengeluaran_bulan = "pengeluaran_".($j+1);
+                    $$pengeluaran_bulan += $$trx_keluar_bulan;
+
+                    $data_keluar[$i][$pengeluaran_bulan] = $$pengeluaran_bulan;
+                
+                
+                }
+
+                
+                $i++;
+            }
+
+        }
+
+        // return $data;
+        // Excel
+        $spreadsheet = IOFactory::load('storage/format/lap_persediaan_tahun_admin.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+        
+        $worksheet->getCell('ta')->setValue($ta);
+        // $worksheet->getCell('twhuruf')->setValue($twhuruf);
+        
+        $worksheet->fromArray(
+            $data,
+            null,
+            'B10'
+        );
+
+        $worksheet->fromArray(
+            $data_keluar,
+            null,
+            'U10'
+        );
+
+        $worksheet->fromArray(
+            $kode_jenis,
+            null,
+            'AS10'
+        );
+
+        $spreadsheet->getActiveSheet()->setAutoFilter('B9:AU609');
+        
+        $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+        $columnFilter = $autoFilter->getColumn('AU');
+        $columnFilter->createRule()
+        ->setRule(
+            \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+            'A'
+        );
+        $autoFilter->showHideRows();
+
+        // Cetak
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+        $writer->save($temp_file);
+        $file= 'B_Persediaan_TA_'.$ta.'.xlsx';
+        $documento = file_get_contents($temp_file);
+        unlink($temp_file);  // delete file tmp
+        header("Content-Disposition: attachment; filename= ".$file."");
+        header('Content-Type: application/excel');
+        return $documento;
+    }
+
     public function k8()
     {
         return view('admin.laporan.k8');

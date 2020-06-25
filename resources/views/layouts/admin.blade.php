@@ -253,8 +253,11 @@
                                         <li>
                                             <a href="{{ route('admin.laporan.modal') }}" class="menu-item">Lap B.Modal</a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a href="{{ route('admin.laporan.persediaan') }}" class="menu-item">Lap B.Persediaan</a>
+                                        </li> --}}
+                                        <li>
+                                            <a href="{{ route('admin.laporan.persediaantahun') }}" class="menu-item">Lap B.Persediaan</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('admin.laporan.pajak') }}" class="menu-item">Lap Pajak</a>

@@ -157,6 +157,10 @@ Route::group([
     Route::get('/laporan/persediaan', 'Admin\LaporanController@persediaan')->name('admin.laporan.persediaan');
     Route::post('/proses/persediaan', 'Admin\LaporanController@proses_persediaan')->name('admin.proses.persediaan');
     
+    Route::get('/laporan/persediaantahun', 'Admin\LaporanController@persediaan_tahun')->name('admin.laporan.persediaantahun');
+    Route::post('/proses/persediaantahun', 'Admin\LaporanController@proses_persediaan_tahun')->name('admin.proses.persediaantahun');
+    
+
     Route::get('/laporan/pajak', 'Admin\LaporanController@pajak')->name('admin.laporan.pajak');
     Route::post('/proses/pajak', 'Admin\LaporanController@proses_pajak')->name('admin.proses.pajak');
     
