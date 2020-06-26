@@ -1005,6 +1005,7 @@ class LaporanController extends Controller
 
         $i=0;
         $kode_jenis = array();
+        $bulan= $request->bulan;
         foreach ($filteredSekolah as $key_sekolah => $item) {
             $npsn = $item->npsn;
             $nama_sekolah = $item->name;
@@ -1060,7 +1061,7 @@ class LaporanController extends Controller
                 $pengeluaran_11 = 0;
                 $pengeluaran_12 = 0;
 
-                for ($j=0; $j < 12 ; $j++) { 
+                for ($j=0; $j < $bulan ; $j++) { 
                     $trx_masuk_bulan = "trx_masuk_".($j+1);
                     $$trx_masuk_bulan = PersediaanTrx::npsn($npsn)->ta($ta)->in()->persediaanId($persediaan->id)->whereMonth('tanggal', ($j+1))->sum('qty');  
                 

@@ -76,6 +76,17 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                         <input type="text" class="form-control" disabled="" value="{{Cookie::get('ta')}}">
                                     </div>
 
+                                    <div class="form-group mb-1">
+                                        <label class="m-0" for="bulan">Bulan</label>
+                                        <select id='bulan' class="form-control" name="bulan" style="width:100%" required>
+                                            <option>Pilih Bulan</option>
+                                            <option value="3">3 Bulan</option>
+                                            <option value="6">6 Bulan</option>
+                                            <option value="12">12 Bulan</option>
+                                            
+                                        </select>
+                                    </div>
+
                                     {{-- <div class="form-group mb-1">
                                         <label class="m-0" for="triwulan">Triwulan</label>
                                         <select id='triwulan' class="form-control" name="triwulan" style="width:100%" required>
