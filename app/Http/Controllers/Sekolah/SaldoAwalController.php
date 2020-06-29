@@ -78,7 +78,17 @@ class SaldoAwalController extends Controller
         else{
             $saldo_awal = $sekolah->saldo_awals()
             ->where('periode', $fromDate)->get();
-            // return $saldo_awal->count();
+            // return $saldo_awal;
+            $sa_bulan_ini = $sekolah->saldo_awals()
+            ->where('periode', $sa->periode)->get();
+            // return $sa_bulan_ini;
+            if ($sa_bulan_ini->count()>1) {
+                $sekolah->saldo_awals()
+                ->where('periode', $sa->periode)
+                ->where('id', '!=', $sa->id)
+                ->first()->delete();
+            }
+
             if ($saldo_awal->count()>1) {
                 $sekolah->saldo_awals()
                 ->where('periode', $fromDate)
