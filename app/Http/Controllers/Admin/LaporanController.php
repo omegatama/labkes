@@ -1006,6 +1006,7 @@ class LaporanController extends Controller
         $i=0;
         $kode_jenis = array();
         $bulan= $request->bulan;
+        $data_keluar = array();
         foreach ($filteredSekolah as $key_sekolah => $item) {
             $npsn = $item->npsn;
             $nama_sekolah = $item->name;
@@ -1016,7 +1017,7 @@ class LaporanController extends Controller
             $persediaan_all = array();
             $pengeluaran_persediaan = array();
             
-            $data_keluar = array();
+            
             foreach ($persediaans as $key => $persediaan) {
                 $data[$i]['npsn'] = $npsn;
                 $data[$i]['nama_sekolah'] = $nama_sekolah;
@@ -1090,7 +1091,7 @@ class LaporanController extends Controller
 
         }
 
-        // return $data;
+        // return $data_keluar;
         // Excel
         $spreadsheet = IOFactory::load('storage/format/lap_persediaan_tahun_admin.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
