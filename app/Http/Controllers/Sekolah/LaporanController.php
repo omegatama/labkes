@@ -1117,7 +1117,7 @@ class LaporanController extends Controller
             'Y10'
         );
 
-        $spreadsheet->getActiveSheet()->setAutoFilter('B9:AA309');
+        $spreadsheet->getActiveSheet()->setAutoFilter('B9:AA409');
         
         $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
         $columnFilter = $autoFilter->getColumn('AA');
@@ -1295,7 +1295,7 @@ class LaporanController extends Controller
             'CA10'
         );
 
-        $spreadsheet->getActiveSheet()->setAutoFilter('B9:CC309');
+        $spreadsheet->getActiveSheet()->setAutoFilter('B9:CC409');
         
         $autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
         $columnFilter = $autoFilter->getColumn('CC');
