@@ -45,7 +45,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                 @endisset
                                 <div class="form-body">
                                     <div class="row">
+                                        @if (isset($rka))
                                         <div class="col-lg-6 col-md-6">
+                                        @else
+                                        <div class="col-lg-6 col-md-6">
+                                        @endif
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="kode_program_id">Program</label>
@@ -111,7 +115,25 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                                 </div>
                                             </div>
 
+                                        @if (isset($rka))
+                                            <div class="row">
+                                                <div class="form-group col-12 mb-1">
+                                                    <label class="m-0" for="harga_satuan">Harga Satuan</label>
+                                                    <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" required value="{{ (isset($rka))? str_replace(".",",", $rka->harga_satuan) : '' }}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12 mb-1">
+                                                    <label class="m-0" for="jumlah">Jumlah</label>
+                                                    <input type="text" id="jumlah" class="form-control rupiah" name="jumlah" required readonly value="{{ (isset($rka))? str_replace(".",",", $rka->jumlah) : '' }}">
+                                                </div>
+                                            </div>
+                                        @endif
                                         </div>
+                                        
+                                        @if (isset($rka))
+                                        <div class="col-lg-3 col-md-3">
+                                        @else
                                         <div class="col-lg-6 col-md-6">
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
@@ -119,13 +141,13 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                                     <input type="text" id="harga_satuan" class="form-control rupiah" name="harga_satuan" required value="{{ (isset($rka))? str_replace(".",",", $rka->harga_satuan) : '' }}">
                                                 </div>
                                             </div>
-
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
                                                     <label class="m-0" for="jumlah">Jumlah</label>
                                                     <input type="text" id="jumlah" class="form-control rupiah" name="jumlah" required readonly value="{{ (isset($rka))? str_replace(".",",", $rka->jumlah) : '' }}">
                                                 </div>
                                             </div>
+                                        @endif
 
                                             <div class="row">
                                                 <div class="form-group col-12 mb-1">
@@ -154,8 +176,40 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
                                                     <input type="text" id="alokasi_tw4" class="form-control rupiah" name="alokasi_tw4" required value="{{ (isset($rka))? str_replace(".",",", $rka->alokasi_tw4) : '' }}">
                                                 </div>
                                             </div>
-
+                                        
                                         </div>
+
+                                        @if (isset($rka))
+                                        <div class="col-lg-3 col-md-3">    
+                                            <div class="row">
+                                                <div class="form-group col-12 mb-1">
+                                                    <label class="m-0" for="realisasi_tw1">Realisasi TW1</label>
+                                                    <input type="text" style="font-weight: bolder" id="realisasi_tw1" readonly class="form-control rupiah" name="realisasi_tw1" required value="{{ (isset($rka))? str_replace(".",",", $rka->realisasi_tw1) : '' }}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12 mb-1">
+                                                    <label class="m-0" for="realisasi_tw2">Realisasi TW2</label>
+                                                    <input type="text" style="font-weight: bolder" id="realisasi_tw2" readonly class="form-control rupiah" name="realisasi_tw2" required value="{{ (isset($rka))? str_replace(".",",", $rka->realisasi_tw2) : '' }}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12 mb-1">
+                                                    <label class="m-0" for="realisasi_tw3">Realisasi TW3</label>
+                                                    <input type="text" style="font-weight: bolder" id="realisasi_tw3" readonly class="form-control rupiah" name="realisasi_tw3" required value="{{ (isset($rka))? str_replace(".",",", $rka->realisasi_tw3) : '' }}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12 mb-1">
+                                                    <label class="m-0" for="realisasi_tw4">Realisasi TW4</label>
+                                                    <input type="text" style="font-weight: bolder" id="realisasi_tw4" readonly class="form-control rupiah" name="realisasi_tw4" required value="{{ (isset($rka))? str_replace(".",",", $rka->realisasi_tw4) : '' }}">
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        @endif
+                                        
                                     </div>
 
                                 </div>
