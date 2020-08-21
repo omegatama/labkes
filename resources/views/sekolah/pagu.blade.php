@@ -31,6 +31,7 @@
                                             <th>Penggunaan TW3</th>
                                             <th>Penggunaan TW4</th>
                                             <th>Sisa</th>
+                                            <th>Pilihan</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -71,6 +72,7 @@
                 { data: 'penggunaan_tw3', name: 'penggunaan_tw3' },
                 { data: 'penggunaan_tw4', name: 'penggunaan_tw4' },
                 { data: 'sisa', name: 'sisa' },
+                { data: 'action', name: 'action'}
             ]
         });
     });

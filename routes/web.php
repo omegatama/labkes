@@ -208,6 +208,7 @@ Route::group([
 
     // Start Pagu
     Route::get('/pagu', 'Sekolah\PaguController@index')->name('sekolah.pagu.index');
+    Route::get('/pagu/hitungulang', 'Sekolah\PaguController@hitungulang')->name('sekolah.pagu.hitungulang');
     // End Pagu
 
     // Start RKA
