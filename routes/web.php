@@ -49,6 +49,79 @@ Route::group([
 	Route::get('/kodeprogram/delete/{id}', 'Admin\Master\KodeProgramController@destroy');
     // End Kode Program
 
+    // Start Tenaga Medis 
+    Route::resource('/tenagamedis', 'Admin\TenagaMedisController', ['as' => 'admin'])
+	->except([
+	    'destroy'
+	]);
+	Route::get('/tenagamedis/delete/{id}', 'Admin\TenagaMedisController@destroy')->name('admin.tenagamedis.destroy');
+    // End Tenaga Medis
+
+    // Start Pekerjaan
+    Route::resource('/pekerjaan', 'Admin\PekerjaanController', ['as' => 'admin'])
+    ->except([
+        'destroy'
+    ]);
+    Route::get('/pekerjaan/delete/{id}', 'Admin\PekerjaanController@destroy')->name('admin.pekerjaan.destroy');
+    // End Pekerjaan
+
+     // Start Pendidikan
+     Route::resource('/pendidikan', 'Admin\PendidikanController', ['as' => 'admin'])
+     ->except([
+         'destroy'
+     ]);
+     Route::get('/pendidikan/delete/{id}', 'Admin\PendidikanController@destroy')->name('admin.pendidikan.destroy');
+     // End Pendidikan
+
+    // Start Pekerjaan
+    Route::resource('/metode', 'Admin\MetodeController', ['as' => 'admin'])
+    ->except([
+        'destroy'
+    ]);
+    Route::get('/metode/delete/{id}', 'Admin\MetodeController@destroy')->name('admin.metode.destroy');
+    // End Pekerjaan
+
+    // Start Kategori Tarif
+    Route::resource('/kategoritarif', 'Admin\KategoriTarifController', ['as' => 'admin'])
+	->except([
+	    'destroy'
+	]);
+	Route::get('/kategoritarif/delete/{id}', 'Admin\KategoriTarifController@destroy')->name('admin.kategoritarif.destroy');
+    // End Kategori Tarif
+   
+    // Start Sub1KategoriTarif
+    Route::resource('/sub1kategoritarif', 'Admin\Sub1KategoriTarifController', ['as' => 'admin'])
+	->except([
+	    'destroy'
+	]);
+	Route::get('/sub1kategoritarif/delete/{id}', 'Admin\Sub1KategoriTarifController@destroy')->name('admin.sub1kategoritarif.destroy');
+    // End Sub1KategoriTarif
+
+    // Start Sub2KategoriTarif
+    Route::resource('/sub2kategoritarif', 'Admin\Sub2KategoriTarifController', ['as' => 'admin'])
+	->except([
+	    'destroy'
+	]);
+	Route::get('/sub2kategoritarif/delete/{id}', 'Admin\Sub2KategoriTarifController@destroy')->name('admin.sub2kategoritarif.destroy');
+    // End Sub2KategoriTarif
+
+     // Start NamaTarif
+     Route::resource('/namatarif', 'Admin\NamaTarifController', ['as' => 'admin'])
+     ->except([
+         'destroy'
+     ]);
+     Route::get('/namatarif/delete/{id}', 'Admin\NamaTarifController@destroy')->name('admin.namatarif.destroy');
+     // End NamaTarif
+
+     // Start Pendaftaran Klinik
+    Route::resource('/pendaftaranklinik', 'Admin\DaftarKlinikController', ['as' => 'admin'])
+	->except([
+	    'destroy'
+	]);
+	Route::get('/pendaftaranklinik/delete/{id}', 'Admin\DaftarKlinikController@destroy')->name('admin.pendaftaranklinik.destroy');
+    // End Pendaftaran Klinik
+ 
+
     // Start Kode Program
     Route::resource('/komponenpembiayaan', 'Admin\Master\KomponenPembiayaanController', ['as' => 'admin'])
 	->except([

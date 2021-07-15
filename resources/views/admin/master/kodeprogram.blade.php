@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('titleBar', 'Master Program Kegiatan')
+@section('titleBar', 'Data Master Dokter dan Non Medis')
 
 @section('extraCss')
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,17 +16,20 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                Master Program Kegiatan
+								Data Master Dokter dan Non Medis
                             </h4>
                         </div>
                         <div class="card-body">
 	                        <a href="javascript:void(0)" class="btn btn-info btn-sm m-0" id="tambah-data">Tambah</a>
-                            <table id="tabelkodeprogram" class="table table-bordered">
+                            <table id="tabelkodeprogram" class="table table-m table-bordered m-t-20 color-table primary-table">
 								<thead>
 									<tr>
 										<th>No</th>
-										<th>Kode Program</th>
-										<th>Nama Program</th>
+										<th>NIP</th>
+										<th>Nama</th>
+										<th>Alamat</th>
+										<th>Telpon</th>
+										<th>Status</th>
 										<th>Pilihan</th>
 									</tr>
 								</thead>
@@ -51,23 +54,51 @@
 		        <form id="formKodeProgram" name="formKodeProgram" class="form-horizontal">
 		        	<input type="hidden" name="kodeprogram_id" id="kodeprogram_id">
 		        	<div class="form-group">
-		                <label for="kode_program" class="col-sm-4 control-label">Kode Program</label>
+		                <label for="kode_program" class="col-sm-4 control-label">NIP</label>
 		                <div class="col-sm-12">
-		                    <input type="text" class="form-control" id="kode_program" name="kode_program" placeholder="Masukkan Kode Program" value="" maxlength="255" required="">
+		                    <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukan NIP" value="" maxlength="255" required="">
 		                </div>
 		            </div>
 
 		            <div class="form-group">
-		                <label for="nama_program" class="col-sm-4 control-label">Nama Program</label>
+		                <label for="nama_program" class="col-sm-4 control-label">Nama</label>
 		                <div class="col-sm-12">
 		                    <input type="text" class="form-control" id="nama_program" name="nama_program" placeholder="Masukkan Nama Program" value="" maxlength="255" required="">
 		                </div>
 		            </div>
+
+					<div class="form-group">
+		                <label for="alamat" class="col-sm-4 control-label">Alamat</label>
+		                <div class="col-sm-12">
+		                    <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Masukkan Nama Program" value="" maxlength="255" required="">
+		                </div>
+		            </div>
+
+					<div class="form-group">
+		                <label for="jenis_kelamin" class="col-sm-4 control-label">jenis_kelamin</label>
+		                <div class="col-sm-12">
+		                    <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" placeholder="Masukkan Nama Program" value="" maxlength="255" required="">
+		                </div>
+		            </div>
+
+					<div class="form-group">
+		                <label for="telpon" class="col-sm-4 control-label">Nomor Telpon</label>
+		                <div class="col-sm-12">
+		                    <input type="text" class="form-control" id="telpon" name="telpon" placeholder="Masukkan Nama Program" value="" maxlength="255" required="">
+		                </div>
+		            </div>
 		 
 		            <div class="col-sm-offset-2 col-sm-10">
+		            	<button type="submit" class="btn btn-primary" id="btn-save" value="create">Simpan </button>
+		            	<button type="submit" class="btn btn-primary" id="btn-save" value="create">Simpan </button>
+						
+		            </div>
+
+					<div class="col-sm-offset-2 col-sm-10">
 		            	<button type="submit" class="btn btn-primary" id="btn-save" value="create">Simpan
 		            	</button>
 		            </div>
+
 		        </form>
 		    </div>
 		</div>
@@ -95,6 +126,9 @@ $(function() {
         	{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false}, 
         	{ data: 'kode_program', name: 'kode_program' },     
             { data: 'nama_program', name: 'nama_program' },
+			{ data: 'nama_program', name: 'nama_program' },
+			{ data: 'nama_program', name: 'nama_program' },
+			{ data: 'nama_program', name: 'nama_program' },
             { data: 'action', name: 'action', orderable: false, searchable: false}
 
         ]

@@ -8,7 +8,7 @@
     <meta name="description" content="Aplikasi Pencatatan Informasi Keuangan Bantuan Operasional Sekolah Kabupaten Semarang">
     <meta name="keywords" content="aplikasi keuangan, aplikasi pencatatan informasi keuangan, bantuan operasional sekolah, kabupaten semarang, aplikasi pencatatan informasi keuangan bos kabupaten semarang, disdikbudpora kabupaten semarang">
     <meta name="author" content="MTROHMAN">
-    <title> @yield('titleBar') - APIK BOS Kabupaten Semarang</title>
+    <title> @yield('titleBar') - Laboratorium Kesehatan Kabupaten Semarang</title>
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('app-assets/img/ico/apple-icon-60.png') }}">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('app-assets/img/ico/apple-icon-76.png') }}">
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('app-assets/img/ico/apple-icon-120.png') }}">
@@ -48,7 +48,7 @@
                         <div class="logo-img">
                             <img src="{{ asset('app-assets/img/logo-kabsemarang.webp') }}" style="width: 100%" />
                         </div>
-                        <span class="text align-middle" style="font-size: 100%">SIM - BOS</span>
+                        <span class="text align-middle" style="font-size: 100%">SIM-LABKES</span>
                     </a>
                     <a
                     id="sidebarToggle"
@@ -91,144 +91,102 @@
                             </a>
                             <ul class="menu-content">
                                 <li>
-                                    <a href="{{ route('admin.kodeprogram.index') }}" class="menu-item">Kode Program</a>
+                                    <a href="{{ route('admin.tenagamedis.index') }}" class="menu-item">Tenaga Medis</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.komponenpembiayaan.index') }}" class="menu-item">Kode Komponen</a>
+                                    <a href="{{ route('admin.pekerjaan.index') }}" class="menu-item">Pekerjaan</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.koderekening.index') }}" class="menu-item">Kode Rekening</a>
+                                    <a href="{{ route('admin.pendidikan.index') }}" class="menu-item">Pendidikan</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.kodebarang.index') }}" class="menu-item">Kode Barang</a>
+                                    <a href="{{ route('admin.metode.index') }}" class="menu-item">Metode Pemeriksaan</a>
                                 </li>
+                                                                
                             </ul>
                         </li>
+                        <!-- start master tarif-->
                         <li class="has-sub nav-item">
                             <a href="javascript:void(0)">
-                                <i class="ft-percent"></i>
+                                <i class="ft-globe"></i>
                                 <span data-i18n="" class="menu-title">
-                                    Pagu
+                                    Master Tarif
                                 </span>
                             </a>
                             <ul class="menu-content">
                                 <li>
-                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Pagu Awal</a>
-                                </li>
-                                {{-- <li>
-                                    <a href="#" class="menu-item">Pagu Perubahan</a>
-                                </li> --}}
-                            </ul>
-                        </li>
-                        <li class="has-sub nav-item">
-                            <a href="javascript:void(0)">
-                                <i class="ft-clipboard"></i>
-                                <span data-i18n="" class="menu-title">
-                                    RKA
-                                </span>
-                            </a>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="{{ route('admin.rka.index') }}" class="menu-item">RKA Awal</a>
-                                </li>
-                                {{-- <li>
-                                    <a href="#" class="menu-item">RKA Perubahan</a>
-                                </li> --}}
-                            </ul>
-                        </li>
-                        <li class="has-sub nav-item">
-                            <a href="javascript:void(0)">
-                                <i class="ft-credit-card"></i>
-                                <span data-i18n="" class="menu-title">
-                                    Saldo
-                                </span>
-                            </a>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="{{ route('admin.penerimaan.index') }}" class="menu-item">Penerimaan Dana</a>
+                                    <a href="{{ route('admin.kategoritarif.index') }}" class="menu-item">Kategori Tarif</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.kas.saldolalu') }}" class="menu-item">Saldo Th Lalu</a>
+                                    <a href="{{ route('admin.namatarif.index') }}" class="menu-item">Nama Tarif</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.kas.saldo') }}" class="menu-item">Saldo Kas</a>
+                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Komponen Tarif</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Harga Tarif</a>
                                 </li>
                                 
                             </ul>
                         </li>
+                        <!-- end master tarif-->
+
+                        <!-- start pelayanan klinik-->
                         <li class="has-sub nav-item">
                             <a href="javascript:void(0)">
+                                <i class="ft-users"></i>
+                                <span data-i18n="" class="menu-title">
+                                    Pelayanan Klinik
+                                </span>
+                            </a>
+                            <ul class="menu-content">
+                                <li>
+                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Pendaftaran Klinik</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Pemeriksaan Klinik</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <!-- end pelayanan klinik-->
+
+                        
+
+                        <!-- start pelayanan laboratorium-->
+                        <li class="has-sub nav-item">
+                            <a href="javascript:void(0)">
+                                <i class="ft-users"></i>
+                                <span data-i18n="" class="menu-title">
+                                    Pelayanan Laboratorium
+                                </span>
+                            </a>
+                            <ul class="menu-content">
+                                <li>
+                                    <a href="{{ route('admin.rka.index') }}" class="menu-item">Pendaftaran Laborat</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.rka.index') }}" class="menu-item">Penerimaan Sampel</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.rka.index') }}" class="menu-item">Pemeriksaan Laborat</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <!-- end pelayanan laboratorium-->
+
+                        <!-- start kassa-->
+                        <li class="nav-item">
+                            <a href="{{ route('admin.sekolah.index') }}">
                                 <i class="ft-shopping-cart"></i>
                                 <span data-i18n="" class="menu-title">
-                                    Belanja
+                                    Kassa 
                                 </span>
                             </a>
-                            <ul class="menu-content">
-                                <li class="has-sub">
-                                    <a href="javascript:void(0)" class="menu-item">Belanja Th Berjalan</a>
-                                    <ul class="menu-content">
-                                        <li>
-                                            <a href="{{ route('admin.belanja.index') }}" class="menu-item">Data Belanja</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('admin.belanjapersediaan.index') }}" class="menu-item">Data Persediaan</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('admin.belanjamodal.index') }}" class="menu-item">Data Belanja Modal</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                
-                                {{-- <li class="has-sub">
-                                    <a href="javascript:void(0)" class="menu-item">Belanja Perubahan</a>
-                                    <ul class="menu-content">
-                                        <li>
-                                            <a href="belanja" class="menu-item">Data Belanja</a>
-                                        </li>
-                                        <li>
-                                            <a href="belanjapersediaan" class="menu-item">Data Persediaan</a>
-                                        </li>
-                                        <li>
-                                            <a href="belanjamodal" class="menu-item">Data Belanja Modal</a>
-                                        </li>
-                                    </ul>
-                                </li> --}}
-
-                                <li class="has-sub">
-                                    <a href="javascript:void(0)" class="menu-item">Belanja Th Lalu</a>
-                                    <ul class="menu-content">
-                                        <li>
-                                            <a href="belanja" class="menu-item">Data Belanja</a>
-                                        </li>
-                                        <li>
-                                            <a href="belanjapersediaan" class="menu-item">Data Persediaan</a>
-                                        </li>
-                                        <li>
-                                            <a href="belanjamodal" class="menu-item">Data Belanja Modal</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </li>
-                        <li class="has-sub nav-item">
-                            <a href="javascript:void(0)">
-                                <i class="ft-package"></i>
-                                <span data-i18n="" class="menu-title">
-                                    Persediaan
-                                </span>
-                            </a>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="{{ route('admin.persediaan.stok') }}" class="menu-item">Stok Persediaan</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('admin.persediaan.penggunaan') }}" class="menu-item">Penggunaan</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('admin.persediaan.penyesuaian') }}" class="menu-item">Penyesuaian</a>
-                                </li>
-                            </ul>
-                        </li>
+                        <!-- startend kassa-->
+                        
 
                         <li class="has-sub nav-item">
                             <a href="javascript:void(0)">
@@ -239,7 +197,7 @@
                             </a>
                             <ul class="menu-content">
                                 <li class="has-sub">
-                                    <a href="javascript:void(0)" class="menu-item">Th Berjalan</a>
+                                    <a href="javascript:void(0)" class="menu-item">Laporan Klinik</a>
                                     <ul class="menu-content">
                                         <li>
                                             <a href="{{ route('admin.laporan.rkaall') }}" class="menu-item">RKA Seluruh Sekolah</a>
@@ -329,7 +287,7 @@
                                 </li> --}}
 
                                 <li class="has-sub">
-                                    <a href="javascript:void(0)" class="menu-item">Th Lalu</a>
+                                    <a href="javascript:void(0)" class="menu-item">Laporan Laboratorium</a>
                                     <ul class="menu-content">
                                         
                                         <li>
@@ -349,14 +307,27 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.sekolah.index') }}">
-                                <i class="ft-users"></i>
+                        
+                        <li class="has-sub nav-item">
+                            <a href="javascript:void(0)">
+                                <i class="ft-package"></i>
                                 <span data-i18n="" class="menu-title">
-                                    Sekolah
+                                    Pengaturan
                                 </span>
                             </a>
+                            <ul class="menu-content">
+                                <li>
+                                    <a href="{{ route('admin.persediaan.stok') }}" class="menu-item">Stok Persediaan</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.persediaan.penggunaan') }}" class="menu-item">Penggunaan</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.persediaan.penyesuaian') }}" class="menu-item">Penyesuaian</a>
+                                </li>
+                            </ul>
                         </li>
+
                         <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
@@ -463,13 +434,13 @@
             <!-- BEGIN : Footer-->
             <footer class="footer footer-static footer-light navbar-border">
                 <p class="clearfix text-muted text-sm-center px-2">
-                    <span>Aplikasi Pencatatan Informasi Keuangan Bantuan Operasional Sekolah Kabupaten Semarang<br>Copyright &copy; <?=date('Y');?>
+                    <span>Sistem Informasi Manajemen Laboratorium Kesehatan Kabupaten Semarang<br>Copyright &copy; <?=date('Y');?>
                         <a
                         href="https://mtrohman.github.io/cv"
                         id="mtrohmancv"
                         target="_blank"
                         class="text-bold-800 primary darken-2">
-                            OMEGATAMA
+                            OMEGATAMA COMPUTER
                         </a>, All rights reserved.
                     </span>
                 </p>
