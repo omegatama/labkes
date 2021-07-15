@@ -121,7 +121,7 @@
                                     <a href="{{ route('admin.namatarif.index') }}" class="menu-item">Nama Tarif</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Komponen Tarif</a>
+                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Nilai Normal</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('admin.pagu.index') }}" class="menu-item">Harga Tarif</a>
