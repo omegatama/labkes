@@ -94,14 +94,24 @@
                                     <a href="{{ route('admin.tenagamedis.index') }}" class="menu-item">Tenaga Medis</a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('admin.tenagamedis.index') }}" class="menu-item">Pembawa Sampel</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.tenagamedis.index') }}" class="menu-item">Katagori Sampel</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.tenagamedis.index') }}" class="menu-item">Pengolongan Pemeriksaan</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.metode.index') }}" class="menu-item">Metode Analisis</a>
+                                </li>
+                                <li>
                                     <a href="{{ route('admin.pekerjaan.index') }}" class="menu-item">Pekerjaan</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('admin.pendidikan.index') }}" class="menu-item">Pendidikan</a>
                                 </li>
-                                <li>
-                                    <a href="{{ route('admin.metode.index') }}" class="menu-item">Metode Pemeriksaan</a>
-                                </li>
+                                
                                                                 
                             </ul>
                         </li>
@@ -122,7 +132,7 @@
                                 </li>
                                 
                                 <li>
-                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Nilai Normal</a>
+                                    <a href="{{ route('admin.pagu.index') }}" class="menu-item">Nilai Normal Test</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('admin.pagu.index') }}" class="menu-item">Harga Tarif</a>
