@@ -29,7 +29,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Kode</th>
+                                        <th>Kode Tarif</th>
                                         <th>Nama Tarif</th>
                                         <th>Status</th>
                                         <th>Pilihan</th>

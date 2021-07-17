@@ -33,28 +33,28 @@
                                         
                                         <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Kategori</label>
-	                                        <div class="col-lg-4">
+	                                        <div class="col-lg-3">
 	                                            <input class="form-control" type="text" name="kodenamatarif" placeholder="masukan kode nama tarif" value="{{ (isset($namatarif) ? $namatarif->kodenamatarif : '' )}}">
 	                                        </div>
 	                                    </div>
 
                                         <div class="form-group row" style="margin-bottom: 5px">
-	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Sub1 Kategori</label>
-	                                        <div class="col-lg-4">
+	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Sub1</label>
+	                                        <div class="col-lg-3">
 	                                            <input class="form-control" type="text" name="kodenamatarif" placeholder="masukan kode nama tarif" value="{{ (isset($namatarif) ? $namatarif->kodenamatarif : '' )}}">
 	                                        </div>
 	                                    </div>
 
                                         <div class="form-group row" style="margin-bottom: 5px">
-	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Sub2 Kategori</label>
-	                                        <div class="col-lg-4">
+	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Sub2</label>
+	                                        <div class="col-lg-3">
 	                                            <input class="form-control" type="text" name="kodenamatarif" placeholder="masukan kode nama tarif" value="{{ (isset($namatarif) ? $namatarif->kodenamatarif : '' )}}">
 	                                        </div>
 	                                    </div>
 
                                         <div class="form-group row" style="margin-bottom: 5px">
-	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Nama Tarif</label>
-	                                        <div class="col-lg-4">
+	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Tarif</label>
+	                                        <div class="col-lg-3">
 	                                            <input class="form-control" type="text" name="kodenamatarif" placeholder="masukan kode nama tarif" value="{{ (isset($namatarif) ? $namatarif->kodenamatarif : '' )}}">
 	                                        </div>
 	                                    </div>
@@ -69,7 +69,16 @@
                                         <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Status</label>
 	                                        <div class="col-lg-3">
-	                                            <input class="form-control" type="text" name="status" placeholder="isi status" value="{{ (isset($namatarif) ? $namatarif->status : '' )}}">
+                                            <select name="namatarif" class="form-control select2" value="{{ (isset($namatarif) ? $namatarif->status : '' )}}">
+                                                @if(isset($namatarif))
+                                                    <option value ={{ $namatarif->status }}> {{ ($namatarif->status=="1")? "Aktif" : "Non Aktif" }}
+                                                
+                                                @endif
+                                                    <option value ="0">Silahkan Pilih</option>
+                                                    <option value ="1">Aktif</option>
+                                                    <option value ="2">Non Aktif</option>
+                                                </select>
+	                                            <!-- <input class="form-control" type="text" name="status" placeholder="isi status" value="{{ (isset($namatarif) ? $namatarif->status : '' )}}"> -->
 	                                        </div>
 	                                    </div>
                                     
