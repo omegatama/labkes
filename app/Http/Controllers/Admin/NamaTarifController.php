@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\NamaTarif;
+use App\KategoriTarif;
 use DataTables;
 
 class NamaTarifController extends Controller
@@ -42,7 +43,8 @@ class NamaTarifController extends Controller
     public function create()
     {
         $aksi= "tambah";
-        return view('admin.namatarif.tambah', compact("aksi"));
+        $kategori = KategoriTarif::all();
+        return view('admin.namatarif.tambah', compact("aksi", "kategori"));
     }
 
     /**

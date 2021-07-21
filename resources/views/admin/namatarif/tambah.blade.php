@@ -33,22 +33,31 @@
                                         
                                         <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Kategori</label>
-	                                        <div class="col-lg-3">
-	                                            <input class="form-control" type="text" name="kodenamatarif" placeholder="masukan kode nama tarif" value="{{ (isset($namatarif) ? $namatarif->kodenamatarif : '' )}}">
+	                                        <div class="col-lg-7">
+                                            <select name="kategori" class="form-control" style="width:100%">
+                                                <option value="">--- Kode Kategori ---</option>
+                                                @foreach ($kategori as $key => $item)
+                                                <option value="{{ $key }}">{{ $item->namakategori }}</option>
+                                                @endforeach
+                                            </select>
 	                                        </div>
 	                                    </div>
 
                                         <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Sub1</label>
-	                                        <div class="col-lg-3">
-	                                            <input class="form-control" type="text" name="kodenamatarif" placeholder="masukan kode nama tarif" value="{{ (isset($namatarif) ? $namatarif->kodenamatarif : '' )}}">
+	                                        <div class="col-lg-5">
+                                            <select name="kodesub1" class="form-control"style="width:100%">
+                                                <option>--Kode Sub 1--</option>
+                                            </select>
 	                                        </div>
 	                                    </div>
 
                                         <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode Sub2</label>
-	                                        <div class="col-lg-3">
-	                                            <input class="form-control" type="text" name="kodenamatarif" placeholder="masukan kode nama tarif" value="{{ (isset($namatarif) ? $namatarif->kodenamatarif : '' )}}">
+	                                        <div class="col-lg-5">
+                                            <select name="kodesub2" class="form-control"style="width:100%">
+                                                <option>--Kode Sub 2--</option>
+                                            </select>
 	                                        </div>
 	                                    </div>
 
@@ -111,7 +120,29 @@
 <script src="{{ asset('app-assets/vendors/js/toastr.min.js') }}" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
-        
+        jQuery('select[name="kategori"]').on('change',function(){
+               var kategoriID = jQuery(this).val();
+               if(kategoriID)
+               {
+                  jQuery.ajax({
+                     url : 'select/sub1kategori?idkategori=' +kategoriID,
+                     type : "GET",
+                     dataType : "json",
+                     success:function(data)
+                     {
+                        console.log(data);
+                        jQuery('select[name="kodesub1"]').empty();
+                        jQuery.each(data, function(key,value){
+                           $('select[name="kodesub1"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+                     }
+                  });
+               }
+               else
+               {
+                  $('select[name="kodesub1"]').empty();
+               }
+            });
 
         
 
