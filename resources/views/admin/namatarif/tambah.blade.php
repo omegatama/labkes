@@ -37,7 +37,7 @@
                                             <select name="kategori" class="form-control" style="width:100%">
                                                 <option value="">--- Kode Kategori ---</option>
                                                 @foreach ($kategori as $key => $item)
-                                                <option value="{{ $key }}">{{ $item->namakategori }}</option>
+                                                <option value="{{ $item->id }}">{{ $item->namakategori }}</option>
                                                 @endforeach
                                             </select>
 	                                        </div>
@@ -125,23 +125,51 @@
                if(kategoriID)
                {
                   jQuery.ajax({
-                     url : 'select/sub1kategori?idkategori=' +kategoriID,
+                     url : '{{route('admin')}}/select/sub1kategori?idkategori=' +kategoriID,
                      type : "GET",
                      dataType : "json",
                      success:function(data)
                      {
                         console.log(data);
                         jQuery('select[name="kodesub1"]').empty();
+                        jQuery('select[name="kodesub1"]').append('<option value="">--Kode Sub 1--</option>');
                         jQuery.each(data, function(key,value){
-                           $('select[name="kodesub1"]').append('<option value="'+ key +'">'+ value +'</option>');
+                           $('select[name="kodesub1"]').append('<option value="'+ value.id +'">'+ value.namasub1kategori +'</option>');
                         });
                      }
                   });
                }
-               else
+                else
+                {
+                    jQuery('select[name="kodesub1"]').empty();
+                    jQuery('select[name="kodesub1"]').append('<option value="">--Kode Sub 1--</option>');
+                }
+            });
+
+            jQuery('select[name="kodesub1"]').on('change',function(){
+               var sub1id = jQuery(this).val();
+               if(sub1id)
                {
-                  $('select[name="kodesub1"]').empty();
+                  jQuery.ajax({
+                     url : '{{route('admin')}}/select/sub2kategori?idsub1=' +sub1id,
+                     type : "GET",
+                     dataType : "json",
+                     success:function(data)
+                     {
+                        console.log(data);
+                        jQuery('select[name="kodesub2"]').empty();
+                        jQuery('select[name="kodesub2"]').append('<option value="">--Kode Sub 2--</option>');
+                        jQuery.each(data, function(key,value){
+                           $('select[name="kodesub2"]').append('<option value="'+ value.id +'">'+ value.namasub2kategori +'</option>');
+                        });
+                     }
+                  });
                }
+                else
+                {
+                    jQuery('select[name="kodesub2"]').empty();
+                    jQuery('select[name="kodesub2"]').append('<option value="">--Kode Sub 2--</option>');
+                }
             });
 
         

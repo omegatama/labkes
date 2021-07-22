@@ -56,7 +56,7 @@ class PekerjaanController extends Controller
     public function store(Request $request)
     {
         $pekerjaan = new Pekerjaan;
-        $pekerjaan->kode = $request->kode;
+        // $pekerjaan->kode = $request->kode;
         $pekerjaan->nama_pekerjaan = $request->nama_pekerjaan;
 
         if($pekerjaan->save()){

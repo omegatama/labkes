@@ -31,12 +31,15 @@
 
                                     <div class="form-body">
                                         
-                                        <div class="form-group row" style="margin-bottom: 5px">
-	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode</label>
-	                                        <div class="col-lg-3">
-	                                            <input class="form-control" type="text" name="kode" placeholder="ketik kode" value="{{ (isset($pekerjaan) ? $pekerjaan->kode : '' )}}">
-	                                        </div>
-	                                    </div>
+                                        @if (isset($pekerjaan))
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label for="example-text-input" class="col-lg-3 col-form-label">Kode</label>
+                                                <div class="col-lg-3">
+                                                    <input class="form-control" readonly type="text" name="kode" placeholder="ketik kode" value="{{ (isset($pekerjaan) ? $pekerjaan->kode : '' )}}">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        
 
                                         <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Nama Pekerjaan</label>

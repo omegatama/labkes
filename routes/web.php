@@ -33,6 +33,7 @@ Route::group([
     Route::get('/select/kecamatan', 'Admin\Master\SelectDataController@selectKecamatan')->name('admin.select.kecamatan'); 
     Route::get('/select/kategori', 'Admin\Master\SelectDataController@selectKategori')->name('admin.select.kategori'); 
     Route::get('/select/sub1kategori', 'Admin\Master\SelectDataController@selectSub1')->name('admin.select.sub1'); 
+    Route::get('/select/sub2kategori', 'Admin\Master\SelectDataController@selectSub2')->name('admin.select.sub2'); 
     
     // 
 

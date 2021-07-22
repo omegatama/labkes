@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Kecamatan;
 use App\KategoriTarif;
 use App\Sub1KategoriTarif;
+use App\Sub2KategoriTarif;
 
 class SelectDataController extends Controller
 {
@@ -38,5 +39,18 @@ class SelectDataController extends Controller
         }
 
         return $sub1kategori;
+    }
+
+    public function selectSub2(Request $request)
+    {
+        if ($request->has('idsub1')) {
+            $idsub1= $request->idsub1;
+            $sub2kategori = Sub2KategoriTarif::where('idsub1', $idsub1)->get();
+        }  
+        else{
+            $sub2kategori = Sub2KategoriTarif::all();
+        }
+
+        return $sub2kategori;
     }
 }

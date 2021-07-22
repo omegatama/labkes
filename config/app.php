@@ -163,6 +163,7 @@ return [
         // Additional
         Yajra\DataTables\DataTablesServiceProvider::class,
         browner12\helpers\HelperServiceProvider::class,
+        Alfa6661\AutoNumber\AutoNumberServiceProvider::class,
     ],
 
     /*
