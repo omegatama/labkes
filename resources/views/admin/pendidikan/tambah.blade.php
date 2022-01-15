@@ -30,13 +30,15 @@
                                     @endif
 
                                     <div class="form-body">
-                                        
-                                        <div class="form-group row" style="margin-bottom: 5px">
+                                    @if (isset($pendidikan))
+                                    <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Kode</label>
 	                                        <div class="col-lg-3">
-	                                            <input class="form-control" type="text" name="kode" placeholder="ketik kode" value="{{ (isset($pendidikan) ? $pendidikan->kode : '' )}}">
+	                                            <input class="form-control" type="text" name="kode" placeholder="ketik kode" readonly value="{{ (isset($pendidikan) ? $pendidikan->kode : '' )}}">
 	                                        </div>
 	                                    </div>
+                                    @endif
+                                        
 
                                         <div class="form-group row" style="margin-bottom: 5px">
 	                                        <label for="example-text-input" class="col-lg-3 col-form-label">Pendidikan</label>

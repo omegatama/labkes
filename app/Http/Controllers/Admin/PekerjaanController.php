@@ -116,8 +116,9 @@ class PekerjaanController extends Controller
     public function destroy($id)
     {
         $pekerjaan = Pekerjaan::findOrFail($id);
+
         // $tenagamedis->status = 0;
-        if($pekerjaan->save()){
+        if($pekerjaan->delete()){
             return redirect()->route("admin.pekerjaan.index");
         }
     }

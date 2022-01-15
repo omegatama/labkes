@@ -54,7 +54,7 @@ class PendidikanController extends Controller
     public function store(Request $request)
     {
         $pendidikan = new Pendidikan;
-        $pendidikan->kode = $request->kode;
+        // $pendidikan->kode = $request->kode;
         $pendidikan->pendidikan = $request->pendidikan;
 
         if($pendidikan->save()){
